@@ -1,0 +1,20 @@
+[
+   {
+      "locale": {
+         "county": "null",
+         "state": "null",
+         "country": "RussianFederation",
+         "latitude": "null",
+         "longitude": "null",
+         "landArea": 1.0
+      },
+      "covid19": [
+         {
+            "confirmed": 10,
+            "deaths": 0,
+            "recovered": 3,
+            "timestamp": "2020-03-10"
+         }
+      ]
+   }
+]

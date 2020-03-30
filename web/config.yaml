@@ -1,0 +1,111 @@
+baseURL: 'https://covid19.stratifylabs.co'
+title: COVID19
+copyright: ''
+theme: engimo
+disqusShortname: ''
+googleAnalytics: ''
+Paginate: 50
+disablePathToLower: true
+preserveTaxonomyNames: true
+enableRobotsTXT: true
+pygmentsCodefences: true
+enableEmoji: true
+defaultContentLanguage: en
+about:
+  logo: 'images/logo.png'
+params:
+  ebook: false
+  info:
+    description: by Stratify Labs
+    title404: Nothing's here!
+  assets:
+    favicon: favicon.ico
+    gopher: ''
+  copyright:
+    prefix: ''
+    holder: 'Stratify Labs, Inc'
+    startYear: '2020'
+    suffix: ''
+  settings:
+    dateFormat: '2006-01-02'
+    listDateFormat: '2006-01-02'
+    archiveDateFormat: Jan 02
+    hideEntryNavigation: [page]
+    hideEntryMeta: [page]
+    showReadingTime: true
+    showLastmod: true
+    taxonomyCloudShuffle: false
+    accentColor: '#204c9b'
+    hideMainMenu: false
+  sidebar:
+    enable: true
+  widgets:
+    header:
+      - breadcrumbs
+    homepage:
+      - recent_posts
+    sidebar:
+      - about
+      - taxonomy_cloud
+      - sidebar_menu
+    footer:
+      - social_menu
+  opengraph:
+    facebook:
+      admins: []
+      appID: ''
+      pageID: ''
+    twitter:
+      page: ''
+  seo:
+    titleSeparator: '|'
+  social:
+    facebook: stratifylabs
+    github: StratifyLabs
+    instagram: stratifylabs
+    twitter: stratifylabs
+    youtube: UCGt9kTTn9LtXWEFfpPp6Vqw
+  comments:
+    enable: false
+    isso:
+      enable: false
+      scriptSrc: ''
+      dataAttrs: ''
+    staticman:
+      enable: true
+      apiEndpoint: 'https://api.staticman.net/v2/entry'
+      maxDepth: 2
+      username: tgil
+      repository: minimo
+      branch: master
+    utterances:
+      enable: false
+      issueTerm: pathname
+      github:
+        username: tyler-gilbert
+        repository: covid19
+  search:
+    client: fuse
+    title: Search
+    algolia:
+      appId: ''
+      indexName: ''
+      searchApiKey: ''
+taxonomy_cloud:
+  title: ''
+  taxonomy: tags
+  shuffle: false
+recent_posts:
+  title: Most Recent Posts
+  length: 50
+taxonomies:
+  tag: tags
+permalinks:
+  page: '/:slug/'
+blackfriday:
+  hrefTargetBlank: true
+languages:
+  en:
+    lang: en
+    languageName: English
+    weight: 1

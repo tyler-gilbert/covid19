@@ -1,0 +1,24 @@
+
+set(SOURCES
+	Object.cpp
+	Object.hpp
+	ChartJs.cpp
+	ChartJs.hpp
+	Covid19.cpp
+	Covid19.hpp
+	Compilation.cpp
+	Compilation.hpp
+	Container.cpp
+	Container.hpp
+	Locale.cpp
+	Locale.hpp
+	Population.cpp
+	Population.hpp
+	Plotter.cpp
+	Plotter.hpp
+	Renderer.cpp
+	Renderer.hpp
+	Importer.cpp
+	Importer.hpp
+	main.cpp
+	PARENT_SCOPE)

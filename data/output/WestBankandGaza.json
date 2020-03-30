@@ -1,0 +1,38 @@
+[
+   {
+      "locale": {
+         "county": "null",
+         "state": "null",
+         "country": "WestBankandGaza",
+         "latitude": "31.9522",
+         "longitude": "35.2332",
+         "landArea": 1.0
+      },
+      "covid19": [
+         {
+            "confirmed": 84,
+            "deaths": 1,
+            "recovered": 17,
+            "timestamp": "2020-03-26"
+         },
+         {
+            "confirmed": 91,
+            "deaths": 1,
+            "recovered": 17,
+            "timestamp": "2020-03-27"
+         },
+         {
+            "confirmed": 98,
+            "deaths": 1,
+            "recovered": 18,
+            "timestamp": "2020-03-28"
+         },
+         {
+            "confirmed": 109,
+            "deaths": 1,
+            "recovered": 18,
+            "timestamp": "2020-03-29"
+         }
+      ]
+   }
+]

@@ -1,0 +1,80 @@
+[
+   {
+      "locale": {
+         "county": "null",
+         "state": "null",
+         "country": "ElSalvador",
+         "latitude": "13.7942",
+         "longitude": "-88.8965",
+         "landArea": 1.0
+      },
+      "covid19": [
+         {
+            "confirmed": 1,
+            "deaths": 0,
+            "recovered": 0,
+            "timestamp": "2020-03-19"
+         },
+         {
+            "confirmed": 1,
+            "deaths": 0,
+            "recovered": 0,
+            "timestamp": "2020-03-20"
+         },
+         {
+            "confirmed": 3,
+            "deaths": 0,
+            "recovered": 0,
+            "timestamp": "2020-03-21"
+         },
+         {
+            "confirmed": 3,
+            "deaths": 0,
+            "recovered": 0,
+            "timestamp": "2020-03-22"
+         },
+         {
+            "confirmed": 3,
+            "deaths": 0,
+            "recovered": 0,
+            "timestamp": "2020-03-23"
+         },
+         {
+            "confirmed": 5,
+            "deaths": 0,
+            "recovered": 0,
+            "timestamp": "2020-03-24"
+         },
+         {
+            "confirmed": 9,
+            "deaths": 0,
+            "recovered": 0,
+            "timestamp": "2020-03-25"
+         },
+         {
+            "confirmed": 13,
+            "deaths": 0,
+            "recovered": 0,
+            "timestamp": "2020-03-26"
+         },
+         {
+            "confirmed": 13,
+            "deaths": 0,
+            "recovered": 0,
+            "timestamp": "2020-03-27"
+         },
+         {
+            "confirmed": 19,
+            "deaths": 0,
+            "recovered": 0,
+            "timestamp": "2020-03-28"
+         },
+         {
+            "confirmed": 24,
+            "deaths": 0,
+            "recovered": 0,
+            "timestamp": "2020-03-29"
+         }
+      ]
+   }
+]

@@ -1,0 +1,474 @@
+[
+   {
+      "locale": {
+         "county": "null",
+         "state": "DistrictofColumbia",
+         "country": "US",
+         "latitude": "null",
+         "longitude": "null",
+         "landArea": 68.360000610351562
+      },
+      "covid19": [
+         {
+            "confirmed": 5,
+            "deaths": 0,
+            "recovered": 0,
+            "timestamp": "2020-03-10"
+         },
+         {
+            "confirmed": 10,
+            "deaths": 0,
+            "recovered": 0,
+            "timestamp": "2020-03-11"
+         },
+         {
+            "confirmed": 10,
+            "deaths": 0,
+            "recovered": 0,
+            "timestamp": "2020-03-12"
+         },
+         {
+            "confirmed": 10,
+            "deaths": 0,
+            "recovered": 0,
+            "timestamp": "2020-03-13"
+         },
+         {
+            "confirmed": 10,
+            "deaths": 0,
+            "recovered": 0,
+            "timestamp": "2020-03-14"
+         },
+         {
+            "confirmed": 16,
+            "deaths": 0,
+            "recovered": 0,
+            "timestamp": "2020-03-15"
+         },
+         {
+            "confirmed": 22,
+            "deaths": 0,
+            "recovered": 0,
+            "timestamp": "2020-03-16"
+         },
+         {
+            "confirmed": 22,
+            "deaths": 0,
+            "recovered": 0,
+            "timestamp": "2020-03-17"
+         },
+         {
+            "confirmed": 31,
+            "deaths": 0,
+            "recovered": 0,
+            "timestamp": "2020-03-18"
+         },
+         {
+            "confirmed": 40,
+            "deaths": 0,
+            "recovered": 0,
+            "timestamp": "2020-03-19"
+         },
+         {
+            "confirmed": 71,
+            "deaths": 1,
+            "recovered": 0,
+            "timestamp": "2020-03-20"
+         },
+         {
+            "confirmed": 77,
+            "deaths": 1,
+            "recovered": 0,
+            "timestamp": "2020-03-21"
+         },
+         {
+            "confirmed": 102,
+            "deaths": 2,
+            "recovered": 0,
+            "timestamp": "2020-03-22"
+         },
+         {
+            "confirmed": 120,
+            "deaths": 2,
+            "recovered": 0,
+            "timestamp": "2020-03-23"
+         },
+         {
+            "confirmed": 141,
+            "deaths": 2,
+            "recovered": 0,
+            "timestamp": "2020-03-24"
+         },
+         {
+            "confirmed": 187,
+            "deaths": 2,
+            "recovered": 0,
+            "timestamp": "2020-03-25"
+         },
+         {
+            "confirmed": 231,
+            "deaths": 3,
+            "recovered": 0,
+            "timestamp": "2020-03-26"
+         },
+         {
+            "confirmed": 271,
+            "deaths": 3,
+            "recovered": 0,
+            "timestamp": "2020-03-27"
+         },
+         {
+            "confirmed": 304,
+            "deaths": 4,
+            "recovered": 0,
+            "timestamp": "2020-03-28"
+         },
+         {
+            "confirmed": 342,
+            "deaths": 5,
+            "recovered": 0,
+            "timestamp": "2020-03-29"
+         }
+      ],
+      "population": {
+         "total": {
+            "total": 684498,
+            "male": 324881,
+            "female": 359617,
+            "minimumAge": 0,
+            "maximumAge": 1000
+         },
+         "byAge": [
+            {
+               "total": 44692,
+               "male": 22724,
+               "female": 21968,
+               "minimumAge": 0,
+               "maximumAge": 4
+            },
+            {
+               "total": 33728,
+               "male": 17266,
+               "female": 16462,
+               "minimumAge": 5,
+               "maximumAge": 9
+            },
+            {
+               "total": 27563,
+               "male": 13562,
+               "female": 14001,
+               "minimumAge": 10,
+               "maximumAge": 14
+            },
+            {
+               "total": 37417,
+               "male": 17645,
+               "female": 19772,
+               "minimumAge": 15,
+               "maximumAge": 19
+            },
+            {
+               "total": 54117,
+               "male": 24904,
+               "female": 29213,
+               "minimumAge": 20,
+               "maximumAge": 24
+            },
+            {
+               "total": 82413,
+               "male": 37850,
+               "female": 44563,
+               "minimumAge": 25,
+               "maximumAge": 29
+            },
+            {
+               "total": 77303,
+               "male": 36999,
+               "female": 40304,
+               "minimumAge": 30,
+               "maximumAge": 34
+            },
+            {
+               "total": 57495,
+               "male": 28413,
+               "female": 29082,
+               "minimumAge": 35,
+               "maximumAge": 39
+            },
+            {
+               "total": 41681,
+               "male": 20714,
+               "female": 20967,
+               "minimumAge": 40,
+               "maximumAge": 44
+            },
+            {
+               "total": 38274,
+               "male": 19244,
+               "female": 19030,
+               "minimumAge": 45,
+               "maximumAge": 49
+            },
+            {
+               "total": 38186,
+               "male": 19208,
+               "female": 18978,
+               "minimumAge": 50,
+               "maximumAge": 54
+            },
+            {
+               "total": 36453,
+               "male": 17978,
+               "female": 18475,
+               "minimumAge": 55,
+               "maximumAge": 59
+            },
+            {
+               "total": 33464,
+               "male": 14996,
+               "female": 18468,
+               "minimumAge": 60,
+               "maximumAge": 64
+            },
+            {
+               "total": 26099,
+               "male": 10982,
+               "female": 15117,
+               "minimumAge": 65,
+               "maximumAge": 69
+            },
+            {
+               "total": 20821,
+               "male": 9434,
+               "female": 11387,
+               "minimumAge": 70,
+               "maximumAge": 74
+            },
+            {
+               "total": 14489,
+               "male": 5706,
+               "female": 8783,
+               "minimumAge": 75,
+               "maximumAge": 79
+            },
+            {
+               "total": 9347,
+               "male": 3549,
+               "female": 5798,
+               "minimumAge": 80,
+               "maximumAge": 84
+            },
+            {
+               "total": 10956,
+               "male": 3707,
+               "female": 7249,
+               "minimumAge": 85,
+               "maximumAge": 1000
+            }
+         ]
+      }
+   },
+   {
+      "locale": {
+         "county": "DistrictofColumbia",
+         "state": "DistrictofColumbia",
+         "country": "US",
+         "latitude": "38.90417773",
+         "longitude": "-77.01655992",
+         "landArea": 0.0
+      },
+      "population": {
+         "total": {
+            "total": 684498,
+            "male": 324881,
+            "female": 359617,
+            "minimumAge": 0,
+            "maximumAge": 1000
+         },
+         "byAge": [
+            {
+               "total": 44692,
+               "male": 22724,
+               "female": 21968,
+               "minimumAge": 0,
+               "maximumAge": 4
+            },
+            {
+               "total": 33728,
+               "male": 17266,
+               "female": 16462,
+               "minimumAge": 5,
+               "maximumAge": 9
+            },
+            {
+               "total": 27563,
+               "male": 13562,
+               "female": 14001,
+               "minimumAge": 10,
+               "maximumAge": 14
+            },
+            {
+               "total": 37417,
+               "male": 17645,
+               "female": 19772,
+               "minimumAge": 15,
+               "maximumAge": 19
+            },
+            {
+               "total": 54117,
+               "male": 24904,
+               "female": 29213,
+               "minimumAge": 20,
+               "maximumAge": 24
+            },
+            {
+               "total": 82413,
+               "male": 37850,
+               "female": 44563,
+               "minimumAge": 25,
+               "maximumAge": 29
+            },
+            {
+               "total": 77303,
+               "male": 36999,
+               "female": 40304,
+               "minimumAge": 30,
+               "maximumAge": 34
+            },
+            {
+               "total": 57495,
+               "male": 28413,
+               "female": 29082,
+               "minimumAge": 35,
+               "maximumAge": 39
+            },
+            {
+               "total": 41681,
+               "male": 20714,
+               "female": 20967,
+               "minimumAge": 40,
+               "maximumAge": 44
+            },
+            {
+               "total": 38274,
+               "male": 19244,
+               "female": 19030,
+               "minimumAge": 45,
+               "maximumAge": 49
+            },
+            {
+               "total": 38186,
+               "male": 19208,
+               "female": 18978,
+               "minimumAge": 50,
+               "maximumAge": 54
+            },
+            {
+               "total": 36453,
+               "male": 17978,
+               "female": 18475,
+               "minimumAge": 55,
+               "maximumAge": 59
+            },
+            {
+               "total": 33464,
+               "male": 14996,
+               "female": 18468,
+               "minimumAge": 60,
+               "maximumAge": 64
+            },
+            {
+               "total": 26099,
+               "male": 10982,
+               "female": 15117,
+               "minimumAge": 65,
+               "maximumAge": 69
+            },
+            {
+               "total": 20821,
+               "male": 9434,
+               "female": 11387,
+               "minimumAge": 70,
+               "maximumAge": 74
+            },
+            {
+               "total": 14489,
+               "male": 5706,
+               "female": 8783,
+               "minimumAge": 75,
+               "maximumAge": 79
+            },
+            {
+               "total": 9347,
+               "male": 3549,
+               "female": 5798,
+               "minimumAge": 80,
+               "maximumAge": 84
+            },
+            {
+               "total": 10956,
+               "male": 3707,
+               "female": 7249,
+               "minimumAge": 85,
+               "maximumAge": 1000
+            }
+         ]
+      },
+      "covid19": [
+         {
+            "confirmed": 0,
+            "deaths": 0,
+            "recovered": 0,
+            "timestamp": "2020-03-22"
+         },
+         {
+            "confirmed": 102,
+            "deaths": 2,
+            "recovered": 0,
+            "timestamp": "2020-03-22"
+         },
+         {
+            "confirmed": 120,
+            "deaths": 2,
+            "recovered": 0,
+            "timestamp": "2020-03-23"
+         },
+         {
+            "confirmed": 141,
+            "deaths": 2,
+            "recovered": 0,
+            "timestamp": "2020-03-24"
+         },
+         {
+            "confirmed": 187,
+            "deaths": 2,
+            "recovered": 0,
+            "timestamp": "2020-03-25"
+         },
+         {
+            "confirmed": 231,
+            "deaths": 3,
+            "recovered": 0,
+            "timestamp": "2020-03-26"
+         },
+         {
+            "confirmed": 271,
+            "deaths": 3,
+            "recovered": 0,
+            "timestamp": "2020-03-27"
+         },
+         {
+            "confirmed": 304,
+            "deaths": 4,
+            "recovered": 0,
+            "timestamp": "2020-03-28"
+         },
+         {
+            "confirmed": 342,
+            "deaths": 5,
+            "recovered": 0,
+            "timestamp": "2020-03-29"
+         }
+      ]
+   }
+]

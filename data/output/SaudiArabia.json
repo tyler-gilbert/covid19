@@ -1,0 +1,182 @@
+[
+   {
+      "locale": {
+         "county": "null",
+         "state": "null",
+         "country": "SaudiArabia",
+         "latitude": "23.885942",
+         "longitude": "45.079162",
+         "landArea": 1.0
+      },
+      "covid19": [
+         {
+            "confirmed": 1,
+            "deaths": 0,
+            "recovered": 0,
+            "timestamp": "2020-03-02"
+         },
+         {
+            "confirmed": 1,
+            "deaths": 0,
+            "recovered": 0,
+            "timestamp": "2020-03-03"
+         },
+         {
+            "confirmed": 1,
+            "deaths": 0,
+            "recovered": 0,
+            "timestamp": "2020-03-04"
+         },
+         {
+            "confirmed": 5,
+            "deaths": 0,
+            "recovered": 0,
+            "timestamp": "2020-03-05"
+         },
+         {
+            "confirmed": 5,
+            "deaths": 0,
+            "recovered": 0,
+            "timestamp": "2020-03-06"
+         },
+         {
+            "confirmed": 5,
+            "deaths": 0,
+            "recovered": 0,
+            "timestamp": "2020-03-07"
+         },
+         {
+            "confirmed": 11,
+            "deaths": 0,
+            "recovered": 0,
+            "timestamp": "2020-03-08"
+         },
+         {
+            "confirmed": 15,
+            "deaths": 0,
+            "recovered": 0,
+            "timestamp": "2020-03-09"
+         },
+         {
+            "confirmed": 20,
+            "deaths": 0,
+            "recovered": 1,
+            "timestamp": "2020-03-10"
+         },
+         {
+            "confirmed": 21,
+            "deaths": 0,
+            "recovered": 1,
+            "timestamp": "2020-03-11"
+         },
+         {
+            "confirmed": 45,
+            "deaths": 0,
+            "recovered": 1,
+            "timestamp": "2020-03-12"
+         },
+         {
+            "confirmed": 86,
+            "deaths": 0,
+            "recovered": 1,
+            "timestamp": "2020-03-13"
+         },
+         {
+            "confirmed": 103,
+            "deaths": 0,
+            "recovered": 1,
+            "timestamp": "2020-03-14"
+         },
+         {
+            "confirmed": 103,
+            "deaths": 0,
+            "recovered": 1,
+            "timestamp": "2020-03-15"
+         },
+         {
+            "confirmed": 118,
+            "deaths": 0,
+            "recovered": 2,
+            "timestamp": "2020-03-16"
+         },
+         {
+            "confirmed": 171,
+            "deaths": 0,
+            "recovered": 6,
+            "timestamp": "2020-03-17"
+         },
+         {
+            "confirmed": 171,
+            "deaths": 0,
+            "recovered": 6,
+            "timestamp": "2020-03-18"
+         },
+         {
+            "confirmed": 274,
+            "deaths": 0,
+            "recovered": 6,
+            "timestamp": "2020-03-19"
+         },
+         {
+            "confirmed": 344,
+            "deaths": 0,
+            "recovered": 8,
+            "timestamp": "2020-03-20"
+         },
+         {
+            "confirmed": 392,
+            "deaths": 0,
+            "recovered": 16,
+            "timestamp": "2020-03-21"
+         },
+         {
+            "confirmed": 511,
+            "deaths": 0,
+            "recovered": 17,
+            "timestamp": "2020-03-22"
+         },
+         {
+            "confirmed": 562,
+            "deaths": 0,
+            "recovered": 19,
+            "timestamp": "2020-03-23"
+         },
+         {
+            "confirmed": 767,
+            "deaths": 1,
+            "recovered": 28,
+            "timestamp": "2020-03-24"
+         },
+         {
+            "confirmed": 900,
+            "deaths": 2,
+            "recovered": 29,
+            "timestamp": "2020-03-25"
+         },
+         {
+            "confirmed": 1012,
+            "deaths": 3,
+            "recovered": 33,
+            "timestamp": "2020-03-26"
+         },
+         {
+            "confirmed": 1104,
+            "deaths": 3,
+            "recovered": 35,
+            "timestamp": "2020-03-27"
+         },
+         {
+            "confirmed": 1203,
+            "deaths": 4,
+            "recovered": 37,
+            "timestamp": "2020-03-28"
+         },
+         {
+            "confirmed": 1299,
+            "deaths": 8,
+            "recovered": 66,
+            "timestamp": "2020-03-29"
+         }
+      ]
+   }
+]

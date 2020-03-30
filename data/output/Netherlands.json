@@ -1,0 +1,170 @@
+[
+   {
+      "locale": {
+         "county": "null",
+         "state": "null",
+         "country": "Netherlands",
+         "latitude": "52.1326",
+         "longitude": "5.2913",
+         "landArea": 1.0
+      },
+      "covid19": [
+         {
+            "confirmed": 1,
+            "deaths": 0,
+            "recovered": 0,
+            "timestamp": "2020-02-27"
+         },
+         {
+            "confirmed": 1,
+            "deaths": 0,
+            "recovered": 0,
+            "timestamp": "2020-02-28"
+         },
+         {
+            "confirmed": 6,
+            "deaths": 0,
+            "recovered": 0,
+            "timestamp": "2020-02-29"
+         },
+         {
+            "confirmed": 10,
+            "deaths": 0,
+            "recovered": 0,
+            "timestamp": "2020-03-01"
+         },
+         {
+            "confirmed": 18,
+            "deaths": 0,
+            "recovered": 0,
+            "timestamp": "2020-03-02"
+         },
+         {
+            "confirmed": 24,
+            "deaths": 0,
+            "recovered": 0,
+            "timestamp": "2020-03-03"
+         },
+         {
+            "confirmed": 38,
+            "deaths": 0,
+            "recovered": 0,
+            "timestamp": "2020-03-04"
+         },
+         {
+            "confirmed": 82,
+            "deaths": 0,
+            "recovered": 0,
+            "timestamp": "2020-03-05"
+         },
+         {
+            "confirmed": 128,
+            "deaths": 1,
+            "recovered": 0,
+            "timestamp": "2020-03-06"
+         },
+         {
+            "confirmed": 188,
+            "deaths": 1,
+            "recovered": 0,
+            "timestamp": "2020-03-07"
+         },
+         {
+            "confirmed": 265,
+            "deaths": 3,
+            "recovered": 0,
+            "timestamp": "2020-03-08"
+         },
+         {
+            "confirmed": 321,
+            "deaths": 3,
+            "recovered": 0,
+            "timestamp": "2020-03-09"
+         },
+         {
+            "confirmed": 382,
+            "deaths": 4,
+            "recovered": 0,
+            "timestamp": "2020-03-10"
+         },
+         {
+            "confirmed": 503,
+            "deaths": 5,
+            "recovered": 0,
+            "timestamp": "2020-03-11"
+         },
+         {
+            "confirmed": 503,
+            "deaths": 5,
+            "recovered": 0,
+            "timestamp": "2020-03-12"
+         },
+         {
+            "confirmed": 804,
+            "deaths": 10,
+            "recovered": 0,
+            "timestamp": "2020-03-13"
+         },
+         {
+            "confirmed": 959,
+            "deaths": 12,
+            "recovered": 2,
+            "timestamp": "2020-03-14"
+         },
+         {
+            "confirmed": 1135,
+            "deaths": 20,
+            "recovered": 2,
+            "timestamp": "2020-03-15"
+         },
+         {
+            "confirmed": 4204,
+            "deaths": 179,
+            "recovered": 2,
+            "timestamp": "2020-03-22"
+         },
+         {
+            "confirmed": 4749,
+            "deaths": 213,
+            "recovered": 2,
+            "timestamp": "2020-03-23"
+         },
+         {
+            "confirmed": 5560,
+            "deaths": 276,
+            "recovered": 2,
+            "timestamp": "2020-03-24"
+         },
+         {
+            "confirmed": 6412,
+            "deaths": 356,
+            "recovered": 3,
+            "timestamp": "2020-03-25"
+         },
+         {
+            "confirmed": 7431,
+            "deaths": 434,
+            "recovered": 3,
+            "timestamp": "2020-03-26"
+         },
+         {
+            "confirmed": 8603,
+            "deaths": 546,
+            "recovered": 3,
+            "timestamp": "2020-03-27"
+         },
+         {
+            "confirmed": 9762,
+            "deaths": 639,
+            "recovered": 3,
+            "timestamp": "2020-03-28"
+         },
+         {
+            "confirmed": 10866,
+            "deaths": 771,
+            "recovered": 250,
+            "timestamp": "2020-03-29"
+         }
+      ]
+   }
+]

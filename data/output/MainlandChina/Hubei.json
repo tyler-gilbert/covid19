@@ -1,0 +1,445 @@
+[
+   {
+      "locale": {
+         "county": "null",
+         "state": "Hubei",
+         "country": "MainlandChina",
+         "latitude": "null",
+         "longitude": "null",
+         "landArea": 0.0
+      },
+      "covid19": [
+         {
+            "confirmed": 444,
+            "deaths": 17,
+            "recovered": 28,
+            "timestamp": "2020-01-22"
+         },
+         {
+            "confirmed": 444,
+            "deaths": 17,
+            "recovered": 28,
+            "timestamp": "2020-01-23"
+         },
+         {
+            "confirmed": 549,
+            "deaths": 24,
+            "recovered": 31,
+            "timestamp": "2020-01-24"
+         },
+         {
+            "confirmed": 761,
+            "deaths": 40,
+            "recovered": 32,
+            "timestamp": "2020-01-25"
+         },
+         {
+            "confirmed": 1058,
+            "deaths": 52,
+            "recovered": 42,
+            "timestamp": "2020-01-26"
+         },
+         {
+            "confirmed": 1423,
+            "deaths": 76,
+            "recovered": 45,
+            "timestamp": "2020-01-27"
+         },
+         {
+            "confirmed": 3554,
+            "deaths": 125,
+            "recovered": 80,
+            "timestamp": "2020-01-28"
+         },
+         {
+            "confirmed": 3554,
+            "deaths": 125,
+            "recovered": 88,
+            "timestamp": "2020-01-29"
+         },
+         {
+            "confirmed": 4903,
+            "deaths": 162,
+            "recovered": 90,
+            "timestamp": "2020-01-30"
+         },
+         {
+            "confirmed": 5806,
+            "deaths": 204,
+            "recovered": 141,
+            "timestamp": "2020-01-31"
+         },
+         {
+            "confirmed": 7153,
+            "deaths": 249,
+            "recovered": 168,
+            "timestamp": "2020-02-01"
+         },
+         {
+            "confirmed": 11177,
+            "deaths": 350,
+            "recovered": 295,
+            "timestamp": "2020-02-02"
+         },
+         {
+            "confirmed": 13522,
+            "deaths": 414,
+            "recovered": 386,
+            "timestamp": "2020-02-03"
+         },
+         {
+            "confirmed": 16678,
+            "deaths": 479,
+            "recovered": 522,
+            "timestamp": "2020-02-04"
+         },
+         {
+            "confirmed": 19665,
+            "deaths": 549,
+            "recovered": 633,
+            "timestamp": "2020-02-05"
+         },
+         {
+            "confirmed": 22112,
+            "deaths": 618,
+            "recovered": 817,
+            "timestamp": "2020-02-06"
+         },
+         {
+            "confirmed": 24953,
+            "deaths": 699,
+            "recovered": 1115,
+            "timestamp": "2020-02-07"
+         },
+         {
+            "confirmed": 27100,
+            "deaths": 780,
+            "recovered": 1439,
+            "timestamp": "2020-02-08"
+         },
+         {
+            "confirmed": 29631,
+            "deaths": 871,
+            "recovered": 1795,
+            "timestamp": "2020-02-09"
+         },
+         {
+            "confirmed": 31728,
+            "deaths": 974,
+            "recovered": 2222,
+            "timestamp": "2020-02-10"
+         },
+         {
+            "confirmed": 33366,
+            "deaths": 1068,
+            "recovered": 2639,
+            "timestamp": "2020-02-11"
+         },
+         {
+            "confirmed": 33366,
+            "deaths": 1068,
+            "recovered": 2686,
+            "timestamp": "2020-02-12"
+         },
+         {
+            "confirmed": 48206,
+            "deaths": 1310,
+            "recovered": 3459,
+            "timestamp": "2020-02-13"
+         },
+         {
+            "confirmed": 54406,
+            "deaths": 1457,
+            "recovered": 4774,
+            "timestamp": "2020-02-14"
+         },
+         {
+            "confirmed": 56249,
+            "deaths": 1596,
+            "recovered": 5623,
+            "timestamp": "2020-02-15"
+         },
+         {
+            "confirmed": 58182,
+            "deaths": 1696,
+            "recovered": 6639,
+            "timestamp": "2020-02-16"
+         },
+         {
+            "confirmed": 59989,
+            "deaths": 1789,
+            "recovered": 7862,
+            "timestamp": "2020-02-17"
+         },
+         {
+            "confirmed": 61682,
+            "deaths": 1921,
+            "recovered": 9128,
+            "timestamp": "2020-02-18"
+         },
+         {
+            "confirmed": 62031,
+            "deaths": 2029,
+            "recovered": 10337,
+            "timestamp": "2020-02-19"
+         },
+         {
+            "confirmed": 62442,
+            "deaths": 2144,
+            "recovered": 11788,
+            "timestamp": "2020-02-20"
+         },
+         {
+            "confirmed": 62662,
+            "deaths": 2144,
+            "recovered": 11881,
+            "timestamp": "2020-02-21"
+         },
+         {
+            "confirmed": 64084,
+            "deaths": 2346,
+            "recovered": 15299,
+            "timestamp": "2020-02-22"
+         },
+         {
+            "confirmed": 64084,
+            "deaths": 2346,
+            "recovered": 15343,
+            "timestamp": "2020-02-23"
+         },
+         {
+            "confirmed": 64287,
+            "deaths": 2495,
+            "recovered": 16748,
+            "timestamp": "2020-02-24"
+         },
+         {
+            "confirmed": 64786,
+            "deaths": 2563,
+            "recovered": 18971,
+            "timestamp": "2020-02-25"
+         },
+         {
+            "confirmed": 65187,
+            "deaths": 2615,
+            "recovered": 20969,
+            "timestamp": "2020-02-26"
+         },
+         {
+            "confirmed": 65596,
+            "deaths": 2641,
+            "recovered": 23383,
+            "timestamp": "2020-02-27"
+         },
+         {
+            "confirmed": 65914,
+            "deaths": 2682,
+            "recovered": 26403,
+            "timestamp": "2020-02-28"
+         },
+         {
+            "confirmed": 66337,
+            "deaths": 2727,
+            "recovered": 28993,
+            "timestamp": "2020-02-29"
+         },
+         {
+            "confirmed": 66907,
+            "deaths": 2761,
+            "recovered": 31536,
+            "timestamp": "2020-03-01"
+         },
+         {
+            "confirmed": 67103,
+            "deaths": 2803,
+            "recovered": 33934,
+            "timestamp": "2020-03-02"
+         },
+         {
+            "confirmed": 67217,
+            "deaths": 2835,
+            "recovered": 36208,
+            "timestamp": "2020-03-03"
+         },
+         {
+            "confirmed": 67332,
+            "deaths": 2871,
+            "recovered": 38557,
+            "timestamp": "2020-03-04"
+         },
+         {
+            "confirmed": 67466,
+            "deaths": 2902,
+            "recovered": 40592,
+            "timestamp": "2020-03-05"
+         },
+         {
+            "confirmed": 67592,
+            "deaths": 2931,
+            "recovered": 42033,
+            "timestamp": "2020-03-06"
+         },
+         {
+            "confirmed": 67666,
+            "deaths": 2959,
+            "recovered": 43500,
+            "timestamp": "2020-03-07"
+         },
+         {
+            "confirmed": 67707,
+            "deaths": 2986,
+            "recovered": 45235,
+            "timestamp": "2020-03-08"
+         },
+         {
+            "confirmed": 67743,
+            "deaths": 3008,
+            "recovered": 46488,
+            "timestamp": "2020-03-09"
+         },
+         {
+            "confirmed": 67760,
+            "deaths": 3024,
+            "recovered": 47743,
+            "timestamp": "2020-03-10"
+         }
+      ],
+      "population": {
+         "total": {
+            "total": 0,
+            "male": 0,
+            "female": 0,
+            "minimumAge": 0,
+            "maximumAge": 1000
+         },
+         "byAge": [
+            {
+               "total": 0,
+               "male": 0,
+               "female": 0,
+               "minimumAge": 0,
+               "maximumAge": 4
+            },
+            {
+               "total": 0,
+               "male": 0,
+               "female": 0,
+               "minimumAge": 5,
+               "maximumAge": 9
+            },
+            {
+               "total": 0,
+               "male": 0,
+               "female": 0,
+               "minimumAge": 10,
+               "maximumAge": 14
+            },
+            {
+               "total": 0,
+               "male": 0,
+               "female": 0,
+               "minimumAge": 15,
+               "maximumAge": 19
+            },
+            {
+               "total": 0,
+               "male": 0,
+               "female": 0,
+               "minimumAge": 20,
+               "maximumAge": 24
+            },
+            {
+               "total": 0,
+               "male": 0,
+               "female": 0,
+               "minimumAge": 25,
+               "maximumAge": 29
+            },
+            {
+               "total": 0,
+               "male": 0,
+               "female": 0,
+               "minimumAge": 30,
+               "maximumAge": 34
+            },
+            {
+               "total": 0,
+               "male": 0,
+               "female": 0,
+               "minimumAge": 35,
+               "maximumAge": 39
+            },
+            {
+               "total": 0,
+               "male": 0,
+               "female": 0,
+               "minimumAge": 40,
+               "maximumAge": 44
+            },
+            {
+               "total": 0,
+               "male": 0,
+               "female": 0,
+               "minimumAge": 45,
+               "maximumAge": 49
+            },
+            {
+               "total": 0,
+               "male": 0,
+               "female": 0,
+               "minimumAge": 50,
+               "maximumAge": 54
+            },
+            {
+               "total": 0,
+               "male": 0,
+               "female": 0,
+               "minimumAge": 55,
+               "maximumAge": 59
+            },
+            {
+               "total": 0,
+               "male": 0,
+               "female": 0,
+               "minimumAge": 60,
+               "maximumAge": 64
+            },
+            {
+               "total": 0,
+               "male": 0,
+               "female": 0,
+               "minimumAge": 65,
+               "maximumAge": 69
+            },
+            {
+               "total": 0,
+               "male": 0,
+               "female": 0,
+               "minimumAge": 70,
+               "maximumAge": 74
+            },
+            {
+               "total": 0,
+               "male": 0,
+               "female": 0,
+               "minimumAge": 75,
+               "maximumAge": 79
+            },
+            {
+               "total": 0,
+               "male": 0,
+               "female": 0,
+               "minimumAge": 80,
+               "maximumAge": 84
+            },
+            {
+               "total": 0,
+               "male": 0,
+               "female": 0,
+               "minimumAge": 85,
+               "maximumAge": 1000
+            }
+         ]
+      }
+   }
+]

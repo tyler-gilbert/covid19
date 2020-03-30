@@ -1,0 +1,20 @@
+[
+   {
+      "locale": {
+         "county": "null",
+         "state": "null",
+         "country": "ChannelIslands",
+         "latitude": "null",
+         "longitude": "null",
+         "landArea": 1.0
+      },
+      "covid19": [
+         {
+            "confirmed": 1,
+            "deaths": 0,
+            "recovered": 0,
+            "timestamp": "2020-03-10"
+         }
+      ]
+   }
+]
