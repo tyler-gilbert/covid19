@@ -5,6 +5,11 @@
 
 class Population: public Container {
 public:
+
+	static u32 absolute_maximum_age(){
+		return 1000;
+	}
+
 	Population();
 	Population(const JsonObject & object){
 		m_total = object.at("total").to_integer();
@@ -12,6 +17,9 @@ public:
 		m_female = object.at("female").to_integer();
 		m_minimum_age = object.at("minimumAge").to_integer();
 		m_maximum_age = object.at("maximumAge").to_integer();
+		if( m_maximum_age == 0 ){
+			m_maximum_age = absolute_maximum_age();
+		}
 	}
 
 	JsonObject to_object() const {
@@ -69,6 +77,14 @@ public:
 		return m_maximum_age;
 	}
 
+	float male_ratio() const {
+		return m_male / m_total;
+	}
+
+	float female_ratio() const {
+		return m_female / m_total;
+	}
+
 	Population& operator +=(const Population& value){
 		if( (minimum_age() == value.minimum_age()) &&
 				(maximum_age() == value.maximum_age()) ){
@@ -91,35 +107,25 @@ private:
 class PopulationGroup {
 public:
 
-	static u32 total_max_age(){
-		return 1000;
-	}
-
 	PopulationGroup(){
-		for(u32 i = 0; i < 90; i+=5){
-			u32 max_age = i+5-1;
-			if( max_age == 89 ){
-				max_age = total_max_age();
-			}
-			m_by_age_list.push_back(
-						Population()
-						.set_minimum_age(i)
-						.set_maximum_age(max_age)
-						);
-		}
+		create_age_brackets();
 
 		m_total
 				.set_minimum_age(0)
-				.set_maximum_age(total_max_age());
+				.set_maximum_age(Population::absolute_maximum_age());
 	}
 
 	PopulationGroup(const JsonObject & object) :
 		m_total(object.at("total").to_object()){
 		JsonArray by_age_array = object.at("byAge").to_array();
-		for(u32 i=0; i < by_age_array.count(); i++){
-			m_by_age_list.push_back(
-						Population(by_age_array.at(i).to_object())
-						);
+		if( by_age_array.count() > 0 ){
+			for(u32 i=0; i < by_age_array.count(); i++){
+				m_by_age_list.push_back(
+							Population(by_age_array.at(i).to_object())
+							);
+			}
+		} else {
+			create_age_brackets();
 		}
 	}
 
@@ -181,6 +187,20 @@ public:
 private:
 	Population m_total;
 	Vector<Population> m_by_age_list;
+
+	void create_age_brackets(){
+		for(u32 i = 0; i < 90; i+=5){
+			u32 max_age = i+5-1;
+			if( max_age == 89 ){
+				max_age = Population::absolute_maximum_age();
+			}
+			m_by_age_list.push_back(
+						Population()
+						.set_minimum_age(i)
+						.set_maximum_age(max_age)
+						);
+		}
+	}
 };
 
 #endif // POPULATION_HPP

@@ -1,0 +1,22 @@
+[
+    {
+        "locale": {
+            "county": "null",
+            "state": "null",
+            "country": "Italy",
+            "latitude": "null",
+            "longitude": "null",
+            "landArea": 1.0
+        },
+        "population": {
+            "averageAge": 0,
+            "total": {
+                "total": 55200,
+                "male": 0,
+                "female": 0,
+                "minimumAge": 0,
+                "maximumAge": 1000
+            }
+        }
+    }
+]

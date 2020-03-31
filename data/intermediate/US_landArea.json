@@ -1,26 +1,6 @@
 [
    {
       "locale": {
-         "county": "null",
-         "state": "null",
-         "country": "US",
-         "latitude": "null",
-         "longitude": "null",
-         "landArea": 3787425.0
-      }
-   },
-   {
-      "locale": {
-         "county": "null",
-         "state": "Alabama",
-         "country": "US",
-         "latitude": "null",
-         "longitude": "null",
-         "landArea": 52422.94140625
-      }
-   },
-   {
-      "locale": {
          "county": "Autauga",
          "state": "Alabama",
          "country": "US",
@@ -691,16 +671,6 @@
    },
    {
       "locale": {
-         "county": "null",
-         "state": "Alaska",
-         "country": "US",
-         "latitude": "null",
-         "longitude": "null",
-         "landArea": 656424.125
-      }
-   },
-   {
-      "locale": {
          "county": "AleutiansEast",
          "state": "Alaska",
          "country": "US",
@@ -991,16 +961,6 @@
    },
    {
       "locale": {
-         "county": "null",
-         "state": "Arizona",
-         "country": "US",
-         "latitude": "null",
-         "longitude": "null",
-         "landArea": 114006.2578125
-      }
-   },
-   {
-      "locale": {
          "county": "Apache",
          "state": "Arizona",
          "country": "US",
@@ -1147,16 +1107,6 @@
          "latitude": "null",
          "longitude": "null",
          "landArea": 5519.31982421875
-      }
-   },
-   {
-      "locale": {
-         "county": "null",
-         "state": "Arkansas",
-         "country": "US",
-         "latitude": "null",
-         "longitude": "null",
-         "landArea": 53182.359375
       }
    },
    {
@@ -1911,16 +1861,6 @@
    },
    {
       "locale": {
-         "county": "null",
-         "state": "California",
-         "country": "US",
-         "latitude": "null",
-         "longitude": "null",
-         "landArea": 163707.15625
-      }
-   },
-   {
-      "locale": {
          "county": "Alameda",
          "state": "California",
          "country": "US",
@@ -2497,16 +2437,6 @@
          "latitude": "null",
          "longitude": "null",
          "landArea": 643.54998779296875
-      }
-   },
-   {
-      "locale": {
-         "county": "null",
-         "state": "Colorado",
-         "country": "US",
-         "latitude": "null",
-         "longitude": "null",
-         "landArea": 104100.3203125
       }
    },
    {
@@ -3151,16 +3081,6 @@
    },
    {
       "locale": {
-         "county": "null",
-         "state": "Connecticut",
-         "country": "US",
-         "latitude": "null",
-         "longitude": "null",
-         "landArea": 5543.64990234375
-      }
-   },
-   {
-      "locale": {
          "county": "Fairfield",
          "state": "Connecticut",
          "country": "US",
@@ -3241,16 +3161,6 @@
    },
    {
       "locale": {
-         "county": "null",
-         "state": "Delaware",
-         "country": "US",
-         "latitude": "null",
-         "longitude": "null",
-         "landArea": 2489.3798828125
-      }
-   },
-   {
-      "locale": {
          "county": "Kent",
          "state": "Delaware",
          "country": "US",
@@ -3277,36 +3187,6 @@
          "latitude": "null",
          "longitude": "null",
          "landArea": 1195.699951171875
-      }
-   },
-   {
-      "locale": {
-         "county": "null",
-         "state": "DistrictofColumbia",
-         "country": "US",
-         "latitude": "null",
-         "longitude": "null",
-         "landArea": 68.360000610351562
-      }
-   },
-   {
-      "locale": {
-         "county": "null",
-         "state": "DistrictofColumbia",
-         "country": "US",
-         "latitude": "null",
-         "longitude": "null",
-         "landArea": 68.360000610351562
-      }
-   },
-   {
-      "locale": {
-         "county": "null",
-         "state": "Florida",
-         "country": "US",
-         "latitude": "null",
-         "longitude": "null",
-         "landArea": 65758.078125
       }
    },
    {
@@ -3977,16 +3857,6 @@
          "latitude": "null",
          "longitude": "null",
          "landArea": 615.84002685546875
-      }
-   },
-   {
-      "locale": {
-         "county": "null",
-         "state": "Georgia",
-         "country": "US",
-         "latitude": "null",
-         "longitude": "null",
-         "landArea": 59441.21875
       }
    },
    {
@@ -5581,16 +5451,6 @@
    },
    {
       "locale": {
-         "county": "null",
-         "state": "Hawaii",
-         "country": "US",
-         "latitude": "null",
-         "longitude": "null",
-         "landArea": 10931.580078125
-      }
-   },
-   {
-      "locale": {
          "county": "Hawaii",
          "state": "Hawaii",
          "country": "US",
@@ -5637,16 +5497,6 @@
          "latitude": "null",
          "longitude": "null",
          "landArea": 2398.8701171875
-      }
-   },
-   {
-      "locale": {
-         "county": "null",
-         "state": "Idaho",
-         "country": "US",
-         "latitude": "null",
-         "longitude": "null",
-         "landArea": 83573.7734375
       }
    },
    {
@@ -6087,16 +5937,6 @@
          "latitude": "null",
          "longitude": "null",
          "landArea": 1473.5999755859375
-      }
-   },
-   {
-      "locale": {
-         "county": "null",
-         "state": "Illinois",
-         "country": "US",
-         "latitude": "null",
-         "longitude": "null",
-         "landArea": 57917.83984375
       }
    },
    {
@@ -7121,16 +6961,6 @@
    },
    {
       "locale": {
-         "county": "null",
-         "state": "Indiana",
-         "country": "US",
-         "latitude": "null",
-         "longitude": "null",
-         "landArea": 36420.08984375
-      }
-   },
-   {
-      "locale": {
          "county": "Adams",
          "state": "Indiana",
          "country": "US",
@@ -8047,16 +7877,6 @@
          "latitude": "null",
          "longitude": "null",
          "landArea": 337.91000366210938
-      }
-   },
-   {
-      "locale": {
-         "county": "null",
-         "state": "Iowa",
-         "country": "US",
-         "latitude": "null",
-         "longitude": "null",
-         "landArea": 56275.5390625
       }
    },
    {
@@ -9047,16 +8867,6 @@
          "latitude": "null",
          "longitude": "null",
          "landArea": 582.58001708984375
-      }
-   },
-   {
-      "locale": {
-         "county": "null",
-         "state": "Kansas",
-         "country": "US",
-         "latitude": "null",
-         "longitude": "null",
-         "landArea": 82282.0
       }
    },
    {
@@ -10107,16 +9917,6 @@
          "latitude": "null",
          "longitude": "null",
          "landArea": 155.69999694824219
-      }
-   },
-   {
-      "locale": {
-         "county": "null",
-         "state": "Kentucky",
-         "country": "US",
-         "latitude": "null",
-         "longitude": "null",
-         "landArea": 40411.23828125
       }
    },
    {
@@ -11321,16 +11121,6 @@
    },
    {
       "locale": {
-         "county": "null",
-         "state": "Louisiana",
-         "country": "US",
-         "latitude": "null",
-         "longitude": "null",
-         "landArea": 51843.46875
-      }
-   },
-   {
-      "locale": {
          "county": "Acadia",
          "state": "Louisiana",
          "country": "US",
@@ -11971,16 +11761,6 @@
    },
    {
       "locale": {
-         "county": "null",
-         "state": "Maine",
-         "country": "US",
-         "latitude": "null",
-         "longitude": "null",
-         "landArea": 35387.328125
-      }
-   },
-   {
-      "locale": {
          "county": "Androscoggin",
          "state": "Maine",
          "country": "US",
@@ -12137,16 +11917,6 @@
          "latitude": "null",
          "longitude": "null",
          "landArea": 1271.43994140625
-      }
-   },
-   {
-      "locale": {
-         "county": "null",
-         "state": "Maryland",
-         "country": "US",
-         "latitude": "null",
-         "longitude": "null",
-         "landArea": 12407.4501953125
       }
    },
    {
@@ -12391,16 +12161,6 @@
    },
    {
       "locale": {
-         "county": "null",
-         "state": "Massachusetts",
-         "country": "US",
-         "latitude": "null",
-         "longitude": "null",
-         "landArea": 10554.7900390625
-      }
-   },
-   {
-      "locale": {
          "county": "Barnstable",
          "state": "Massachusetts",
          "country": "US",
@@ -12537,16 +12297,6 @@
          "latitude": "null",
          "longitude": "null",
          "landArea": 1579.1099853515625
-      }
-   },
-   {
-      "locale": {
-         "county": "null",
-         "state": "Michigan",
-         "country": "US",
-         "latitude": "null",
-         "longitude": "null",
-         "landArea": 96810.21875
       }
    },
    {
@@ -13377,16 +13127,6 @@
          "latitude": "null",
          "longitude": "null",
          "landArea": 575.8800048828125
-      }
-   },
-   {
-      "locale": {
-         "county": "null",
-         "state": "Minnesota",
-         "country": "US",
-         "latitude": "null",
-         "longitude": "null",
-         "landArea": 86942.7109375
       }
    },
    {
@@ -14261,16 +14001,6 @@
    },
    {
       "locale": {
-         "county": "null",
-         "state": "Mississippi",
-         "country": "US",
-         "latitude": "null",
-         "longitude": "null",
-         "landArea": 48433.58984375
-      }
-   },
-   {
-      "locale": {
          "county": "Adams",
          "state": "Mississippi",
          "country": "US",
@@ -15087,16 +14817,6 @@
          "latitude": "null",
          "longitude": "null",
          "landArea": 934.20001220703125
-      }
-   },
-   {
-      "locale": {
-         "county": "null",
-         "state": "Missouri",
-         "country": "US",
-         "latitude": "null",
-         "longitude": "null",
-         "landArea": 69708.8125
       }
    },
    {
@@ -16251,16 +15971,6 @@
    },
    {
       "locale": {
-         "county": "null",
-         "state": "Montana",
-         "country": "US",
-         "latitude": "null",
-         "longitude": "null",
-         "landArea": 147046.15625
-      }
-   },
-   {
-      "locale": {
          "county": "Beaverhead",
          "state": "Montana",
          "country": "US",
@@ -16827,16 +16537,6 @@
          "latitude": "null",
          "longitude": "null",
          "landArea": 246.1199951171875
-      }
-   },
-   {
-      "locale": {
-         "county": "null",
-         "state": "Nebraska",
-         "country": "US",
-         "latitude": "null",
-         "longitude": "null",
-         "landArea": 77358.3984375
       }
    },
    {
@@ -17771,16 +17471,6 @@
    },
    {
       "locale": {
-         "county": "null",
-         "state": "Nevada",
-         "country": "US",
-         "latitude": "null",
-         "longitude": "null",
-         "landArea": 110566.90625
-      }
-   },
-   {
-      "locale": {
          "county": "Churchill",
          "state": "Nevada",
          "country": "US",
@@ -17951,16 +17641,6 @@
    },
    {
       "locale": {
-         "county": "null",
-         "state": "NewHampshire",
-         "country": "US",
-         "latitude": "null",
-         "longitude": "null",
-         "landArea": 9350.9296875
-      }
-   },
-   {
-      "locale": {
          "county": "Belknap",
          "state": "NewHampshire",
          "country": "US",
@@ -18057,16 +17737,6 @@
          "latitude": "null",
          "longitude": "null",
          "landArea": 551.97998046875
-      }
-   },
-   {
-      "locale": {
-         "county": "null",
-         "state": "NewJersey",
-         "country": "US",
-         "latitude": "null",
-         "longitude": "null",
-         "landArea": 8721.9501953125
       }
    },
    {
@@ -18277,16 +17947,6 @@
          "latitude": "null",
          "longitude": "null",
          "landArea": 362.77999877929688
-      }
-   },
-   {
-      "locale": {
-         "county": "null",
-         "state": "NewMexico",
-         "country": "US",
-         "latitude": "null",
-         "longitude": "null",
-         "landArea": 121598.2265625
       }
    },
    {
@@ -18617,16 +18277,6 @@
          "latitude": "null",
          "longitude": "null",
          "landArea": 1068.2900390625
-      }
-   },
-   {
-      "locale": {
-         "county": "null",
-         "state": "NewYork",
-         "country": "US",
-         "latitude": "null",
-         "longitude": "null",
-         "landArea": 54474.55859375
       }
    },
    {
@@ -19247,16 +18897,6 @@
          "latitude": "null",
          "longitude": "null",
          "landArea": 371.85000610351562
-      }
-   },
-   {
-      "locale": {
-         "county": "null",
-         "state": "NorthCarolina",
-         "country": "US",
-         "latitude": "null",
-         "longitude": "null",
-         "landArea": 53821.3515625
       }
    },
    {
@@ -20261,16 +19901,6 @@
    },
    {
       "locale": {
-         "county": "null",
-         "state": "NorthDakota",
-         "country": "US",
-         "latitude": "null",
-         "longitude": "null",
-         "landArea": 70703.828125
-      }
-   },
-   {
-      "locale": {
          "county": "Adams",
          "state": "NorthDakota",
          "country": "US",
@@ -20797,16 +20427,6 @@
          "latitude": "null",
          "longitude": "null",
          "landArea": 2148.080078125
-      }
-   },
-   {
-      "locale": {
-         "county": "null",
-         "state": "Ohio",
-         "country": "US",
-         "latitude": "null",
-         "longitude": "null",
-         "landArea": 44827.53125
       }
    },
    {
@@ -21691,16 +21311,6 @@
    },
    {
       "locale": {
-         "county": "null",
-         "state": "Oklahoma",
-         "country": "US",
-         "latitude": "null",
-         "longitude": "null",
-         "landArea": 69902.8984375
-      }
-   },
-   {
-      "locale": {
          "county": "Adair",
          "state": "Oklahoma",
          "country": "US",
@@ -22471,16 +22081,6 @@
    },
    {
       "locale": {
-         "county": "null",
-         "state": "Oregon",
-         "country": "US",
-         "latitude": "null",
-         "longitude": "null",
-         "landArea": 98385.75
-      }
-   },
-   {
-      "locale": {
          "county": "Baker",
          "state": "Oregon",
          "country": "US",
@@ -22837,16 +22437,6 @@
          "latitude": "null",
          "longitude": "null",
          "landArea": 718.40997314453125
-      }
-   },
-   {
-      "locale": {
-         "county": "null",
-         "state": "Pennsylvania",
-         "country": "US",
-         "latitude": "null",
-         "longitude": "null",
-         "landArea": 46058.23828125
       }
    },
    {
@@ -23521,16 +23111,6 @@
    },
    {
       "locale": {
-         "county": "null",
-         "state": "RhodeIsland",
-         "country": "US",
-         "latitude": "null",
-         "longitude": "null",
-         "landArea": 1545.0999755859375
-      }
-   },
-   {
-      "locale": {
          "county": "Bristol",
          "state": "RhodeIsland",
          "country": "US",
@@ -23577,16 +23157,6 @@
          "latitude": "null",
          "longitude": "null",
          "landArea": 562.9000244140625
-      }
-   },
-   {
-      "locale": {
-         "county": "null",
-         "state": "SouthCarolina",
-         "country": "US",
-         "latitude": "null",
-         "longitude": "null",
-         "landArea": 32007.109375
       }
    },
    {
@@ -24047,16 +23617,6 @@
          "latitude": "null",
          "longitude": "null",
          "landArea": 695.77001953125
-      }
-   },
-   {
-      "locale": {
-         "county": "null",
-         "state": "SouthDakota",
-         "country": "US",
-         "latitude": "null",
-         "longitude": "null",
-         "landArea": 77121.4609375
       }
    },
    {
@@ -24717,16 +24277,6 @@
          "latitude": "null",
          "longitude": "null",
          "landArea": 1971.2099609375
-      }
-   },
-   {
-      "locale": {
-         "county": "null",
-         "state": "Tennessee",
-         "country": "US",
-         "latitude": "null",
-         "longitude": "null",
-         "landArea": 42146.01171875
       }
    },
    {
@@ -25677,16 +25227,6 @@
          "latitude": "null",
          "longitude": "null",
          "landArea": 583.27001953125
-      }
-   },
-   {
-      "locale": {
-         "county": "null",
-         "state": "Texas",
-         "country": "US",
-         "latitude": "null",
-         "longitude": "null",
-         "landArea": 268600.96875
       }
    },
    {
@@ -28231,16 +27771,6 @@
    },
    {
       "locale": {
-         "county": "null",
-         "state": "Utah",
-         "country": "US",
-         "latitude": "null",
-         "longitude": "null",
-         "landArea": 84904.1171875
-      }
-   },
-   {
-      "locale": {
          "county": "Beaver",
          "state": "Utah",
          "country": "US",
@@ -28531,16 +28061,6 @@
    },
    {
       "locale": {
-         "county": "null",
-         "state": "Vermont",
-         "country": "US",
-         "latitude": "null",
-         "longitude": "null",
-         "landArea": 9615.0
-      }
-   },
-   {
-      "locale": {
          "county": "Addison",
          "state": "Vermont",
          "country": "US",
@@ -28677,16 +28197,6 @@
          "latitude": "null",
          "longitude": "null",
          "landArea": 976.09002685546875
-      }
-   },
-   {
-      "locale": {
-         "county": "null",
-         "state": "Virginia",
-         "country": "US",
-         "latitude": "null",
-         "longitude": "null",
-         "landArea": 42768.87890625
       }
    },
    {
@@ -30051,16 +29561,6 @@
    },
    {
       "locale": {
-         "county": "null",
-         "state": "Washington",
-         "country": "US",
-         "latitude": "null",
-         "longitude": "null",
-         "landArea": 71302.6484375
-      }
-   },
-   {
-      "locale": {
          "county": "Adams",
          "state": "Washington",
          "country": "US",
@@ -30447,16 +29947,6 @@
          "latitude": "null",
          "longitude": "null",
          "landArea": 4311.77978515625
-      }
-   },
-   {
-      "locale": {
-         "county": "null",
-         "state": "WestVirginia",
-         "country": "US",
-         "latitude": "null",
-         "longitude": "null",
-         "landArea": 24231.439453125
       }
    },
    {
@@ -31007,16 +30497,6 @@
          "latitude": "null",
          "longitude": "null",
          "landArea": 501.85000610351562
-      }
-   },
-   {
-      "locale": {
-         "county": "null",
-         "state": "Wisconsin",
-         "country": "US",
-         "latitude": "null",
-         "longitude": "null",
-         "landArea": 65503.2109375
       }
    },
    {
@@ -31737,16 +31217,6 @@
          "latitude": "null",
          "longitude": "null",
          "landArea": 809.510009765625
-      }
-   },
-   {
-      "locale": {
-         "county": "null",
-         "state": "Wyoming",
-         "country": "US",
-         "latitude": "null",
-         "longitude": "null",
-         "landArea": 97818.109375
       }
    },
    {

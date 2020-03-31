@@ -22,6 +22,22 @@ public:
 				(locale.county() == county());
 	}
 
+	bool is_world() const {
+		return country() == "null";
+	}
+
+	bool is_country() const {
+		return country() != "null" && state() == "null";
+	}
+
+	bool is_state() const {
+		return country() != "null" && state() != "null" && county() == "null";
+	}
+
+	bool is_county() const {
+		return country() != "null" && state() != "null" && county() != "null";
+	}
+
 	Locale& set_state(const String& value){
 		m_state = deabbreviate_state(
 					sanitize(value)
@@ -87,6 +103,64 @@ public:
 
 	const var::String& longitude() const {
 		return m_longitude;
+	}
+
+	Locale& operator += (const Locale & a){
+		m_land_area += a.land_area();
+		return *this;
+	}
+
+	String description() const {
+		if( county() != "null" ){
+			return county() + ", " + state() + ", " + country();
+		} else if( state() != "null" ){
+			return state() + ", " + country();
+		} else if( country() != "null" ){
+			return country();
+		} else {
+			return "World";
+		}
+	}
+
+	String output_file_base_name() const {
+		if( county() != "null" ){
+			return "world/" +
+					String(country()).to_lower() +
+					"/" +
+					String(state()).to_lower() +
+					"/" +
+					String(county()).to_lower();
+		} else if( state() != "null" ){
+			return "world/" +
+					String(country()).to_lower() +
+					"/" +
+					String(state()).to_lower();
+		} else if( country() != "null" ){
+			return "world/" + String(country()).to_lower();
+		} else {
+			return "world";
+		}
+	}
+
+	String child_name() const {
+		if( is_country() ){
+			if( (country() == "US") || (country() == "Canada") ){
+				return "State";
+			} else if( country() == "UnitedKingdom" ){
+				return "Territory";
+			} else {
+				return "Province";
+			}
+		} else if( is_state() ){
+			if(country() == "US"){
+				return "County";
+			} else {
+				return "Municipal";
+			}
+		} else if( is_world() ){
+			return "Country";
+		}
+		return "null";
 	}
 
 	JsonObject to_object() const {

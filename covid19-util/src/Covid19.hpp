@@ -123,6 +123,24 @@ public:
 	Vector<Covid19>& data(){ return m_data; }
 	const Vector<Covid19>& data() const { return m_data; }
 
+	Covid19List& operator += (const Covid19List& a){
+		//add every point in this to every point in a
+		//only matching timestamps will actually be added together
+		for(const auto & rhs: a.data()){
+			bool is_summed = false;
+			for(auto & lhs: data()){
+				if( lhs.timestamp() == rhs.timestamp() ){
+					is_summed = true;
+					lhs += rhs;
+				}
+			}
+			if( is_summed == false ){
+				data().push_back(rhs);
+			}
+		}
+		return *this;
+	}
+
 	JsonArray to_array() const {
 		JsonArray result;
 		for(const auto & sample: data()){

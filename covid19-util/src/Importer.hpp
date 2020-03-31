@@ -16,6 +16,7 @@ public:
 	void execute();
 
 private:
+	bool m_is_load_compilation;
 	String m_input_directory_path;
 	String m_output_directory_path;
 	String m_intermediate_directory_path;
@@ -34,6 +35,10 @@ private:
 	void process_covid19_daily_report(const String& file_path);
 	void create_output_compilations();
 
+	void create_compilation_output();
+
+	bool is_filter_covid19(const Locale& locale) const;
+
 	void create_country_output(const String& country);
 	void create_country_with_states_compilations(const String& country);
 	void create_state_output(const String& country, const String& state);
@@ -41,7 +46,7 @@ private:
 	StringList build_state_list(const var::String & country) const;
 	StringList build_timestamp_list(const JsonArray & state_array);
 	Vector<Locale> build_locale_list(const var::String & country, const String& state);
-	Vector<Locale> build_country_list();
+	Vector<Locale> build_locale_list() const;
 
 	String sanitize(const String & value){
 		String result = value;

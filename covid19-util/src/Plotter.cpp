@@ -20,7 +20,7 @@ String Plotter::create_population_histogram_by_age(
 	for(u32 i=0; i < population_group.by_age_count(); i++){
 		const Population & by_age = population_group.by_age(i);
 		String label;
-		if( by_age.maximum_age() == PopulationGroup::total_max_age() ){
+		if( by_age.maximum_age() == Population::absolute_maximum_age() ){
 			label.format("%d and over", by_age.minimum_age());
 		} else {
 			label.format(

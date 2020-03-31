@@ -3,7 +3,7 @@
 #include <sapi/fmt.hpp>
 #include "Importer.hpp"
 #include "Locale.hpp"
-
+#include "Compilation.hpp"
 
 Importer::Importer(){
 
@@ -65,7 +65,7 @@ void Importer::execute(){
 					).to_array();
 	}
 
-	create_output_compilations();
+	create_compilation_output();
 
 }
 
@@ -104,10 +104,10 @@ void Importer::create_output_compilations(){
 	create_country_with_states_compilations("MainlandChina");
 	create_country_with_states_compilations("Canada");
 	create_country_with_states_compilations("UnitedKingdom");
-	Vector<Locale> country_list = build_country_list();
-	for(const auto & country: country_list){
-		create_country_output(country.country());
-	}
+	//Vector<Locale> country_list = build_country_list();
+	//for(const auto & country: country_list){
+	//	create_country_output(country.country());
+	//}
 
 }
 
@@ -143,6 +143,134 @@ void Importer::create_country_output(const String& country){
 				);
 }
 
+void Importer::create_compilation_output(){
+
+	String compilation_file_path =
+			m_intermediate_directory_path + "/compilation.json";
+
+	JsonArray compilation_array;
+	if( File::exists(compilation_file_path) == true ){
+		compilation_array = JsonDocument().load(
+					JsonDocument::FilePath(compilation_file_path)
+					).to_array();
+	} else {
+		PrinterObject compliation_guard(printer(), "creating compiliation");
+		//builds a list of all unique locales
+		Vector<Locale> locale_list = build_locale_list();
+		Vector<String> country_list = build_country_list();
+
+		Vector<Compilation> compilation_list;
+		compilation_list.reserve( locale_list.count() );
+
+		for(auto & locale: locale_list){
+			PrinterObject locale_guard(printer(), locale.description());
+			JsonObject land_area_object = find_locale(
+						m_land_area_array,
+						locale
+						);
+
+			JsonObject population_object = find_locale(
+						m_population_array,
+						locale
+						);
+
+			JsonObject covid19_object = find_locale(
+						m_covid19_array,
+						locale
+						);
+
+			PopulationGroup locale_population_group =
+					PopulationGroup(
+						population_object.at("population").to_object()
+						);
+
+			Covid19List covid19_data;
+
+			if( is_filter_covid19(locale) == false ){
+				covid19_data = Covid19List(
+							covid19_object.at("covid19").to_array()
+							);
+			}
+
+			//data wrangling
+			locale.set_land_area(
+						land_area_object
+						.at("locale").to_object()
+						.at("landArea").to_float()
+						);
+
+			compilation_list.push_back(
+						Compilation(
+							locale,
+							locale_population_group,
+							covid19_data
+							)
+						);
+
+			printer().info("added locale");
+		}
+
+		printer().info("Checking for %d total countries", country_list.count());
+		for(auto & country: country_list){
+
+			printer().info("checking list for " + country);
+			Locale locale;
+			locale.set_country(country);
+
+			bool is_country_found = false;
+			for(const auto & compilation: compilation_list){
+				if( compilation.locale().is_country() &&
+						compilation.locale().country() == country ){
+					is_country_found = true;
+					break;
+				}
+			}
+
+			if( is_country_found == false ){
+				printer().info("adding top level country locale " + locale.description());
+				compilation_list.push_back(
+							Compilation(
+								locale,
+								PopulationGroup(),
+								Covid19List()
+								)
+							);
+			}
+		}
+
+		for(const auto & compilation: compilation_list){
+			compilation_array.append(
+						compilation.to_object()
+						);
+		}
+
+
+		printer().info("saving compiliation");
+		JsonDocument().save(
+					compilation_array,
+					JsonDocument::FilePath(m_intermediate_directory_path + "/compilation.json")
+					);
+	}
+
+	CompilationGroup world = CompilationGroup(
+				compilation_array
+				);
+	printer().info("world has %d compiliations", world.compilation_count());
+
+	JsonDocument().save(
+				world.to_object(),
+				JsonDocument::FilePath(m_intermediate_directory_path + "/world.json")
+				);
+
+
+}
+
+bool Importer::is_filter_covid19(const Locale & locale) const {
+	if( locale.country() == "US" ){
+		if( locale.state() == "null" ){ return true; }
+	}
+	return false;
+}
 
 void Importer::create_state_output(const String& country, const String& state){
 	printer().info("processing " + state);
@@ -280,23 +408,24 @@ void Importer::process_land_area_data(){
 		land_area = row.at(3);
 
 
-		entry.insert("locale",
-								 Locale()
-								 .set_county(county)
-								 .set_state(state)
-								 .set_country("US")
-								 .set_land_area(land_area.to_float())
-								 .to_object()
-								 );
-		m_land_area_array.append(entry);
+		if( county != "null" ){
+			//all land area data will be computed by summing county data
+			entry.insert("locale",
+									 Locale()
+									 .set_county(county)
+									 .set_state(state)
+									 .set_country("US")
+									 .set_land_area(land_area.to_float())
+									 .to_object()
+									 );
+			m_land_area_array.append(entry);
+		}
 	}
 
 	{
 		PrinterObject object_guard(printer(), "LandArea");
 		printer() << m_land_area_array;
 	}
-
-
 }
 
 void Importer::process_population_data(){
@@ -363,14 +492,14 @@ void Importer::process_population_data(){
 						row,
 						convert_csv_column_character('C'),
 						0,
-						PopulationGroup::total_max_age())
+						Population::absolute_maximum_age())
 					);
 
 		u32 column = convert_csv_column_character('O');
 		for(u32 i = 0; i < population_group.by_age_count(); i++){
 			u32 max_age = i*5 + 4;
 			if( max_age == 89 ){
-				max_age = PopulationGroup::total_max_age();
+				max_age = Population::absolute_maximum_age();
 			}
 			int adjust = 0;
 			if( i*5 == 60 ){
@@ -561,25 +690,26 @@ void Importer::process_covid19_daily_report(
 					FileInfo::base_name(file_path)
 					);
 
+		if( state.find("Princess") == String::npos ){
+			JsonObject locale_object = find_locale(
+						m_covid19_array,
+						locale
+						);
 
-		JsonObject locale_object = find_locale(
-					m_covid19_array,
-					locale
-					);
-
-		if( locale_object.is_empty() ){
-			JsonArray locale_data;
-			locale_data.append(covid19.to_object());
-			locale_object.insert("locale", locale.to_object());
-			locale_object.insert("covid19", locale_data);
-			m_covid19_array.append(locale_object);
-		} else {
-			if( (latitude != "null") &&
-					(locale_object.at("locale").to_object().at("latitude").to_string() == "null") ){
-				locale_object.at("locale").to_object().insert("latitude", JsonString(latitude));
-				locale_object.at("locale").to_object().insert("longitude", JsonString(longitude));
+			if( locale_object.is_empty() ){
+				JsonArray locale_data;
+				locale_data.append(covid19.to_object());
+				locale_object.insert("locale", locale.to_object());
+				locale_object.insert("covid19", locale_data);
+				m_covid19_array.append(locale_object);
+			} else {
+				if( (latitude != "null") &&
+						(locale_object.at("locale").to_object().at("latitude").to_string() == "null") ){
+					locale_object.at("locale").to_object().insert("latitude", JsonString(latitude));
+					locale_object.at("locale").to_object().insert("longitude", JsonString(longitude));
+				}
+				locale_object.at("covid19").to_array().append(covid19.to_object());
 			}
-			locale_object.at("covid19").to_array().append(covid19.to_object());
 		}
 	}
 }
@@ -645,8 +775,8 @@ StringList Importer::build_country_list() const{
 	StringList result;
 	for(const auto * array: m_json_array_data){
 		for(u32 i=0; i < array->count(); i++){
-			JsonObject object = array->at(i).to_object();
-			String country = object.at("country").to_string();
+			Locale locale = Locale(array->at(i).to_object().at("locale").to_object());
+			String country = locale.country();
 			if( result.find(country) == result.count() ){
 				result.push_back(country);
 			}
@@ -710,25 +840,20 @@ Vector<Locale> Importer::build_locale_list(
 	return result;
 }
 
-Vector<Locale> Importer::build_country_list(){
+Vector<Locale> Importer::build_locale_list() const{
 	Vector<Locale> result;
 	for(const auto * array: m_json_array_data){
 		for(u32 i=0; i < array->count(); i++){
 			Locale locale = Locale(array->at(i).to_object().at("locale").to_object());
-			if(
-				 (locale.state() == "null") &&
-				 (locale.county() == "null")
-				 ){
-				u32 offset = result.find(locale);
-				if( offset == result.count() ){
-					result.push_back(locale);
-				} else if(
-									(locale.latitude() != "null") &&
-									(result.at(offset).latitude() == "null") ){
-					result.at(offset) = locale;
-				}
+			u32 offset = result.find(locale);
+			if( offset == result.count() ){
+				result.push_back(locale);
+			} else if( (locale.latitude() != "null") &&
+								 (result.at(offset).latitude() == "null") ){
+				result.at(offset) = locale;
 			}
 		}
+
 	}
 	return result;
 }

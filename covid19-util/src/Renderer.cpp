@@ -11,7 +11,7 @@ Renderer::Renderer() : m_file_printer(m_output_file){
 
 void Renderer::execute(){
 	load_options();
-	process_directory();
+	process_world();
 }
 
 
@@ -28,11 +28,27 @@ void Renderer::load_options(){
 		m_output_directory = "markdown";
 	}
 
-	printer().key("input", m_input_directory);
+	m_input_file = cli().get_option("renderInput");
+	if( m_input_file.is_empty() ){
+		m_input_file = "data/intermediate/world.json";
+	}
+
+	printer().key("inputDirectory", m_input_directory);
+	printer().key("input", m_input_file);
 	printer().key("output", m_output_directory);
 
 }
 
+void Renderer::process_world(){
+	CompilationGroup world(
+				JsonDocument().load(
+					JsonDocument::FilePath(m_input_file)
+					).to_object()
+				);
+
+	process_compilation_group(world);
+
+}
 
 void Renderer::process_directory(){
 
@@ -62,6 +78,133 @@ void Renderer::process_country_directory(
 	for(const auto & input: input_list){
 		process_file(directory_path + "/" + input);
 	}
+}
+
+
+void Renderer::process_compilation_group(
+		const CompilationGroup & group
+		){
+
+	PrinterObject guard(printer(), group.parent().locale().description());
+	String output_file_path =
+			m_output_directory +
+			"/" +
+			group.parent().locale().output_file_base_name() + "_page.md";
+
+	Dir::create(
+				FileInfo::parent_directory(output_file_path),
+				Permissions(0777),
+				Dir::IsRecursive(true)
+				);
+
+	printer().debug("creating " + output_file_path);
+	if( m_output_file.create(
+				output_file_path,
+				File::IsOverwrite(true)
+				) < 0 ){
+		printer().error("failed to create " + output_file_path);
+	}
+
+	const Locale & locale = group.parent().locale();
+	m_output_file.write(String("---\n"));
+	m_output_file.write(String("categories:\n"));
+	if( locale.is_country() ){
+		m_output_file.write("- World\n");
+	} else if( locale.is_state() ){
+		m_output_file.write("- " + locale.country() + "\n");
+	} else if( locale.is_county() ){
+		m_output_file.write("- " + locale.state() + "\n");
+	}
+	m_output_file.write(String("date: \"2016-10-29\"\n"));
+	m_output_file.write(String("layout: post\n"));
+	m_output_file.write(String("tagline: Four Tips\n"));
+	m_output_file.write(String("tags:\n"));
+	if( locale.is_country() ){
+		m_output_file.write("- World\n");
+	} else if( locale.is_state() ){
+		m_output_file.write("- " + locale.country() + "\n");
+	}
+	m_output_file.write(
+				"title: " +
+				group.parent().locale().description() +
+				"\n");
+
+	m_output_file.write("chart: true\n");
+	m_output_file.write(String("---\n\n"));
+
+	{
+		String links;
+		if( locale.is_county() || locale.is_state() ){
+			file_printer().hyperlink(
+						locale.country(),
+						"{{< relref \"world/" + String(locale.country()).to_lower() + "_page\" >}}"
+						);
+		}
+		if( locale.is_county() ){
+			file_printer() << " / ";
+			file_printer().hyperlink(
+						locale.state(),
+						"{{< relref	\"world/" +
+						String(locale.country()).to_lower() +
+						"/" +
+						String(locale.state()).to_lower() +
+						"_page\" >}}"
+						);
+		}
+		file_printer() << MarkdownPrinter::insert_newline;
+		file_printer() << MarkdownPrinter::insert_newline;
+
+	}
+
+#if 0
+	//link to list of children
+	if( group.children().count() > 0 ){
+		String child_name_lower = group.parent().locale().child_name();
+		child_name_lower.to_lower();
+		file_printer().hyperlink(
+					group.parent().locale().child_name() + " List",
+					"#" + child_name_lower + "-list");
+		file_printer() << MarkdownPrinter::insert_newline;
+	}
+#endif
+
+	{
+		//Total deaths
+
+		//Top ten deadliest children
+
+	}
+
+	{
+		//Cases
+
+	}
+
+	process_compilation(group.parent());
+
+
+	//list of children
+	if( group.children().count() > 0 ){
+
+		MarkdownHeader county_list(
+					file_printer(),
+					group.parent().locale().child_name() + " List"
+					);
+		MarkdownList locale_list(file_printer(), MarkdownPrinter::list_unordered);
+		Vector<Locale> children_locale_list = group.children_locale_list();
+		for(const auto & child: children_locale_list){
+			file_printer().hyperlink(
+						child.description(),
+						"{{< relref \"" + child.output_file_base_name() + "_page.md\" >}}"
+						);
+		}
+
+	}
+
+	for(const auto & child: group.children()){
+		process_compilation_group(child);
+	}
+
 }
 
 
@@ -129,7 +272,7 @@ void Renderer::process_file(
 	m_output_file.write(String("---\n"));
 	m_output_file.write(String("categories:\n"));
 	m_output_file.write("- " + top_level_compilation.locale().country() + "\n");
-	m_output_file.write(String("date: \"2016-10-29\"\n"));
+	m_output_file.write(String("date: \"2020-03-30\"\n"));
 	m_output_file.write(String("layout: post\n"));
 	m_output_file.write(String("tagline: Four Tips\n"));
 	m_output_file.write(String("tags:\n"));
@@ -204,7 +347,6 @@ void Renderer::process_file(
 					}
 				}
 			}
-
 		}
 
 
@@ -225,16 +367,28 @@ void Renderer::process_compilation(
 			{
 				//average age
 				MarkdownList details_list(file_printer(), MarkdownPrinter::list_unordered);
+
+				file_printer() << String().format(
+														"Total Population: %d",
+														compilation.population_group().total()
+														);
+
 				file_printer() << String().format(
 														"Average Age: %0.2f years old",
 														compilation.population_group().calculate_average_age()
 														);
+
 				file_printer() << String().format(
 														"Population Density: %0.2f people per square mile",
 														compilation.calculate_population_density()
 														);
-			}
 
+				file_printer() << String().format(
+														"Males vs Females: %0.2f:%0.2f",
+														compilation.population_group().total().male_ratio() * 100.0f,
+														compilation.population_group().total().female_ratio() * 100.0f
+														);
+			}
 
 			{
 				//population histogram
@@ -245,14 +399,6 @@ void Renderer::process_compilation(
 														);
 			}
 
-			{
-				//by gender
-				file_printer() << MarkdownPrinter::insert_newline;
-				MarkdownCode gender_chart(file_printer(), "chart");
-				file_printer() << Plotter().create_population_pie_chart_by_sex(
-														compilation.population_group().total()
-														);
-			}
 		}
 
 	}
