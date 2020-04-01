@@ -120,6 +120,62 @@ public:
 		return count;
 	}
 
+	static bool ascending_locales(
+			const CompilationGroup & a,
+			const CompilationGroup & b
+			){
+		return a.parent().locale().description() <
+				b.parent().locale().description();
+	}
+
+	static bool ascending_deaths(
+			const CompilationGroup & a,
+			const CompilationGroup & b
+			){
+		return a.parent().covid19().cummulative(Covid19::metric_type_deaths) <
+				b.parent().covid19().cummulative(Covid19::metric_type_deaths);
+	}
+
+	static bool descending_deaths(
+			const CompilationGroup & a,
+			const CompilationGroup & b
+			){
+		return b.parent().covid19().cummulative(Covid19::metric_type_deaths) <
+				a.parent().covid19().cummulative(Covid19::metric_type_deaths);
+	}
+
+	static bool ascending_confirmed(
+			const CompilationGroup & a,
+			const CompilationGroup & b
+			){
+		return a.parent().covid19().cummulative(Covid19::metric_type_confirmed) <
+				b.parent().covid19().cummulative(Covid19::metric_type_confirmed);
+	}
+
+	static bool descending_confirmed(
+			const CompilationGroup & a,
+			const CompilationGroup & b
+			){
+		return b.parent().covid19().cummulative(Covid19::metric_type_confirmed) <
+				a.parent().covid19().cummulative(Covid19::metric_type_confirmed);
+	}
+
+	static bool ascending_recovered(
+			const CompilationGroup & a,
+			const CompilationGroup & b
+			){
+		return a.parent().covid19().cummulative(Covid19::metric_type_recovered) <
+				b.parent().covid19().cummulative(Covid19::metric_type_recovered);
+	}
+
+	static bool descending_recovered(
+			const CompilationGroup & a,
+			const CompilationGroup & b
+			){
+		return b.parent().covid19().cummulative(Covid19::metric_type_recovered) <
+				a.parent().covid19().cummulative(Covid19::metric_type_recovered);
+	}
+
 private:
 	Compilation m_parent;
 	Vector<CompilationGroup> m_children;

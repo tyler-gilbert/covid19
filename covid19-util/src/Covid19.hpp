@@ -5,6 +5,13 @@
 
 class Covid19 : public Container {
 public:
+
+	enum metric_type {
+		metric_type_confirmed,
+		metric_type_deaths,
+		metric_type_recovered
+	};
+
 	Covid19(){}
 	Covid19(const JsonObject & object){
 		m_confirmed = object.at("confirmed").to_integer();
@@ -31,6 +38,15 @@ public:
 	Covid19& set_timestamp(const String& value){
 		m_timestamp = parse_date(value);
 		return *this;
+	}
+
+	u32 metric(enum metric_type value) const {
+		switch(value){
+			case metric_type_confirmed: return confirmed();
+			case metric_type_recovered: return recovered();
+			case metric_type_deaths: return deaths();
+		}
+		return confirmed();
 	}
 
 	u32 confirmed() const {
@@ -92,8 +108,6 @@ public:
 		return *this;
 	}
 
-
-
 private:
 	u32 m_confirmed = 0;
 	u32 m_deaths = 0;
@@ -117,8 +131,15 @@ public:
 		}
 	}
 
-	Vector<Array<float, 3>> calculate_daily_percent_increase() const;
-	Vector<Array<float, 3>> calculate_increment_period(float factor) const;
+	u32 total(enum Covid19::metric_type type){
+		return data().back().metric(type);
+	}
+
+	Vector<Array<float, 3>> calculate_daily_percent_increase(float maximum) const;
+	Vector<Array<float, 3>> calculate_increment_period(
+			float factor,
+			float max_period
+			) const;
 
 	Vector<Covid19>& data(){ return m_data; }
 	const Vector<Covid19>& data() const { return m_data; }
@@ -149,9 +170,22 @@ public:
 		return result;
 	}
 
+	u32 cummulative(enum Covid19::metric_type type) const {
+		if( m_data.count() > 0 ){
+			return m_data.back().metric(type);
+		}
+
+		return 0;
+	}
+
 private:
 	Vector<Covid19> m_data;
 
+
+	float calculate_daily_percent_increase(
+			enum Covid19::metric_type value,
+			u32 offset
+			) const;
 
 };
 

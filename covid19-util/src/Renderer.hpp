@@ -40,16 +40,7 @@ private:
 
 	void load_options();
 	void process_world();
-	void process_directory();
-
-	void process_compilation_group(
-			const CompilationGroup & group
-			);
-
-	void process_country_directory(const String & directory_path);
-	void process_file(const String & file_path);
-
-
+	void process_compilation_group(CompilationGroup& group);
 	void process_compilation(
 			const Compilation& compilation,
 			bool is_show_notes = false

@@ -66,6 +66,7 @@ void Importer::execute(){
 	}
 
 	create_compilation_output();
+	create_world_output();
 
 }
 
@@ -99,58 +100,14 @@ void Importer::load_options(){
 }
 
 
-void Importer::create_output_compilations(){
-	create_country_with_states_compilations("US");
-	create_country_with_states_compilations("MainlandChina");
-	create_country_with_states_compilations("Canada");
-	create_country_with_states_compilations("UnitedKingdom");
-	//Vector<Locale> country_list = build_country_list();
-	//for(const auto & country: country_list){
-	//	create_country_output(country.country());
-	//}
-
-}
-
-void Importer::create_country_with_states_compilations(const var::String& country){
-	Dir::create(
-				m_output_directory_path + "/" + country
-				);
-
-	StringList state_list = build_state_list(country);
-	for(const auto & state: state_list){
-		create_state_output(country, state);
-	}
-}
-
-void Importer::create_country_output(const String& country){
-	printer().info("processing " + country);
-
-	JsonArray output_array;
-
-	Locale locale = Locale()
-			.set_country(country);
-
-	JsonObject covid19_object = find_locale(
-				m_covid19_array,
-				locale
-				);
-
-	output_array.append(covid19_object);
-
-	JsonDocument().save(
-				output_array,
-				File::Path("data/output/" + country + ".json")
-				);
-}
-
 void Importer::create_compilation_output(){
 
 	String compilation_file_path =
 			m_intermediate_directory_path + "/compilation.json";
 
-	JsonArray compilation_array;
 	if( File::exists(compilation_file_path) == true ){
-		compilation_array = JsonDocument().load(
+	//if( 0 ){
+		m_compilation_array = JsonDocument().load(
 					JsonDocument::FilePath(compilation_file_path)
 					).to_array();
 	} else {
@@ -212,8 +169,6 @@ void Importer::create_compilation_output(){
 
 		printer().info("Checking for %d total countries", country_list.count());
 		for(auto & country: country_list){
-
-			printer().info("checking list for " + country);
 			Locale locale;
 			locale.set_country(country);
 
@@ -228,6 +183,9 @@ void Importer::create_compilation_output(){
 
 			if( is_country_found == false ){
 				printer().info("adding top level country locale " + locale.description());
+				locale
+						.set_state("null")
+						.set_county("null");
 				compilation_list.push_back(
 							Compilation(
 								locale,
@@ -239,7 +197,8 @@ void Importer::create_compilation_output(){
 		}
 
 		for(const auto & compilation: compilation_list){
-			compilation_array.append(
+			printer().info("adding " + compilation.locale().description() + " to output");
+			m_compilation_array.append(
 						compilation.to_object()
 						);
 		}
@@ -247,13 +206,16 @@ void Importer::create_compilation_output(){
 
 		printer().info("saving compiliation");
 		JsonDocument().save(
-					compilation_array,
+					m_compilation_array,
 					JsonDocument::FilePath(m_intermediate_directory_path + "/compilation.json")
 					);
 	}
 
+}
+
+void Importer::create_world_output(){
 	CompilationGroup world = CompilationGroup(
-				compilation_array
+				m_compilation_array
 				);
 	printer().info("world has %d compiliations", world.compilation_count());
 
@@ -261,8 +223,6 @@ void Importer::create_compilation_output(){
 				world.to_object(),
 				JsonDocument::FilePath(m_intermediate_directory_path + "/world.json")
 				);
-
-
 }
 
 bool Importer::is_filter_covid19(const Locale & locale) const {
@@ -270,95 +230,6 @@ bool Importer::is_filter_covid19(const Locale & locale) const {
 		if( locale.state() == "null" ){ return true; }
 	}
 	return false;
-}
-
-void Importer::create_state_output(const String& country, const String& state){
-	printer().info("processing " + state);
-	Vector<Locale> locale_list = build_locale_list(country, state);
-	JsonArray state_array;
-
-	PopulationGroup state_population_group;
-
-	Covid19List covid19_state_data;
-
-	for(const auto & locale: locale_list){
-		JsonObject land_area_object = find_locale(
-					m_land_area_array,
-					locale
-					);
-
-		JsonObject population_object = find_locale(
-					m_population_array,
-					locale
-					);
-
-		JsonObject covid19_object = find_locale(
-					m_covid19_array,
-					locale
-					);
-
-		Covid19List covid19_data = Covid19List(
-					covid19_object.at("covid19").to_array()
-					);
-
-		for(u32 i=0; i < covid19_data.data().count(); i++){
-
-			Covid19 sample = Covid19(covid19_data.data().at(i));
-			u32 offset = covid19_state_data.data().find(
-						sample
-						);
-
-			if( offset == covid19_state_data.data().count() ){
-				covid19_state_data.data().push_back(sample);
-			} else {
-				covid19_state_data.data().at(offset) += sample;
-			}
-
-		}
-
-		PopulationGroup locale_population_group =
-				PopulationGroup(
-					population_object.at("population").to_object()
-					);
-
-		state_population_group += locale_population_group;
-
-		JsonObject entry;
-		Locale locale_copy = locale;
-		Locale land_area_locale = Locale(land_area_object.at("locale").to_object());
-
-		locale_copy.set_land_area( land_area_locale.land_area() );
-		entry.insert("locale", locale_copy.to_object());
-		entry.insert("population", population_object.at("population"));
-		entry.insert("covid19", covid19_data.to_array());
-		state_array.append(entry);
-	}
-
-	//create state level covid19 data
-	covid19_state_data.data().sort(Vector<Covid19>::ascending);
-	JsonObject state_object = find_locale(
-				state_array,
-				Locale()
-				.set_country(country)
-				.set_state(state)
-				);
-
-	//need to get a reference to the array
-	JsonArray covid19_state_array = state_object.at("covid19").to_array();
-	covid19_state_array.clear();
-
-	//add the new data
-	for(const auto & datum: covid19_state_data.data() ){
-		covid19_state_array.append(datum.to_object());
-	}
-
-	//create state level population data
-	state_object.insert("population", state_population_group.to_object());
-
-	JsonDocument().save(
-				state_array,
-				File::Path("data/output/" + country + "/" + state + ".json")
-				);
 }
 
 void Importer::process_land_area_data(){
@@ -775,39 +646,12 @@ StringList Importer::build_country_list() const{
 	StringList result;
 	for(const auto * array: m_json_array_data){
 		for(u32 i=0; i < array->count(); i++){
-			Locale locale = Locale(array->at(i).to_object().at("locale").to_object());
+			Locale locale = Locale(
+						array->at(i).to_object().at("locale").to_object()
+						);
 			String country = locale.country();
 			if( result.find(country) == result.count() ){
 				result.push_back(country);
-			}
-		}
-	}
-	return result;
-}
-
-StringList Importer::build_state_list(const var::String & country) const {
-	StringList result;
-	for(const auto * array: m_json_array_data){
-		for(u32 i=0; i < array->count(); i++){
-			Locale locale = Locale(array->at(i).to_object().at("locale").to_object());
-			if( locale.country() == country ){
-				if( result.find(locale.state()) == result.count() ){
-					result.push_back(locale.state());
-				}
-			}
-		}
-	}
-	return result;
-}
-
-StringList Importer::build_timestamp_list(const JsonArray & state_array){
-	StringList result;
-	for(u32 i=0; i < state_array.count(); i++){
-		const JsonObject state_object = state_array.at(i).to_object();
-		Covid19List data = Covid19List(state_object.at("covid19").to_array());
-		for(const auto & covid19: data.data()){
-			if( result.find(covid19.timestamp()) == result.count() ){
-				result.push_back(covid19.timestamp());
 			}
 		}
 	}

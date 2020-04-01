@@ -11,7 +11,7 @@ float Compilation::calculate_population_density() const {
 	if( land_area < 0.2f ){
 		return 0.0f;
 	}
-	return population_group().total().total() / land_area;
+	return population_group().cummulative().total() * 1.0f / land_area;
 }
 
 CompilationGroup::CompilationGroup(const JsonObject & object) :
@@ -124,12 +124,6 @@ void CompilationGroup::collect_children(
 
 void CompilationGroup::build_parent_from_children(){
 	for(const auto & child: m_children){
-		PrinterObject guard(
-					printer(),
-					parent().locale().description() +
-					" += " +
-					child.parent().locale().description()
-					);
 		parent() += child.parent();
 	}
 }

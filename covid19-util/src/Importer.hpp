@@ -23,6 +23,7 @@ private:
 	JsonArray m_land_area_array;
 	JsonArray m_population_array;
 	JsonArray m_covid19_array;
+	JsonArray m_compilation_array;
 	Vector<JsonArray*> m_json_array_data;
 	bool m_is_process_land_area;
 	bool m_is_process_population;
@@ -33,18 +34,12 @@ private:
 	void process_population_data();
 	void process_covid19_data();
 	void process_covid19_daily_report(const String& file_path);
-	void create_output_compilations();
-
 	void create_compilation_output();
+	void create_world_output();
 
 	bool is_filter_covid19(const Locale& locale) const;
 
-	void create_country_output(const String& country);
-	void create_country_with_states_compilations(const String& country);
-	void create_state_output(const String& country, const String& state);
 	StringList build_country_list() const;
-	StringList build_state_list(const var::String & country) const;
-	StringList build_timestamp_list(const JsonArray & state_array);
 	Vector<Locale> build_locale_list(const var::String & country, const String& state);
 	Vector<Locale> build_locale_list() const;
 

@@ -78,11 +78,11 @@ public:
 	}
 
 	float male_ratio() const {
-		return m_male / m_total;
+		return m_male * 1.0f / m_total;
 	}
 
 	float female_ratio() const {
-		return m_female / m_total;
+		return m_female * 1.0f / m_total;
 	}
 
 	Population& operator +=(const Population& value){
@@ -110,13 +110,13 @@ public:
 	PopulationGroup(){
 		create_age_brackets();
 
-		m_total
+		m_cummulative
 				.set_minimum_age(0)
 				.set_maximum_age(Population::absolute_maximum_age());
 	}
 
 	PopulationGroup(const JsonObject & object) :
-		m_total(object.at("total").to_object()){
+		m_cummulative(object.at("total").to_object()){
 		JsonArray by_age_array = object.at("byAge").to_array();
 		if( by_age_array.count() > 0 ){
 			for(u32 i=0; i < by_age_array.count(); i++){
@@ -131,7 +131,7 @@ public:
 
 	JsonObject to_object() const {
 		JsonObject result;
-		result.insert("total", m_total.to_object());
+		result.insert("total", m_cummulative.to_object());
 		JsonArray by_age_array;
 		for(const auto & by_age: m_by_age_list){
 			by_age_array.append(
@@ -143,7 +143,7 @@ public:
 	}
 
 	PopulationGroup& set_total(const Population& value){
-		m_total = value;
+		m_cummulative = value;
 		return *this;
 	}
 
@@ -152,12 +152,12 @@ public:
 		return *this;
 	}
 
-	Population& total(){
-		return m_total;
+	Population& cummulative(){
+		return m_cummulative;
 	}
 
-	const Population& total() const {
-		return m_total;
+	const Population& cummulative() const {
+		return m_cummulative;
 	}
 
 	Population& by_age(u32 offset){
@@ -173,7 +173,7 @@ public:
 	}
 
 	PopulationGroup& operator +=(const PopulationGroup& value){
-		m_total += value.total();
+		m_cummulative += value.cummulative();
 		if( value.by_age_count() == by_age_count() ){
 			for(u32 i=0; i < by_age_count(); i++){
 				by_age(i) += value.by_age(i);
@@ -185,7 +185,7 @@ public:
 	float calculate_average_age() const;
 
 private:
-	Population m_total;
+	Population m_cummulative;
 	Vector<Population> m_by_age_list;
 
 	void create_age_brackets(){

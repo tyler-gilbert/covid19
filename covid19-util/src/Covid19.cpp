@@ -29,7 +29,28 @@ String Covid19::parse_date(
 	return result;
 }
 
-Vector<Array<float, 3>> Covid19List::calculate_daily_percent_increase() const {
+float Covid19List::calculate_daily_percent_increase(
+		Covid19::metric_type value,
+		u32 offset
+		) const {
+	if( offset == 0 ){
+		return 0.0f;
+	}
+
+	float result =
+			(m_data.at(offset).metric(value)*1.0f - m_data.at(offset-1).metric(value))
+			/ m_data.at(offset-1).metric(value);
+
+	if ( result < 0.0f ){
+		result = 0.0001f;
+	}
+	return result;
+}
+
+
+Vector<Array<float, 3>> Covid19List::calculate_daily_percent_increase(
+		float maximum
+		) const {
 	Vector<Array<float, 3>> result;
 	Array<float, 3> entry;
 	for(auto & value: entry){
@@ -39,31 +60,25 @@ Vector<Array<float, 3>> Covid19List::calculate_daily_percent_increase() const {
 
 	for(u32 i=1; i < m_data.count(); i++){
 
+		entry.at(0) = calculate_daily_percent_increase(
+					Covid19::metric_type_confirmed,
+					i
+					);
 
-		if( m_data.at(i-1).confirmed() > 0 ){
-			entry.at(0) =
-					(m_data.at(i).confirmed()*1.0f - m_data.at(i-1).confirmed())
-					/ m_data.at(i-1).confirmed();
+		entry.at(1) = calculate_daily_percent_increase(
+					Covid19::metric_type_deaths,
+					i
+					);
 
-		} else {
-			entry.at(0) = 0.0f;
-		}
+		entry.at(2) = calculate_daily_percent_increase(
+					Covid19::metric_type_recovered,
+					i
+					);
 
-		if( m_data.at(i-1).deaths() > 0 ){
-			entry.at(1) =
-					(m_data.at(i).deaths()*1.0f - m_data.at(i-1).deaths())
-					/ m_data.at(i-1).deaths();
-		} else {
-			entry.at(1) = 0.0f;
-		}
-
-		if( m_data.at(i-1).recovered() > 0 ){
-			entry.at(2) =
-					(m_data.at(i).recovered()*1.0f - m_data.at(i-1).recovered())
-					/ m_data.at(i-1).recovered();
-
-		} else {
-			entry.at(2) = 0.0f;
+		for(auto & value: entry){
+			if( value > maximum ){
+				value = maximum;
+			}
 		}
 
 		result.push_back(entry);
@@ -71,9 +86,13 @@ Vector<Array<float, 3>> Covid19List::calculate_daily_percent_increase() const {
 	return result;
 }
 
-Vector<Array<float, 3>> Covid19List::calculate_increment_period(float factor) const {
+Vector<Array<float, 3>> Covid19List::calculate_increment_period(
+		float factor,
+		float maximum_daily_increase
+		) const {
 	Vector<Array<float, 3>> result;
-	Vector<Array<float, 3>> daily_increase = calculate_daily_percent_increase();
+	Vector<Array<float, 3>> daily_increase =
+			calculate_daily_percent_increase(maximum_daily_increase);
 
 	Array<float, 3> entry;
 	for(auto & value: entry){
@@ -82,7 +101,6 @@ Vector<Array<float, 3>> Covid19List::calculate_increment_period(float factor) co
 	result.push_back(entry);
 
 	for(u32 i=1; i < m_data.count(); i++){
-
 		for(u32 j=0; j < entry.count(); j++){
 			entry.at(j) =
 					logf(factor) /

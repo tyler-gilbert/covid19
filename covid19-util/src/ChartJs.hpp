@@ -33,35 +33,35 @@ public:
 
 	var::String to_string() const {
 		return var::String().format(
-					"rgba(%d,%d,%d,%d)",
+					"rgba(%d,%d,%d,%0.2f)",
 					m_red,
 					m_green,
 					m_blue,
-					m_alpha
+					m_alpha * 1.0f / 255
 					);
 	}
 
-	static ChartJsColor create_red(){
+	static ChartJsColor create_red(u8 value = 255){
 		return ChartJsColor()
-				.set_red(255)
+				.set_red(value)
 				.set_green(0)
 				.set_blue(0)
 				.set_alpha(255);
 	}
 
-	static ChartJsColor create_green(){
+	static ChartJsColor create_green(u8 value = 255){
 		return ChartJsColor()
 				.set_red(0)
-				.set_green(255)
+				.set_green(value)
 				.set_blue(0)
 				.set_alpha(255);
 	}
 
-	static ChartJsColor create_blue(){
+	static ChartJsColor create_blue(u8 value = 255){
 		return ChartJsColor()
 				.set_red(0)
 				.set_green(0)
-				.set_blue(255)
+				.set_blue(value)
 				.set_alpha(255);
 	}
 
@@ -79,6 +79,14 @@ public:
 				.set_red(0)
 				.set_green(0)
 				.set_blue(0)
+				.set_alpha(255);
+	}
+
+	static ChartJsColor create_gray(u8 value = 128){
+		return ChartJsColor()
+				.set_red(value)
+				.set_green(value)
+				.set_blue(value)
 				.set_alpha(255);
 	}
 

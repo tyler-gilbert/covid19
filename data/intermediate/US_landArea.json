@@ -571,7 +571,7 @@
    },
    {
       "locale": {
-         "county": "St.Clair",
+         "county": "StClair",
          "state": "Alabama",
          "country": "US",
          "latitude": "null",
@@ -1721,7 +1721,7 @@
    },
    {
       "locale": {
-         "county": "St.Francis",
+         "county": "StFrancis",
          "state": "Arkansas",
          "country": "US",
          "latitude": "null",
@@ -3731,7 +3731,7 @@
    },
    {
       "locale": {
-         "county": "St.Johns",
+         "county": "StJohns",
          "state": "Florida",
          "country": "US",
          "latitude": "null",
@@ -3741,7 +3741,7 @@
    },
    {
       "locale": {
-         "county": "St.Lucie",
+         "county": "StLucie",
          "state": "Florida",
          "country": "US",
          "latitude": "null",
@@ -6751,7 +6751,7 @@
    },
    {
       "locale": {
-         "county": "St.Clair",
+         "county": "StClair",
          "state": "Illinois",
          "country": "US",
          "latitude": "null",
@@ -7661,7 +7661,7 @@
    },
    {
       "locale": {
-         "county": "St.Joseph",
+         "county": "StJoseph",
          "state": "Indiana",
          "country": "US",
          "latitude": "null",
@@ -11551,7 +11551,7 @@
    },
    {
       "locale": {
-         "county": "St.Bernard",
+         "county": "StBernard",
          "state": "Louisiana",
          "country": "US",
          "latitude": "null",
@@ -11561,7 +11561,7 @@
    },
    {
       "locale": {
-         "county": "St.Charles",
+         "county": "StCharles",
          "state": "Louisiana",
          "country": "US",
          "latitude": "null",
@@ -11571,7 +11571,7 @@
    },
    {
       "locale": {
-         "county": "St.Helena",
+         "county": "StHelena",
          "state": "Louisiana",
          "country": "US",
          "latitude": "null",
@@ -11581,7 +11581,7 @@
    },
    {
       "locale": {
-         "county": "St.James",
+         "county": "StJames",
          "state": "Louisiana",
          "country": "US",
          "latitude": "null",
@@ -11591,7 +11591,7 @@
    },
    {
       "locale": {
-         "county": "St.JohntheBaptist",
+         "county": "StJohntheBaptist",
          "state": "Louisiana",
          "country": "US",
          "latitude": "null",
@@ -11601,7 +11601,7 @@
    },
    {
       "locale": {
-         "county": "St.Landry",
+         "county": "StLandry",
          "state": "Louisiana",
          "country": "US",
          "latitude": "null",
@@ -11611,7 +11611,7 @@
    },
    {
       "locale": {
-         "county": "St.Martin",
+         "county": "StMartin",
          "state": "Louisiana",
          "country": "US",
          "latitude": "null",
@@ -11621,7 +11621,7 @@
    },
    {
       "locale": {
-         "county": "St.Mary",
+         "county": "StMary",
          "state": "Louisiana",
          "country": "US",
          "latitude": "null",
@@ -11631,7 +11631,7 @@
    },
    {
       "locale": {
-         "county": "St.Tammany",
+         "county": "StTammany",
          "state": "Louisiana",
          "country": "US",
          "latitude": "null",
@@ -12091,7 +12091,7 @@
    },
    {
       "locale": {
-         "county": "St.Mary's",
+         "county": "StMary's",
          "state": "Maryland",
          "country": "US",
          "latitude": "null",
@@ -13031,7 +13031,7 @@
    },
    {
       "locale": {
-         "county": "St.Clair",
+         "county": "StClair",
          "state": "Michigan",
          "country": "US",
          "latitude": "null",
@@ -13041,7 +13041,7 @@
    },
    {
       "locale": {
-         "county": "St.Joseph",
+         "county": "StJoseph",
          "state": "Michigan",
          "country": "US",
          "latitude": "null",
@@ -13811,7 +13811,7 @@
    },
    {
       "locale": {
-         "county": "St.Louis",
+         "county": "StLouis",
          "state": "Minnesota",
          "country": "US",
          "latitude": "null",
@@ -15731,7 +15731,7 @@
    },
    {
       "locale": {
-         "county": "St.Charles",
+         "county": "StCharles",
          "state": "Missouri",
          "country": "US",
          "latitude": "null",
@@ -15741,7 +15741,7 @@
    },
    {
       "locale": {
-         "county": "St.Clair",
+         "county": "StClair",
          "state": "Missouri",
          "country": "US",
          "latitude": "null",
@@ -15751,7 +15751,7 @@
    },
    {
       "locale": {
-         "county": "Ste.Genevieve",
+         "county": "SteGenevieve",
          "state": "Missouri",
          "country": "US",
          "latitude": "null",
@@ -15761,7 +15761,7 @@
    },
    {
       "locale": {
-         "county": "St.Francois",
+         "county": "StFrancois",
          "state": "Missouri",
          "country": "US",
          "latitude": "null",
@@ -15771,7 +15771,7 @@
    },
    {
       "locale": {
-         "county": "St.Louis",
+         "county": "StLouis",
          "state": "Missouri",
          "country": "US",
          "latitude": "null",
@@ -15961,7 +15961,7 @@
    },
    {
       "locale": {
-         "county": "St.Louiscity",
+         "county": "StLouiscity",
          "state": "Missouri",
          "country": "US",
          "latitude": "null",
@@ -18721,7 +18721,7 @@
    },
    {
       "locale": {
-         "county": "St.Lawrence",
+         "county": "StLawrence",
          "state": "NewYork",
          "country": "US",
          "latitude": "null",
@@ -31051,7 +31051,7 @@
    },
    {
       "locale": {
-         "county": "St.Croix",
+         "county": "StCroix",
          "state": "Wisconsin",
          "country": "US",
          "latitude": "null",

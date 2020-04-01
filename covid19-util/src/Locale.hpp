@@ -123,23 +123,29 @@ public:
 	}
 
 	String output_file_base_name() const {
+		String result;
 		if( county() != "null" ){
-			return "world/" +
+			result = "world/" +
 					String(country()).to_lower() +
 					"/" +
 					String(state()).to_lower() +
 					"/" +
 					String(county()).to_lower();
 		} else if( state() != "null" ){
-			return "world/" +
+			result = "world/" +
 					String(country()).to_lower() +
 					"/" +
 					String(state()).to_lower();
 		} else if( country() != "null" ){
-			return "world/" + String(country()).to_lower();
+			result = "world/" + String(country()).to_lower();
 		} else {
-			return "world";
+			result = "world/world";
 		}
+		result.replace(
+					String::ToErase("."),
+					String::ToInsert("_")
+					);
+		return result;
 	}
 
 	String child_name() const {
@@ -200,6 +206,7 @@ private:
 	String sanitize(const String & value){
 		String result = value;
 		return result
+				.replace(String::ToErase("."), String::ToInsert(""))
 				.replace(String::ToErase("\""), String::ToInsert(""))
 				.replace(String::ToErase(" "), String::ToInsert(""));
 	}
