@@ -1,4 +1,8 @@
+#include <sapi/chrono.hpp>
+
 #include "Compilation.hpp"
+
+Vector<Compilation>CompilationGroup::m_master_compilation_list;
 
 Compilation::Compilation()
 {
@@ -28,28 +32,53 @@ CompilationGroup::CompilationGroup(const JsonObject & object) :
 
 CompilationGroup::CompilationGroup(const JsonArray & json_array){
 	PrinterArray guard(printer(), "World");
-	collect_children(json_array);
+	Vector<Compilation> compilation_array;
+	compilation_array.reserve(json_array.count());
+	for(u32 i=0; i < json_array.count(); i++){
+		compilation_array.push_back(json_array.at(i).to_object());
+	}
+
+	Timer t;
+	t.start();
+	collect_children(compilation_array);
+	printer().key("jsonArrayConstructTime", String::number(
+									t.milliseconds(), "%dms"
+									));
+	t.restart();
 	build_parent_from_children();
+	printer().key("buildFromChildrenTime", String::number(
+									t.milliseconds(), "%dms"
+									));
 }
 
 CompilationGroup::CompilationGroup(
 		const Compilation & parent,
-		const JsonArray& json_array) :
+		const Vector<Compilation>& compilation_array) :
 	m_parent(parent){
 	PrinterArray guard(printer(), parent.locale().description());
-	collect_children(json_array);
+	Timer t;
+	t.start();
+	collect_children(compilation_array);
+	printer().key("collectChildrenTime", String::number(
+									t.microseconds(), "%dus"
+									));
 	build_parent_from_children();
+	t.restart();
+	printer().key("buildFromChildrenTime", String::number(
+									t.microseconds(), "%dus"
+									));
 }
 
 void CompilationGroup::collect_children(
-		const JsonArray & compilation_array
+		const Vector<Compilation>& compilation_array
 		){
 
+	m_children.reserve(4000);
 
-	u32 children_count = 0;
 	for(u32 i=0; i < compilation_array.count(); i++){
 
-		Compilation compilation(compilation_array.at(i).to_object());
+		const Compilation& compilation = compilation_array.at(i);
+
 		if( parent().locale().country() == "null" ){
 			//import the world -- all nations as children
 
@@ -57,40 +86,7 @@ void CompilationGroup::collect_children(
 					(compilation.locale().state() == "null") &&
 					(compilation.locale().county() == "null")
 					){
-				children_count++;
-			}
 
-		} else if( state() == "null" ){
-			//import the country -- all states as children
-			if( (compilation.locale().country() == country() ) &&
-					(compilation.locale().state() != "null") &&
-					(compilation.locale().county() == "null")
-					){
-				children_count++;
-			}
-		} else if( parent().locale().county() == "null" ){
-			//import the state -- all counties as children
-			if( (compilation.locale().country() == country() ) &&
-					(compilation.locale().state() == state() ) &&
-					(compilation.locale().county() != "null" )
-					){
-				children_count++;
-			}
-		}
-	}
-
-	m_children.reserve(children_count);
-
-	for(u32 i=0; i < compilation_array.count(); i++){
-
-		Compilation compilation(compilation_array.at(i).to_object());
-		if( parent().locale().country() == "null" ){
-			//import the world -- all nations as children
-
-			if( (compilation.locale().country() != "null") &&
-					(compilation.locale().state() == "null") &&
-					(compilation.locale().county() == "null")
-					){
 				m_children.push_back(
 							CompilationGroup(compilation, compilation_array)
 							);
@@ -120,6 +116,8 @@ void CompilationGroup::collect_children(
 			}
 		}
 	}
+
+	m_children.shrink_to_fit();
 }
 
 void CompilationGroup::build_parent_from_children(){
@@ -130,6 +128,7 @@ void CompilationGroup::build_parent_from_children(){
 
 StringList CompilationGroup::children_name_list() const {
 	StringList result;
+	result.reserve(children().count());
 	for(const auto & child: children()){
 		if( child.parent().locale().is_country() ){
 			result.push_back(child.parent().locale().country());
@@ -151,7 +150,6 @@ Vector<Locale> CompilationGroup::children_locale_list() const {
 	Vector<Locale> result;
 	result.reserve(children().count());
 	for(const auto & name: name_list){
-
 		for(const auto & child: children()){
 			if( child.parent().locale().is_country() && child.parent().locale().country() == name){
 				result.push_back(child.parent().locale());

@@ -14,6 +14,7 @@ void Importer::execute(){
 	load_options();
 
 
+	m_json_array_data.reserve(3);
 	m_json_array_data
 			.push_back(&m_covid19_array)
 			.push_back(&m_land_area_array)
@@ -117,7 +118,7 @@ void Importer::create_compilation_output(){
 		Vector<String> country_list = build_country_list();
 
 		Vector<Compilation> compilation_list;
-		compilation_list.reserve( locale_list.count() );
+		compilation_list.reserve( country_list.count() + locale_list.count() );
 
 		for(auto & locale: locale_list){
 			PrinterObject locale_guard(printer(), locale.description());
@@ -160,7 +161,8 @@ void Importer::create_compilation_output(){
 						Compilation(
 							locale,
 							locale_population_group,
-							covid19_data
+							covid19_data,
+							Covid19FeatureGroup()
 							)
 						);
 
@@ -190,7 +192,8 @@ void Importer::create_compilation_output(){
 							Compilation(
 								locale,
 								PopulationGroup(),
-								Covid19List()
+								Covid19List(),
+								Covid19FeatureGroup()
 								)
 							);
 			}
@@ -280,15 +283,14 @@ void Importer::process_land_area_data(){
 
 
 		if( county != "null" ){
+			Locale locale = Locale()
+					.set_county(county)
+					.set_state(state)
+					.set_country("US")
+					.set_land_area(land_area.to_float());
+
 			//all land area data will be computed by summing county data
-			entry.insert("locale",
-									 Locale()
-									 .set_county(county)
-									 .set_state(state)
-									 .set_country("US")
-									 .set_land_area(land_area.to_float())
-									 .to_object()
-									 );
+			entry.insert("locale",locale.to_object());
 			m_land_area_array.append(entry);
 		}
 	}
@@ -572,6 +574,7 @@ void Importer::process_covid19_daily_report(
 				locale_data.append(covid19.to_object());
 				locale_object.insert("locale", locale.to_object());
 				locale_object.insert("covid19", locale_data);
+
 				m_covid19_array.append(locale_object);
 			} else {
 				if( (latitude != "null") &&

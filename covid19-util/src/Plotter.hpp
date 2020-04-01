@@ -8,6 +8,7 @@
 #include "ChartJs.hpp"
 #include "Covid19.hpp"
 #include "Population.hpp"
+#include "Compilation.hpp"
 
 //methods to convert containers to charts
 class Plotter : public Object {
@@ -32,6 +33,10 @@ public:
 
 	String create_covid19_daily_increase(
 			const Covid19List& covid19_list
+			);
+
+	String create_growth_trend_latitude_population_density_bubble_plot(
+			const CompilationGroup& compilation_group
 			);
 
 };

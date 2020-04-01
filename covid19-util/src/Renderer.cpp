@@ -154,7 +154,7 @@ void Renderer::process_compilation_group(
 			if( locale.country() == "US" ){
 				MarkdownPrettyTable deadly_list(
 							file_printer(),
-				{"Name", "Deaths", "Population Density", "Deaths/Million"}
+				{"Name", "Deaths", "People/Square Mile", "Deaths/Million"}
 							);
 
 				file_printer() << MarkdownPrinter::insert_newline;
@@ -178,7 +178,7 @@ void Renderer::process_compilation_group(
 									),
 
 									String::number(
-									group.children().at(i).parent().calculate_population_density(), "%0.2f ppl/sqmi"
+									group.children().at(i).parent().calculate_population_density(), "%0.2f"
 									),
 
 									String::number(
@@ -222,19 +222,23 @@ void Renderer::process_compilation_group(
 				}
 			}
 		}
+
+
+		if( locale.country() == "US" ){
+			//scatter plot
+			file_printer() << MarkdownPrinter::insert_newline;
+			MarkdownCode scatter_plot(file_printer(), "chart");
+			file_printer() << MarkdownPrinter::insert_newline;
+			file_printer()
+					<< Plotter().create_growth_trend_latitude_population_density_bubble_plot(
+							 group
+							 );
+			file_printer() << MarkdownPrinter::insert_newline;
+
+		}
 	}
 
-	{
-		//Total deaths
 
-		//Top ten deadliest children
-
-	}
-
-	{
-		//Cases
-
-	}
 
 	process_compilation(group.parent());
 

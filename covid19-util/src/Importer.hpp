@@ -16,6 +16,23 @@ public:
 	void execute();
 
 private:
+	//not bering used yet
+	struct Covid19Locale {
+		Covid19Locale(
+				const Locale & locale,
+				const Covid19 & covid19) :
+			m_locale(locale),
+			m_covid19(covid19){
+
+		}
+
+		const Covid19 & covid19(){ return m_covid19; }
+		const Locale & locale(){ return m_locale; }
+	private:
+		Covid19 m_covid19;
+		Locale m_locale;
+	};
+
 	bool m_is_load_compilation;
 	String m_input_directory_path;
 	String m_output_directory_path;
@@ -24,6 +41,7 @@ private:
 	JsonArray m_population_array;
 	JsonArray m_covid19_array;
 	JsonArray m_compilation_array;
+
 	Vector<JsonArray*> m_json_array_data;
 	bool m_is_process_land_area;
 	bool m_is_process_population;

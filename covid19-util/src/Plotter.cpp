@@ -32,7 +32,7 @@ String Plotter::create_population_histogram_by_age(
 
 		chart.data().labels().push_back(label);
 		data_set.data().push_back(
-					String::number(by_age.total())
+					JsonReal(by_age.total())
 					);
 	}
 
@@ -60,8 +60,8 @@ String Plotter::create_population_pie_chart_by_sex(
 
 	chart.data().append(
 				ChartJsDataSet()
-				.append(String::number(population.male() * 100.0f / population.total(), "%0.2f"))
-				.append(String::number(population.female() *100.0f / population.total(), "%0.2f"))
+				.append(JsonReal(population.male() * 100.0f / population.total()))
+				.append(JsonReal(population.female() *100.0f / population.total()))
 				.set_property("backgroundColor", JsonArray(colors))
 				);
 
@@ -80,7 +80,6 @@ String Plotter::create_covid19_history_plot(
 	ChartJsDataSet confirmed_data_set;
 	ChartJsDataSet deaths_data_set;
 
-	confirmed_data_set.set_type(ChartJsDataSet::type_real);
 	confirmed_data_set.set_property("label", JsonString("Confirmed"));
 	confirmed_data_set.set_property(
 				"backgroundColor",
@@ -91,7 +90,6 @@ String Plotter::create_covid19_history_plot(
 				JsonString( ChartJsColor::create_blue().to_string() )
 				);
 
-	deaths_data_set.set_type(ChartJsDataSet::type_real);
 	deaths_data_set.set_property("label", JsonString("Deaths"));
 	deaths_data_set.set_property(
 				"backgroundColor",
@@ -110,11 +108,11 @@ String Plotter::create_covid19_history_plot(
 
 
 		confirmed_data_set.data().push_back(
-					String::number(covid19.confirmed())
+					JsonReal(covid19.confirmed())
 					);
 
 		deaths_data_set.data().push_back(
-					String::number(covid19.deaths())
+					JsonReal(covid19.deaths())
 					);
 	}
 
@@ -145,25 +143,25 @@ String Plotter::create_covid19_daily_increase(
 	chart.set_type(ChartJs::type_line);
 
 
-	Vector<Array<float, 3>> daily_increase =
+	Vector<Covid19Feature> daily_increase =
 			covid19_list.calculate_daily_percent_increase(0.24f);
 
 	Array<ChartJsDataSet, 3> data_sets;
 
 	data_sets.at(0)
-			.set_property("label", JsonString("Confirmed"))
+			.set_property("label", JsonString(Covid19Feature::name_at(0)))
 			.set_property("lineTension", JsonInteger(0))
 			.set_property("backgroundColor", JsonString(ChartJsColor::create_transparent().to_string()))
 			.set_property("borderColor", JsonString(ChartJsColor::create_blue().to_string()));
 
 	data_sets.at(1)
-			.set_property("label", JsonString("Deaths"))
+			.set_property("label", JsonString(Covid19Feature::name_at(1)))
 			.set_property("lineTension", JsonInteger(0))
 			.set_property("backgroundColor", JsonString(ChartJsColor::create_transparent().to_string()))
 			.set_property("borderColor", JsonString(ChartJsColor::create_black().to_string()));
 
 	data_sets.at(2)
-			.set_property("label", JsonString("Recovered"))
+			.set_property("label", JsonString(Covid19Feature::name_at(2)))
 			.set_property("lineTension", JsonInteger(0))
 			.set_property("backgroundColor", JsonString(ChartJsColor::create_transparent().to_string()))
 			.set_property("borderColor", JsonString(ChartJsColor::create_green().to_string()));
@@ -201,17 +199,17 @@ String Plotter::create_covid19_daily_increase(
 					);
 
 		for(u32 j=0; j < data_sets.count(); j++){
-				data_sets.at(j).data().push_back(
-							String::number(daily_increase.at(i).at(j)*100.0f, "%0.2f")
-							);
-			}
+			data_sets.at(j).data().push_back(
+						JsonReal(daily_increase.at(i).at(j)*100.0f)
+						);
+		}
 
 		decay_zone.data().push_back(
-					String("5.0")
+					JsonReal(5.0f)
 					);
 
 		truncation_line.data().push_back(
-					String("24.0")
+					JsonReal(24.0f)
 					);
 
 	}
@@ -245,27 +243,27 @@ String Plotter::create_covid19_days_to_double(
 	chart.set_type(ChartJs::type_line);
 
 	ChartJsDataSet data_set;
-	data_set.set_property("label", JsonString("Age Bracket"));
+	data_set.set_property("label", JsonString("Days to Double"));
 
-	Vector<Array<float, 3>> days_to_double =
+	Vector<Covid19Feature> days_to_double =
 			covid19_list.calculate_increment_period(2.0f, 5.0f);
 
 	Array<ChartJsDataSet, 3> data_sets;
 
 	data_sets.at(0)
-			.set_property("label", JsonString("Confirmed"))
+			.set_property("label", JsonString(Covid19Feature::name_at(0)))
 			.set_property("lineTension", JsonInteger(0))
 			.set_property("backgroundColor", JsonString(ChartJsColor::create_transparent().to_string()))
 			.set_property("borderColor", JsonString(ChartJsColor::create_blue().to_string()));
 
 	data_sets.at(1)
-			.set_property("label", JsonString("Deaths"))
+			.set_property("label", JsonString(Covid19Feature::name_at(1)))
 			.set_property("lineTension", JsonInteger(0))
 			.set_property("backgroundColor", JsonString(ChartJsColor::create_transparent().to_string()))
 			.set_property("borderColor", JsonString(ChartJsColor::create_black().to_string()));
 
 	data_sets.at(2)
-			.set_property("label", JsonString("Recovered"))
+			.set_property("label", JsonString(Covid19Feature::name_at(2)))
 			.set_property("lineTension", JsonInteger(0))
 			.set_property("backgroundColor", JsonString(ChartJsColor::create_transparent().to_string()))
 			.set_property("borderColor", JsonString(ChartJsColor::create_green().to_string()));
@@ -282,8 +280,8 @@ String Plotter::create_covid19_days_to_double(
 			.set_property("backgroundColor", JsonString(transparent_red))
 			.set_property("borderColor", JsonString(transparent_red));
 
-	String transparent_green =
-			ChartJsColor::create_green()
+	String transparent_gray =
+			ChartJsColor::create_gray(128)
 			.set_alpha(64)
 			.to_string();
 
@@ -292,7 +290,7 @@ String Plotter::create_covid19_days_to_double(
 			.set_property("label", JsonString("Truncation Line"))
 			.set_property("lineTension", JsonInteger(0))
 			.set_property("backgroundColor", JsonString(ChartJsColor::create_transparent().to_string()))
-			.set_property("borderColor", JsonString(transparent_green));
+			.set_property("borderColor", JsonString(transparent_gray));
 
 
 	for(u32 i=0; i < covid19_list.data().count(); i++){
@@ -302,23 +300,23 @@ String Plotter::create_covid19_days_to_double(
 					);
 
 		for(u32 j=0; j < data_sets.count(); j++){
-				if( days_to_double.at(i).at(j) > 24 ){
-					data_sets.at(j).data().push_back("24");
-				} else {
-					data_sets.at(j).data().push_back(
-								String::number(days_to_double.at(i).at(j), "%0.2f")
-								);
-				}
+			if( days_to_double.at(i).at(j) > 24 ){
+				data_sets.at(j).data().push_back(JsonReal(24.0f));
+			} else {
+				data_sets.at(j).data().push_back(
+							JsonReal(days_to_double.at(i).at(j))
+							);
+			}
 
 
 		}
 
 		growth_zone.data().push_back(
-					String("14.0")
+					JsonReal(14.0f)
 					);
 
 		truncation_line.data().push_back(
-					String("24.0")
+					JsonReal(24.0f)
 					);
 	}
 
@@ -339,6 +337,112 @@ String Plotter::create_covid19_days_to_double(
 				"title",
 				ChartJsOptions::create_title("Days to Double (Capped at 24 Days)")
 				);
+
+	return JsonDocument().stringify(chart.to_object());
+}
+
+String Plotter::create_growth_trend_latitude_population_density_bubble_plot(
+		const CompilationGroup& compilation_group
+		){
+	ChartJs chart;
+	chart.set_type(ChartJs::type_scatter);
+
+	ChartJsDataSet growth_trend_scatter;
+
+	growth_trend_scatter.set_property("label", JsonString("Growth Trend"));
+	growth_trend_scatter.set_property(
+				"backgroundColor",
+				JsonString( ChartJsColor::create_transparent()
+										.to_string() )
+				);
+
+	growth_trend_scatter.set_property(
+				"borderColor",
+				JsonString( ChartJsColor::create_blue().to_string() )
+				);
+
+
+	Vector<ChartJsDataSet> data_set_list;
+
+	Vector<float> point_sizes;
+	StringList labels;
+	StringList background_colors;
+	String point_background_color = ChartJsColor::create_blue()
+			.set_alpha(64)
+			.to_string();
+
+	int count = 0;
+	for(const CompilationGroup & group: compilation_group.children()){
+
+		float latitude = 0.0f;
+		latitude = group.parent().locale().latitude().to_float();
+		if( latitude > 0.1f ){
+			JsonObject data_object;
+			data_object.insert("x", JsonReal(group.parent().calculate_population_density()));
+			data_object.insert("y", JsonReal(group.parent().locale().latitude().to_float()));
+
+			float point_size =
+					group.parent().covid19().data().back().confirmed() * 1.0f /
+					(group.parent().population_group().cummulative().total()*1.0f / 100000.0f) + 0.5f;
+
+			point_sizes.push_back(
+						point_size
+						);
+			labels.push_back(group.parent().locale().description());
+			background_colors.push_back(point_background_color);
+			growth_trend_scatter.data().push_back(data_object);
+
+			ChartJsDataSet data_set = ChartJsDataSet()
+					.set_property("label", JsonString(group.parent().locale().description()))
+					.set_property("pointRadius", JsonReal(point_size))
+					.set_property("pointHoverRadius", JsonReal(point_size))
+					.set_property(
+						"borderColor",
+						JsonString( ChartJsColor::create_blue().to_string() )
+						)
+					.set_property(
+									"backgroundColor",
+									JsonString( ChartJsColor::create_transparent()
+															.to_string() )
+									);
+
+			data_set.data().push_back(data_object);
+			data_set_list.push_back(
+						data_set
+						);
+
+		}
+		count++;
+		if( count == 10){
+			break;
+		}
+	}
+
+	growth_trend_scatter.set_property("pointBackgroundColor", JsonArray(background_colors));
+	growth_trend_scatter.set_property("pointRadius", JsonArray(point_sizes));
+	growth_trend_scatter.set_property("pointHoverRadius", JsonArray(point_sizes));
+	//growth_trend_scatter.set_property("label", JsonArray(labels));
+
+	JsonObject x_axis_object = ChartJsOptions::create_axis("logarithmic");
+	x_axis_object.insert("position", JsonString("bottom"));
+	x_axis_object.insert("labelString", JsonString("People / Square Mile (Log Scale)"));
+
+
+	JsonObject y_axis_object = ChartJsOptions::create_axis("linear");
+	y_axis_object.insert("labelString", JsonString("Latitude (degrees)"));
+
+	chart.options()
+			.set_x_axis(x_axis_object)
+			.set_y_axis(y_axis_object)
+			.set_property(
+				"title",
+				ChartJsOptions::create_title("Growth Trend Scatter Plot")
+				);
+
+	for(const auto & data_set: data_set_list){
+		chart.data().append(data_set);
+	}
+	//chart.data().append(growth_trend_scatter);
 
 	return JsonDocument().stringify(chart.to_object());
 }

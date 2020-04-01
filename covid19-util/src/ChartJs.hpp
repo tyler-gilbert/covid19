@@ -104,7 +104,8 @@ public:
 
 	enum type {
 		type_string,
-		type_real
+		type_real,
+		type_object
 	};
 
 	ChartJsDataSet& set_property(
@@ -115,12 +116,7 @@ public:
 		return *this;
 	}
 
-	ChartJsDataSet& set_type(enum type value){
-		m_type = value;
-		return *this;
-	}
-
-	ChartJsDataSet& append(const var::String & value){
+	ChartJsDataSet& append(const var::JsonValue & value){
 		data().push_back(value);
 		return *this;
 	}
@@ -128,32 +124,26 @@ public:
 	var::JsonObject to_object() const {
 		var::JsonObject result;
 		result.copy(m_properties);
-		if (m_type == type_string){
-			result.insert(
-						"data",
-						var::JsonArray(m_data)
-						);
-		} else {
-			var::JsonArray data_array;
-			for(const auto & data: m_data){
-				data_array.append(var::JsonReal(data.to_float()));
-			}
-			result.insert(
-						"data",
-						data_array
-						);
+		var::JsonArray data_array;
+		for(const auto & data: m_data){
+			data_array.append(data);
 		}
+		result.insert(
+					"data",
+					data_array
+					);
+
 		return result;
 	}
 
-	var::Vector<var::String>& data(){ return m_data; }
-	const var::Vector<var::String>& data() const { return m_data; }
+	var::Vector<var::JsonValue>& data(){ return m_data; }
+	const var::Vector<var::JsonValue>& data() const { return m_data; }
 
 
 private:
 	enum type m_type = type_string;
 	var::JsonObject m_properties;
-	var::Vector<var::String> m_data;
+	var::Vector<var::JsonValue> m_data;
 };
 
 class ChartJsData {
@@ -276,7 +266,8 @@ public:
 		type_bar,
 		type_doughnut,
 		type_pie,
-		type_radar
+		type_radar,
+		type_scatter
 	};
 
 	ChartJs& set_type(enum type value){

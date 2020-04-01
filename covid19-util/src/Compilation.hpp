@@ -11,16 +11,21 @@ public:
 	Compilation(
 			const Locale& locale,
 			const PopulationGroup& population_group,
-			const Covid19List& covid19) :
+			const Covid19List& covid19,
+			const Covid19FeatureGroup & feature_group) :
 		m_locale(locale),
 		m_population_group(population_group),
-		m_covid19(covid19)
+		m_covid19(covid19),
+		m_feature_group(feature_group)
 	{}
 
 	Compilation(const JsonObject & object) :
 		m_population_group(object.at("population").to_object()),
 		m_locale(object.at("locale").to_object()),
-		m_covid19(object.at("covid19").to_array()){
+		m_covid19(object.at("covid19").to_array()),
+		m_feature_group(m_covid19)
+	{
+
 	}
 
 	const PopulationGroup & population_group() const {
@@ -35,8 +40,13 @@ public:
 		return m_covid19;
 	}
 
+	const Covid19FeatureGroup& feature_group() const {
+		return m_feature_group;
+	}
+
 	static Vector<Compilation> load(const JsonArray & array){
 		Vector<Compilation> result;
+		result.reserve(array.count());
 		for(u32 i=0; i < array.count(); i++){
 			result.push_back(
 						Compilation(array.at(i).to_object())
@@ -67,6 +77,7 @@ private:
 	Locale m_locale;
 	PopulationGroup m_population_group;
 	Covid19List m_covid19;
+	Covid19FeatureGroup m_feature_group;
 
 };
 
@@ -75,9 +86,8 @@ public:
 
 	CompilationGroup(const JsonObject & object);
 	CompilationGroup(const JsonArray & json_array);
-	CompilationGroup(
-			const Compilation & parent,
-			const JsonArray & json_array
+	CompilationGroup(const Compilation & parent,
+			const Vector<Compilation>& compilation_array
 			);
 
 	const String& country() const {
@@ -181,10 +191,12 @@ private:
 	Vector<CompilationGroup> m_children;
 
 	void collect_children(
-			const JsonArray& compilation_array
+			const Vector<Compilation>& compilation_array
 			);
 
 	void build_parent_from_children();
+
+	static Vector<Compilation> m_master_compilation_list;
 
 };
 
