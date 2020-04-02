@@ -11,6 +11,8 @@ public:
 
 	}
 
+	ChartJsColor(const var::String & hex_code);
+
 	ChartJsColor& set_red(u8 value){
 		m_red = value;
 		return *this;
@@ -90,12 +92,35 @@ public:
 				.set_alpha(255);
 	}
 
+	static var::Vector<ChartJsColor> create_standard_palette(){
+		var::Vector<ChartJsColor> result = {
+			ChartJsColor("9BA4B2"),
+			ChartJsColor("F1D651"),
+			ChartJsColor("9F5D6B"),
+			ChartJsColor("343D68"),
+			ChartJsColor("94BFDE"),
+			ChartJsColor("AA3C55"),
+			ChartJsColor("255C35"),
+			ChartJsColor("AA9E9B"),
+			ChartJsColor("38323D"),
+			ChartJsColor("84817E"),
+			ChartJsColor("A19B9A"),
+			ChartJsColor("88BCAA"),
+			ChartJsColor("787FCC"),
+			ChartJsColor("2F6192"),
+			ChartJsColor("A2795B"),
+			ChartJsColor("2C1B2E")
+		};
+		return result;
+	}
 
 private:
 	u8 m_red = 0xff;
 	u8 m_green = 0xff;
 	u8 m_blue = 0xff;
 	u8 m_alpha = 0xff;
+
+
 };
 
 class ChartJsDataSet {
@@ -245,9 +270,38 @@ public:
 	static var::JsonObject create_axis(const var::String & type){
 		var::JsonObject result;
 		result.insert("display", var::JsonTrue());
-		result.insert("type", var::JsonString(type));
+		if( type.is_empty() == false ){
+			result.insert("type", var::JsonString(type));
+		}
 		return result;
 	}
+
+	static var::JsonObject create_scale_label(const var::String & label){
+		var::JsonObject result;
+		result.insert("display", var::JsonTrue());
+		result.insert("labelString", var::JsonString(label));
+		return result;
+	}
+
+	static var::JsonObject create_legend(bool is_display){
+		var::JsonObject result;
+		if( is_display ){
+			result.insert("display", var::JsonTrue());
+		} else {
+			result.insert("display", var::JsonFalse());
+		}
+		return result;
+	}
+
+	static var::JsonObject create_time(const var::String & unit, const var::String & format){
+		var::JsonObject result;
+		result.insert("unit", var::JsonString(unit));
+		var::JsonObject display_format;
+		display_format.insert(unit, var::JsonString(format));
+		result.insert("displayFormats", display_format);
+		return result;
+	}
+
 
 
 

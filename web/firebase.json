@@ -9,7 +9,7 @@
     "redirects": [
       {
         "source": "/",
-        "destination": "world_page",
+        "destination": "world/world",
         "type": 301
       }
     ]

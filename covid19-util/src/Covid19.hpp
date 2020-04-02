@@ -328,14 +328,14 @@ public:
 
 	Covid19FeatureGroup(const Covid19List & covid19){
 
-		PrinterObject guard(printer(), "FeatureGroup", Printer::level_trace);
+		PrinterObject guard(printer(), "FeatureGroup", Printer::level_debug);
 		PRINTER_TRACE(printer(), "calc growth rate");
 		Vector<Covid19Feature> growth_rate =
 				covid19.calculate_daily_percent_increase(2000.0f);
 
 		PRINTER_TRACE(printer(), "calc 10x growth");
-		for(u32 i=0; i < m_days_for_10x_growth.count(); i++){
-			auto & feature = m_days_for_10x_growth.at(i);
+		for(u32 i=0; i < m_daily_growth_rate_for_10x.count(); i++){
+			auto & feature = m_daily_growth_rate_for_10x.at(i);
 			feature = calculate_days_for_10x_growth(
 						covid19,
 						days_for_10x_growth_initial_value(i)
@@ -364,9 +364,9 @@ public:
 
 	Covid19FeatureGroup(const JsonObject & object){
 		{
-			JsonArray json_array = object.at("daysFor10xGrowth").to_array();
-			for(u32 i=0; i < json_array.count() && i < m_days_for_10x_growth.count(); i++){
-				m_days_for_10x_growth.at(i) = Covid19Feature(json_array.at(i).to_object());
+			JsonArray json_array = object.at("dailyGrowthRateFor10x").to_array();
+			for(u32 i=0; i < json_array.count() && i < m_daily_growth_rate_for_10x.count(); i++){
+				m_daily_growth_rate_for_10x.at(i) = Covid19Feature(json_array.at(i).to_object());
 			}
 		}
 
@@ -392,10 +392,10 @@ public:
 
 		{
 			JsonArray json_array;
-			for(const auto & feature: days_for_10x_growth()){
+			for(const auto & feature: daily_growth_rate_for_10x()){
 				json_array.append(feature.to_object());
 			}
-			result.insert("daysFor10xGrowth", json_array);
+			result.insert("dailyGrowthRateFor10x", json_array);
 		}
 
 		{
@@ -425,8 +425,8 @@ public:
 		return 0;
 	}
 
-	const Array<Covid19Feature, count_days_for_10x_growth>& days_for_10x_growth() const {
-		return m_days_for_10x_growth;
+	const Array<Covid19Feature, count_days_for_10x_growth>& daily_growth_rate_for_10x() const {
+		return m_daily_growth_rate_for_10x;
 	}
 
 	const Array<Covid19Feature, count_latest_average_growth_rate>& latest_average_growth_rate() const {
@@ -439,7 +439,7 @@ public:
 
 private:
 
-	Array<Covid19Feature, count_days_for_10x_growth> m_days_for_10x_growth;
+	Array<Covid19Feature, count_days_for_10x_growth> m_daily_growth_rate_for_10x;
 	Array<Covid19Feature, count_latest_average_growth_rate> m_latest_average_growth_rate;
 	Array<Covid19Feature, count_latest_growth_trend> m_latest_growth_trend;
 

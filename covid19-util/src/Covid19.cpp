@@ -37,6 +37,10 @@ float Covid19List::calculate_daily_percent_increase(
 		return 0.0f;
 	}
 
+	if( m_data.at(offset-1).metric(value) == 0 ){
+		return 0.0001f;
+	}
+
 	float result =
 			(m_data.at(offset).metric(value)*1.0f - m_data.at(offset-1).metric(value))
 			/ m_data.at(offset-1).metric(value);
@@ -129,7 +133,7 @@ Covid19Feature Covid19FeatureGroup::calculate_days_for_10x_growth(
 		u32 initial_value
 		){
 
-	auto calculate = [](
+	auto calculate = [this](
 			const Covid19List & covid19,
 			u32 value,
 			enum Covid19::metric_type type
@@ -148,7 +152,12 @@ Covid19Feature Covid19FeatureGroup::calculate_days_for_10x_growth(
 		}
 
 		if( stop_sample.is_valid() ){
-			return (stop_sample.timestamp_time() - start_sample.timestamp_time()).day();
+			u32 days = (stop_sample.timestamp_time() - start_sample.timestamp_time()).time() / (3600*24);
+
+			float result = powf(10.0f, 1.0f / days) - 1;
+			printer().debug("days = %d, growth = %0.2f", days, result);
+
+			return result;
 		}
 
 		return 0.0f;

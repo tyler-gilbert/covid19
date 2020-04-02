@@ -5,6 +5,31 @@ ChartJs::ChartJs()
 
 }
 
+ChartJsColor::ChartJsColor(const var::String & hex_code){
+
+	if( hex_code.length() != 6 ){
+		return;
+	}
+
+	m_red = hex_code
+			.create_sub_string(
+				var::String::Position(0),
+				var::String::Length(2))
+			.to_unsigned_long(var::String::base_16);
+
+	m_green = hex_code
+			.create_sub_string(
+				var::String::Position(2),
+				var::String::Length(2))
+			.to_unsigned_long(var::String::base_16);
+
+	m_blue = hex_code
+			.create_sub_string(
+				var::String::Position(4),
+				var::String::Length(2))
+			.to_unsigned_long(var::String::base_16);
+}
+
 
 var::String ChartJs::convert_type_to_string(enum type value){
 	switch(value){

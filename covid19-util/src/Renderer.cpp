@@ -226,13 +226,32 @@ void Renderer::process_compilation_group(
 
 		if( locale.country() == "US" ){
 			//scatter plot
+			group.children().sort(CompilationGroup::ascending_locales);
 			file_printer() << MarkdownPrinter::insert_newline;
-			MarkdownCode scatter_plot(file_printer(), "chart");
+
+			MarkdownHeader county_list(
+						file_printer(),
+						"Recent Growth"
+						);
+
 			file_printer() << MarkdownPrinter::insert_newline;
-			file_printer()
-					<< Plotter().create_growth_trend_latitude_population_density_bubble_plot(
-							 group
-							 );
+			{
+				MarkdownCode scatter_plot(file_printer(), "chart");
+				file_printer() << MarkdownPrinter::insert_newline;
+
+				file_printer() << MarkdownPrinter::insert_newline;
+				file_printer()
+						<< Plotter().create_growth_trend_bar_graph(group);
+				file_printer() << MarkdownPrinter::insert_newline;
+			}
+			file_printer() << MarkdownPrinter::insert_newline;
+			file_printer() <<
+												"The Recent Growth Chart Shows:\n"
+												" - X: Number of Confirmed Cases\n"
+												" - Y: After Growth Rate over the last 4 days\n"
+												" - Radius: Relative population size\n";
+			file_printer() << MarkdownPrinter::insert_newline;
+			file_printer() << "Growth rates need to be below 5 percent (shown in green) before cases will start to peak.";
 			file_printer() << MarkdownPrinter::insert_newline;
 
 		}

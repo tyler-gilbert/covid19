@@ -35,7 +35,11 @@ public:
 			const Covid19List& covid19_list
 			);
 
-	String create_growth_trend_latitude_population_density_bubble_plot(
+	String create_10x_growth_vs_density_vs_latitude_bubble_plot(
+			const CompilationGroup& compilation_group
+			);
+
+	String create_growth_trend_bar_graph(
 			const CompilationGroup& compilation_group
 			);
 

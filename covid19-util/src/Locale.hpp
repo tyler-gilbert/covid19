@@ -14,6 +14,11 @@ public:
 		m_latitude = object.at("latitude").to_string();
 		m_longitude = object.at("longitude").to_string();
 		m_land_area = object.at("landArea").to_float();
+		if( m_latitude == "null" ){
+			m_is_location_included = false;
+		} else {
+			m_is_location_included = true;
+		}
 	}
 
 	bool operator == (const Locale & locale) const {
@@ -98,15 +103,28 @@ public:
 	}
 
 	const var::String& latitude() const {
+		if( m_is_location_included == false && m_longitude == "null" ){
+			m_longitude = String::number(m_position_sum.at(0) / m_position_count);
+		}
 		return m_latitude;
 	}
 
 	const var::String& longitude() const {
+		if( m_is_location_included == false && m_longitude == "null" ){
+			m_longitude = String::number(m_position_sum.at(1) / m_position_count);
+		}
 		return m_longitude;
 	}
 
 	Locale& operator += (const Locale & a){
 		m_land_area += a.land_area();
+
+		if( m_is_location_included == false && a.latitude() != "null" ){
+				m_position_sum.at(0) = a.latitude().to_float();
+				m_position_sum.at(1) = a.longitude().to_float();
+				m_position_count++;
+		}
+
 		return *this;
 	}
 
@@ -184,9 +202,12 @@ private:
 	String m_county = "null";
 	String m_country = "null";
 	String m_state = "null";
-	String m_latitude	= "null";
-	String m_longitude	= "null";
+	mutable String m_latitude	= "null";
+	mutable String m_longitude	= "null";
 	float m_land_area = 1.0f;
+	bool m_is_location_included;
+	Array<float, 2> m_position_sum;
+	u32 m_position_count;
 
 	String deabbreviate_state(const String & abbr);
 	String deabbreviate_country(const String & abbr);

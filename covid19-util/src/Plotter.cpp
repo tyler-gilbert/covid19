@@ -37,6 +37,9 @@ String Plotter::create_population_histogram_by_age(
 	}
 
 	chart.data().append(data_set);
+	chart.options()
+			.set_property("legend", ChartJsOptions::create_legend(false));
+
 	return JsonDocument().stringify(chart.to_object());
 }
 
@@ -118,15 +121,19 @@ String Plotter::create_covid19_history_plot(
 
 	JsonObject x_axis_object = ChartJsOptions::create_axis("time");
 	x_axis_object.insert("distribution", JsonString("linear"));
+	x_axis_object.insert("time", ChartJsOptions::create_time("day", "YYYY-MM-DD"));
+
+	JsonObject y_axis_object = ChartJsOptions::create_axis("logarithmic");
+	y_axis_object.insert("scaleLabel", ChartJsOptions::create_scale_label("Confirmed / Deaths (Log Scale)"));
+
 
 	chart.options()
-			//.set_x_axis(x_axis_object)
-			.set_y_axis(
-				ChartJsOptions::create_axis("logarithmic")
-				)
+			.set_x_axis(x_axis_object)
+			.set_property("legend", ChartJsOptions::create_legend(false))
+			.set_y_axis(y_axis_object)
 			.set_property(
 				"title",
-				ChartJsOptions::create_title("COVID19 Cases (Log Scale)")
+				ChartJsOptions::create_title("COVID19 Cases")
 				);
 
 	chart.data()
@@ -219,15 +226,23 @@ String Plotter::create_covid19_daily_increase(
 	chart.data().append(data_sets.at(0));
 	chart.data().append(data_sets.at(1));
 
-	JsonObject y_axis = ChartJsOptions::create_axis("linear");
+
+	JsonObject x_axis_object = ChartJsOptions::create_axis("time");
+	x_axis_object.insert("distribution", JsonString("linear"));
+	x_axis_object.insert("time", ChartJsOptions::create_time("day", "YYYY-MM-DD"));
+
+	JsonObject y_axis_object = ChartJsOptions::create_axis("linear");
+	y_axis_object.insert("scaleLabel", ChartJsOptions::create_scale_label("Percent Daily Increase (Lower is Better)"));
+
 	JsonObject ticks;
 	ticks.insert("min", JsonInteger(0));
 	ticks.insert("max", JsonInteger(25.0f));
-	y_axis.insert("ticks", ticks);
+	y_axis_object.insert("ticks", ticks);
 
 
 	chart.options()
-			.set_y_axis(y_axis)
+			.set_x_axis(x_axis_object)
+			.set_y_axis(y_axis_object)
 			.set_property(
 				"title",
 				ChartJsOptions::create_title("Percent Daily Increase (Capped at 24%)")
@@ -325,14 +340,22 @@ String Plotter::create_covid19_days_to_double(
 	chart.data().append(data_sets.at(0));
 	chart.data().append(data_sets.at(1));
 
-	JsonObject y_axis = ChartJsOptions::create_axis("linear");
+
+	JsonObject x_axis_object = ChartJsOptions::create_axis("time");
+	x_axis_object.insert("distribution", JsonString("linear"));
+	x_axis_object.insert("time", ChartJsOptions::create_time("day", "YYYY-MM-DD"));
+
+	JsonObject y_axis_object = ChartJsOptions::create_axis("linear");
+	y_axis_object.insert("scaleLabel", ChartJsOptions::create_scale_label("Days (Higher is Better)"));
+
 	JsonObject ticks;
 	ticks.insert("min", JsonInteger(0));
 	ticks.insert("max", JsonInteger(25));
-	y_axis.insert("ticks", ticks);
+	y_axis_object.insert("ticks", ticks);
 
 	chart.options()
-			.set_y_axis(y_axis)
+			.set_y_axis(x_axis_object)
+			.set_y_axis(y_axis_object)
 			.set_property(
 				"title",
 				ChartJsOptions::create_title("Days to Double (Capped at 24 Days)")
@@ -341,27 +364,14 @@ String Plotter::create_covid19_days_to_double(
 	return JsonDocument().stringify(chart.to_object());
 }
 
-String Plotter::create_growth_trend_latitude_population_density_bubble_plot(
+String Plotter::create_10x_growth_vs_density_vs_latitude_bubble_plot(
 		const CompilationGroup& compilation_group
 		){
 	ChartJs chart;
-	chart.set_type(ChartJs::type_scatter);
+	chart.set_type(ChartJs::type_line);
 
 	ChartJsDataSet growth_trend_scatter;
-
-	growth_trend_scatter.set_property("label", JsonString("Growth Trend"));
-	growth_trend_scatter.set_property(
-				"backgroundColor",
-				JsonString( ChartJsColor::create_transparent()
-										.to_string() )
-				);
-
-	growth_trend_scatter.set_property(
-				"borderColor",
-				JsonString( ChartJsColor::create_blue().to_string() )
-				);
-
-
+	Vector<ChartJsColor> color_list = ChartJsColor::create_standard_palette();
 	Vector<ChartJsDataSet> data_set_list;
 
 	Vector<float> point_sizes;
@@ -382,67 +392,166 @@ String Plotter::create_growth_trend_latitude_population_density_bubble_plot(
 			data_object.insert("y", JsonReal(group.parent().locale().latitude().to_float()));
 
 			float point_size =
-					group.parent().covid19().data().back().confirmed() * 1.0f /
-					(group.parent().population_group().cummulative().total()*1.0f / 100000.0f) + 0.5f;
+					group.parent().feature_group().daily_growth_rate_for_10x().at(5).confirmed() * 100.0f;
+
+			if( point_size > 100.0f ){
+				point_size = 100.0f;
+			}
 
 			point_sizes.push_back(
 						point_size
 						);
-			labels.push_back(group.parent().locale().description());
+			labels.push_back(group.parent().locale().description() + " - " + String::number(point_size, "%0.2f"));
 			background_colors.push_back(point_background_color);
-			growth_trend_scatter.data().push_back(data_object);
 
 			ChartJsDataSet data_set = ChartJsDataSet()
-					.set_property("label", JsonString(group.parent().locale().description()))
+					.set_property("label", JsonString(
+													group.parent().locale().description() + " - " + String::number(point_size, "%0.2f")
+													)
+												)
 					.set_property("pointRadius", JsonReal(point_size))
 					.set_property("pointHoverRadius", JsonReal(point_size))
 					.set_property(
 						"borderColor",
-						JsonString( ChartJsColor::create_blue().to_string() )
+						JsonString(
+							color_list.at(count % color_list.count()).to_string()
+							)
 						)
 					.set_property(
-									"backgroundColor",
-									JsonString( ChartJsColor::create_transparent()
-															.to_string() )
-									);
+						"backgroundColor",
+						JsonString(
+							color_list.at(count % color_list.count()).set_alpha(64).to_string()
+							)
+						);
 
 			data_set.data().push_back(data_object);
 			data_set_list.push_back(
 						data_set
 						);
+			count++;
+			if( count == 25 ){
+				break;
+			}
 
 		}
-		count++;
-		if( count == 10){
-			break;
-		}
+
 	}
-
-	growth_trend_scatter.set_property("pointBackgroundColor", JsonArray(background_colors));
-	growth_trend_scatter.set_property("pointRadius", JsonArray(point_sizes));
-	growth_trend_scatter.set_property("pointHoverRadius", JsonArray(point_sizes));
-	//growth_trend_scatter.set_property("label", JsonArray(labels));
 
 	JsonObject x_axis_object = ChartJsOptions::create_axis("logarithmic");
 	x_axis_object.insert("position", JsonString("bottom"));
-	x_axis_object.insert("labelString", JsonString("People / Square Mile (Log Scale)"));
-
+	x_axis_object.insert("scaleLabel", ChartJsOptions::create_scale_label("People / Square Mile (Log Scale)"));
 
 	JsonObject y_axis_object = ChartJsOptions::create_axis("linear");
-	y_axis_object.insert("labelString", JsonString("Latitude (degrees)"));
+	y_axis_object.insert("scaleLabel", ChartJsOptions::create_scale_label("Latitude (degrees)"));
 
 	chart.options()
+			.set_property("legend", ChartJsOptions::create_legend(false))
 			.set_x_axis(x_axis_object)
 			.set_y_axis(y_axis_object)
 			.set_property(
 				"title",
-				ChartJsOptions::create_title("Growth Trend Scatter Plot")
+				ChartJsOptions::create_title("Days from 10 to 100 Cases")
 				);
 
 	for(const auto & data_set: data_set_list){
 		chart.data().append(data_set);
 	}
-	//chart.data().append(growth_trend_scatter);
+
+	return JsonDocument().stringify(chart.to_object());
+}
+
+String Plotter::create_growth_trend_bar_graph(
+		const CompilationGroup& compilation_group
+		){
+
+	ChartJs chart;
+	chart.set_type(ChartJs::type_line);
+
+
+	Vector<ChartJsColor> color_list = ChartJsColor::create_standard_palette();
+	Vector<ChartJsDataSet> data_set_list;
+
+	const u32 cummulative_population = compilation_group.parent().population_group().cummulative().total();
+
+	for(const CompilationGroup & group: compilation_group.children()){
+
+		float rate = group.parent().feature_group().latest_average_growth_rate().at(5).confirmed() * 100.0f;
+		if( rate > 24.0f ){
+			rate = 24.0f;
+		}
+
+		if( rate > 0.01f ){
+			ChartJsDataSet confirmed_data_set;
+			ChartJsColor background_color;
+			if( rate < 5.0f ){
+				background_color = ChartJsColor::create_green();
+			} else {
+				background_color = ChartJsColor::create_red();
+			}
+
+			JsonObject data_object;
+			data_object.insert("x", JsonReal(group.parent().covid19().data().back().confirmed()));
+			data_object.insert("y", JsonReal(rate));
+
+
+			float point_size;
+			if( cummulative_population > 0 ){
+				point_size = group.parent().population_group().cummulative().total() *1.0f / cummulative_population * 100.0f;
+				if( point_size < 2.0f ){
+					point_size = 2.0f;
+				}
+			} else {
+				point_size = 10.0f;
+			}
+
+			confirmed_data_set.set_property("label", JsonString(group.parent().locale().description()))
+					.set_property("pointRadius", JsonReal(point_size))
+					.set_property("pointHoverRadius", JsonReal(point_size))
+					.set_property(
+						"barThickness",
+						JsonInteger(
+							16
+							)
+						)
+					.set_property(
+						"borderColor",
+						JsonString(
+							background_color.to_string()
+							)
+						)
+					.set_property(
+						"backgroundColor",
+						JsonString(
+							background_color.set_alpha(64).to_string()
+							)
+						);
+
+			confirmed_data_set.data().push_back(data_object);
+
+			data_set_list.push_back(confirmed_data_set);
+		}
+	}
+
+	JsonObject x_axis_object = ChartJsOptions::create_axis("logarithmic");
+	x_axis_object.insert("position", JsonString("bottom"));
+	x_axis_object.insert("scaleLabel", ChartJsOptions::create_scale_label("Number of Confirmed Cases (Log Scale)"));
+
+	JsonObject y_axis_object = ChartJsOptions::create_axis("linear");
+	y_axis_object.insert("scaleLabel", ChartJsOptions::create_scale_label("Growth Rate (Lower is Better)"));
+
+	JsonObject ticks;
+	ticks.insert("min", JsonInteger(0));
+	ticks.insert("max", JsonInteger(25.0f));
+	y_axis_object.insert("ticks", ticks);
+
+	for(const auto & data_set: data_set_list){
+		chart.data().append(data_set);
+	}
+
+	chart.options()
+			.set_property("legend", ChartJsOptions::create_legend(false))
+			.set_x_axis(x_axis_object)
+			.set_y_axis(y_axis_object);
 
 	return JsonDocument().stringify(chart.to_object());
 }

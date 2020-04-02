@@ -106,13 +106,19 @@ void Importer::create_compilation_output(){
 	String compilation_file_path =
 			m_intermediate_directory_path + "/compilation.json";
 
+#if 0
 	if( File::exists(compilation_file_path) == true ){
-	//if( 0 ){
+#else
+	if( 0 ){
+#endif
 		m_compilation_array = JsonDocument().load(
 					JsonDocument::FilePath(compilation_file_path)
 					).to_array();
 	} else {
-		PrinterObject compliation_guard(printer(), "creating compiliation");
+		PrinterObject compilation_guard(
+					printer(),
+					"creating compiliation"
+					);
 		//builds a list of all unique locales
 		Vector<Locale> locale_list = build_locale_list();
 		Vector<String> country_list = build_country_list();
@@ -207,11 +213,13 @@ void Importer::create_compilation_output(){
 		}
 
 
+#if 1
 		printer().info("saving compiliation");
 		JsonDocument().save(
 					m_compilation_array,
 					JsonDocument::FilePath(m_intermediate_directory_path + "/compilation.json")
 					);
+#endif
 	}
 
 }
@@ -574,13 +582,16 @@ void Importer::process_covid19_daily_report(
 				locale_data.append(covid19.to_object());
 				locale_object.insert("locale", locale.to_object());
 				locale_object.insert("covid19", locale_data);
-
 				m_covid19_array.append(locale_object);
+
 			} else {
 				if( (latitude != "null") &&
-						(locale_object.at("locale").to_object().at("latitude").to_string() == "null") ){
+						(locale_object.at("locale").to_object().at("latitude").to_string() == "null")
+						){
+
 					locale_object.at("locale").to_object().insert("latitude", JsonString(latitude));
 					locale_object.at("locale").to_object().insert("longitude", JsonString(longitude));
+
 				}
 				locale_object.at("covid19").to_array().append(covid19.to_object());
 			}
@@ -699,6 +710,9 @@ Vector<Locale> Importer::build_locale_list() const{
 								 (result.at(offset).latitude() == "null") ){
 				result.at(offset) = locale;
 			}
+
+
+
 		}
 
 	}
