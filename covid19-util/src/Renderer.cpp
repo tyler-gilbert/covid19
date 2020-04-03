@@ -260,7 +260,7 @@ void Renderer::process_compilation_group(
 				file_printer() << " - X: Number of Deaths\n";
 			}
 			file_printer() <<
-												" - Y: After Growth Rate over the last 4 days\n"
+												" - Y: Average Growth Rate\n"
 												" - Tails: Historical Growth Rate\n";
 
 
