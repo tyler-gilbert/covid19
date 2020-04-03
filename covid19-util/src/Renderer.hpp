@@ -8,7 +8,7 @@
 
 class MarkdownFilePrinter : public MarkdownPrinter {
 public:
-	MarkdownFilePrinter(File & file) : m_file(file), m_buffer(1024*100){}
+	MarkdownFilePrinter(File & file) : m_file(file), m_buffer(1024*1024){}
 
 	void print_final(const char * fmt, ...){
 		va_list list;

@@ -31,7 +31,7 @@ public:
 			const Covid19List& covid19_list
 			);
 
-	String create_covid19_daily_increase(
+	String create_covid19_daily_growth_rate(
 			const Covid19List& covid19_list
 			);
 
@@ -39,8 +39,9 @@ public:
 			const CompilationGroup& compilation_group
 			);
 
-	String create_growth_trend_bar_graph(
-			const CompilationGroup& compilation_group
+	String create_growth_trend_bubble_chart(
+			const CompilationGroup& compilation_group,
+			enum Covid19::metric_type metric_type
 			);
 
 };

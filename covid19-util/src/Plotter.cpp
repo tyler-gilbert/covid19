@@ -104,9 +104,9 @@ String Plotter::create_covid19_history_plot(
 				JsonString( ChartJsColor::create_black().to_string() )
 				);
 
-	for(const auto & covid19: covid19_list.data()){
+	for(const auto & covid19: covid19_list.data_smoothed()){
 		chart.data().labels().push_back(
-					covid19.timestamp().split(" ").at(0)
+					covid19.timestamp_string()
 					);
 
 
@@ -143,32 +143,32 @@ String Plotter::create_covid19_history_plot(
 	return JsonDocument().stringify(chart.to_object());
 }
 
-String Plotter::create_covid19_daily_increase(
+String Plotter::create_covid19_daily_growth_rate(
 		const Covid19List& covid19_list
 		){
 	ChartJs chart;
 	chart.set_type(ChartJs::type_line);
 
 
-	Vector<Covid19Feature> daily_increase =
-			covid19_list.calculate_daily_percent_increase(0.24f);
+	Vector<Covid19Float> daily_increase =
+			covid19_list.calculate_daily_growth_rate(1, 0.24f);
 
 	Array<ChartJsDataSet, 3> data_sets;
 
 	data_sets.at(0)
-			.set_property("label", JsonString(Covid19Feature::name_at(0)))
+			.set_property("label", JsonString(Covid19Float::name_at(0)))
 			.set_property("lineTension", JsonInteger(0))
 			.set_property("backgroundColor", JsonString(ChartJsColor::create_transparent().to_string()))
 			.set_property("borderColor", JsonString(ChartJsColor::create_blue().to_string()));
 
 	data_sets.at(1)
-			.set_property("label", JsonString(Covid19Feature::name_at(1)))
+			.set_property("label", JsonString(Covid19Float::name_at(1) + "Growth Rate"))
 			.set_property("lineTension", JsonInteger(0))
 			.set_property("backgroundColor", JsonString(ChartJsColor::create_transparent().to_string()))
 			.set_property("borderColor", JsonString(ChartJsColor::create_black().to_string()));
 
 	data_sets.at(2)
-			.set_property("label", JsonString(Covid19Feature::name_at(2)))
+			.set_property("label", JsonString(Covid19Float::name_at(2) + "Growth Rate"))
 			.set_property("lineTension", JsonInteger(0))
 			.set_property("backgroundColor", JsonString(ChartJsColor::create_transparent().to_string()))
 			.set_property("borderColor", JsonString(ChartJsColor::create_green().to_string()));
@@ -202,12 +202,13 @@ String Plotter::create_covid19_daily_increase(
 	for(u32 i=0; i < covid19_list.data().count(); i++){
 
 		chart.data().labels().push_back(
-					covid19_list.data().at(i).timestamp()
+					covid19_list.data().at(i).timestamp_string()
 					);
 
 		for(u32 j=0; j < data_sets.count(); j++){
+			float value = daily_increase.at(i).at(j)*100.0f;
 			data_sets.at(j).data().push_back(
-						JsonReal(daily_increase.at(i).at(j)*100.0f)
+						JsonReal(value)
 						);
 		}
 
@@ -260,25 +261,25 @@ String Plotter::create_covid19_days_to_double(
 	ChartJsDataSet data_set;
 	data_set.set_property("label", JsonString("Days to Double"));
 
-	Vector<Covid19Feature> days_to_double =
+	Vector<Covid19Float> days_to_double =
 			covid19_list.calculate_increment_period(2.0f, 5.0f);
 
 	Array<ChartJsDataSet, 3> data_sets;
 
 	data_sets.at(0)
-			.set_property("label", JsonString(Covid19Feature::name_at(0)))
+			.set_property("label", JsonString(Covid19Float::name_at(0)))
 			.set_property("lineTension", JsonInteger(0))
 			.set_property("backgroundColor", JsonString(ChartJsColor::create_transparent().to_string()))
 			.set_property("borderColor", JsonString(ChartJsColor::create_blue().to_string()));
 
 	data_sets.at(1)
-			.set_property("label", JsonString(Covid19Feature::name_at(1)))
+			.set_property("label", JsonString(Covid19Float::name_at(1)))
 			.set_property("lineTension", JsonInteger(0))
 			.set_property("backgroundColor", JsonString(ChartJsColor::create_transparent().to_string()))
 			.set_property("borderColor", JsonString(ChartJsColor::create_black().to_string()));
 
 	data_sets.at(2)
-			.set_property("label", JsonString(Covid19Feature::name_at(2)))
+			.set_property("label", JsonString(Covid19Float::name_at(2)))
 			.set_property("lineTension", JsonInteger(0))
 			.set_property("backgroundColor", JsonString(ChartJsColor::create_transparent().to_string()))
 			.set_property("borderColor", JsonString(ChartJsColor::create_green().to_string()));
@@ -311,7 +312,7 @@ String Plotter::create_covid19_days_to_double(
 	for(u32 i=0; i < covid19_list.data().count(); i++){
 
 		chart.data().labels().push_back(
-					covid19_list.data().at(i).timestamp().split(" ").at(0)
+					covid19_list.data().at(i).timestamp_string().split(" ").at(0)
 					);
 
 		for(u32 j=0; j < data_sets.count(); j++){
@@ -460,75 +461,116 @@ String Plotter::create_10x_growth_vs_density_vs_latitude_bubble_plot(
 	return JsonDocument().stringify(chart.to_object());
 }
 
-String Plotter::create_growth_trend_bar_graph(
-		const CompilationGroup& compilation_group
+String Plotter::create_growth_trend_bubble_chart(
+		const CompilationGroup& compilation_group,
+		enum Covid19::metric_type metric_type
 		){
 
 	ChartJs chart;
 	chart.set_type(ChartJs::type_line);
 
-
 	Vector<ChartJsColor> color_list = ChartJsColor::create_standard_palette();
 	Vector<ChartJsDataSet> data_set_list;
+	ChartJsColor transparent_color =
+			ChartJsColor::create_transparent();
 
 	const u32 cummulative_population = compilation_group.parent().population_group().cummulative().total();
 
+	u32 count = 0;
 	for(const CompilationGroup & group: compilation_group.children()){
 
-		float rate = group.parent().feature_group().latest_average_growth_rate().at(5).confirmed() * 100.0f;
-		if( rate > 24.0f ){
-			rate = 24.0f;
-		}
+		if( group.parent().covid19().data().count() &&
+				group.parent().covid19().total(metric_type) > 20 ){
+			Vector<Covid19Float> daily_growth =
+					group.parent().covid19().calculate_daily_growth_rate(10, 0.24f);
 
-		if( rate > 0.01f ){
-			ChartJsDataSet confirmed_data_set;
-			ChartJsColor background_color;
-			if( rate < 5.0f ){
-				background_color = ChartJsColor::create_green();
-			} else {
-				background_color = ChartJsColor::create_red();
-			}
+			if( daily_growth.count() > 1 ){
+				float rate = daily_growth.back().metric(metric_type)*100.0f;
+				if( rate > 0.01f ){
 
-			JsonObject data_object;
-			data_object.insert("x", JsonReal(group.parent().covid19().data().back().confirmed()));
-			data_object.insert("y", JsonReal(rate));
+					ChartJsColor background_color;
+					if( rate < 5.0f ){
+						background_color = ChartJsColor::create_green();
+					} else {
+						background_color = ChartJsColor::create_red();
+					}
+
+					ChartJsDataSet trend_data_set;
+					for(u32 i=1; i < daily_growth.count(); i++){
+						if( group.parent().covid19().data().at(i).metric(metric_type) > 20 ){
+							JsonObject data_object;
+							data_object.insert(
+										"x",
+										JsonReal(group.parent().covid19().data().at(i).metric(metric_type))
+										);
+							data_object.insert("y", JsonReal(
+																	 daily_growth.at(i).metric(metric_type)*100.0f)
+																 );
+							trend_data_set.append(data_object);
+						}
+					}
+
+					trend_data_set
+							.set_property("label", JsonString(group.parent().locale().description()))
+							.set_property("pointRadius", JsonReal(0))
+							.set_property("pointHoverRadius", JsonReal(0))
+							.set_property(
+								"borderColor",
+								JsonString(
+									color_list.at(count % color_list.count())
+									.set_alpha(64)
+									.to_string()
+									)
+								)
+							.set_property(
+								"backgroundColor",
+								JsonString(
+									transparent_color.to_string()
+									)
+								);
 
 
-			float point_size;
-			if( cummulative_population > 0 ){
-				point_size = group.parent().population_group().cummulative().total() *1.0f / cummulative_population * 100.0f;
-				if( point_size < 2.0f ){
-					point_size = 2.0f;
+					ChartJsDataSet end_data_set;
+
+					JsonObject data_object;
+					data_object.insert("x", JsonReal(group.parent().covid19().data().back().metric(metric_type)));
+					data_object.insert("y", JsonReal(rate));
+
+
+					float point_size;
+					if( compilation_group.parent().locale().is_world() == false ){
+						point_size = group.parent().population_group().cummulative().total() *1.0f / cummulative_population * 100.0f;
+						if( point_size < 2.0f ){
+							point_size = 2.0f;
+						}
+					} else {
+						point_size = 10.0f;
+					}
+
+					end_data_set
+							.set_property("label", JsonString(group.parent().locale().description()))
+							.set_property("pointRadius", JsonReal(point_size))
+							.set_property("pointHoverRadius", JsonReal(point_size))
+							.set_property(
+								"borderColor",
+								JsonString(
+									background_color.to_string()
+									)
+								)
+							.set_property(
+								"backgroundColor",
+								JsonString(
+									background_color.set_alpha(64).to_string()
+									)
+								);
+
+					end_data_set.data().push_back(data_object);
+
+					data_set_list.push_back(end_data_set);
+					data_set_list.push_back(trend_data_set);
+					count++;
 				}
-			} else {
-				point_size = 10.0f;
 			}
-
-			confirmed_data_set.set_property("label", JsonString(group.parent().locale().description()))
-					.set_property("pointRadius", JsonReal(point_size))
-					.set_property("pointHoverRadius", JsonReal(point_size))
-					.set_property(
-						"barThickness",
-						JsonInteger(
-							16
-							)
-						)
-					.set_property(
-						"borderColor",
-						JsonString(
-							background_color.to_string()
-							)
-						)
-					.set_property(
-						"backgroundColor",
-						JsonString(
-							background_color.set_alpha(64).to_string()
-							)
-						);
-
-			confirmed_data_set.data().push_back(data_object);
-
-			data_set_list.push_back(confirmed_data_set);
 		}
 	}
 
@@ -539,10 +581,18 @@ String Plotter::create_growth_trend_bar_graph(
 	JsonObject y_axis_object = ChartJsOptions::create_axis("linear");
 	y_axis_object.insert("scaleLabel", ChartJsOptions::create_scale_label("Growth Rate (Lower is Better)"));
 
-	JsonObject ticks;
-	ticks.insert("min", JsonInteger(0));
-	ticks.insert("max", JsonInteger(25.0f));
-	y_axis_object.insert("ticks", ticks);
+	{
+		JsonObject ticks;
+		ticks.insert("min", JsonInteger(0));
+		ticks.insert("max", JsonInteger(25.0f));
+		y_axis_object.insert("ticks", ticks);
+	}
+
+	{
+		JsonObject ticks;
+		ticks.insert("min", JsonInteger(20));
+		x_axis_object.insert("ticks", ticks);
+	}
 
 	for(const auto & data_set: data_set_list){
 		chart.data().append(data_set);

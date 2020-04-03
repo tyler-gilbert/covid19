@@ -224,9 +224,8 @@ void Renderer::process_compilation_group(
 		}
 
 
-		if( locale.country() == "US" ){
+		if( (locale.country() == "US") || locale.is_world() ){
 			//scatter plot
-			group.children().sort(CompilationGroup::ascending_locales);
 			file_printer() << MarkdownPrinter::insert_newline;
 
 			MarkdownHeader county_list(
@@ -240,16 +239,31 @@ void Renderer::process_compilation_group(
 				file_printer() << MarkdownPrinter::insert_newline;
 
 				file_printer() << MarkdownPrinter::insert_newline;
+				enum Covid19::metric_type metric = Covid19::metric_type_confirmed;
+				if( locale.is_world() ){
+					metric = Covid19::metric_type_deaths;
+				}
+
+
 				file_printer()
-						<< Plotter().create_growth_trend_bar_graph(group);
+						<< Plotter().create_growth_trend_bubble_chart(group, metric);
 				file_printer() << MarkdownPrinter::insert_newline;
 			}
 			file_printer() << MarkdownPrinter::insert_newline;
 			file_printer() <<
-												"The Recent Growth Chart Shows:\n"
-												" - X: Number of Confirmed Cases\n"
+												"The Recent Growth Chart Shows:\n";
+
+			if( locale.is_world() == false ){
+				file_printer() << " - Radius: Relative population size\n"
+													" - X: Number of Confirmed Cases\n";
+			} else {
+				file_printer() << " - X: Number of Deaths\n";
+			}
+			file_printer() <<
 												" - Y: After Growth Rate over the last 4 days\n"
-												" - Radius: Relative population size\n";
+												" - Tails: Historical Growth Rate\n";
+
+
 			file_printer() << MarkdownPrinter::insert_newline;
 			file_printer() << "Growth rates need to be below 5 percent (shown in green) before cases will start to peak.";
 			file_printer() << MarkdownPrinter::insert_newline;
@@ -377,7 +391,7 @@ void Renderer::process_compilation(
 				//daily percent increase
 				file_printer() << MarkdownPrinter::insert_newline;
 				MarkdownCode covid19_chart(file_printer(), "chart");
-				file_printer() << Plotter().create_covid19_daily_increase(
+				file_printer() << Plotter().create_covid19_daily_growth_rate(
 														compilation.covid19()
 														);
 			}
@@ -391,6 +405,7 @@ void Renderer::process_compilation(
 													"to stop the disease from spreading.";
 			}
 
+#if 0
 			{
 				//days to double
 				file_printer() << MarkdownPrinter::insert_newline;
@@ -399,6 +414,7 @@ void Renderer::process_compilation(
 														compilation.covid19()
 														);
 			}
+#endif
 
 			if( is_show_notes ){
 				file_printer() << MarkdownPrinter::insert_newline;
