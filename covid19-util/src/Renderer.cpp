@@ -1,6 +1,7 @@
 #include "Renderer.hpp"
 #include "Compilation.hpp"
 #include "Plotter.hpp"
+#include "Factbook.hpp"
 
 Renderer::Renderer() : m_file_printer(m_output_file){
 
@@ -40,6 +41,15 @@ void Renderer::load_options(){
 }
 
 void Renderer::process_world(){
+	PrinterObject pg(printer(), "Process World");
+	printer().debug("Load world factbook");
+	m_world_factbook = WorldFactbook(
+				JsonDocument().load(
+					JsonDocument::FilePath("data/intermediate/factbook.json")
+					).to_array()
+				);
+
+	printer().debug("Load world compilation");
 	CompilationGroup world(
 				JsonDocument().load(
 					JsonDocument::FilePath(m_input_file)
@@ -47,7 +57,6 @@ void Renderer::process_world(){
 				);
 
 	process_compilation_group(world);
-
 }
 
 
@@ -304,41 +313,71 @@ void Renderer::process_compilation_group(
 void Renderer::process_compilation(
 		const Compilation& compilation,
 		bool is_show_notes){
-	if( compilation.locale().country() == "US" ){
+
+	printer().debug("get factbook for " + compilation.locale().country());
+	const Factbook& factbook =
+			world_factbook().factbook(compilation.locale().country());
+
+	if( (compilation.locale().country() == "US") ||
+			compilation.locale().is_country()
+			){
 		file_printer() << MarkdownPrinter::insert_newline;
 		MarkdownHeader demographics_header(file_printer(), "Demographics");
 
-		if( compilation.population_group().calculate_average_age() < 5.0f ){
-			file_printer() << "Demographics Unavailable";
+		bool is_population_group_available = compilation.population_group().calculate_average_age() > 5.0f;
+
+		float population_density = 0.0f;
+		u32 population = 0;
+		String population_density_units;
+
+		PRINTER_TRACE(printer(), "calculate demographic indicators");
+		if( factbook.is_valid() ){
+			population_density = factbook.calculate_population_density();
+			population = factbook.population();
+			population_density_units = "people per square kilometer";
 		} else {
-			{
-				//average age
-				MarkdownList details_list(file_printer(), MarkdownPrinter::list_unordered);
+			population_density = compilation.calculate_population_density();
+			population = compilation.population_group().cummulative().total();
+			population_density_units = "people per square mile";
+		}
 
-				String total_population;
-				if( compilation.population_group().cummulative().total() > 1000000 ){
-					total_population = String().format("%0.1f",
-																						 compilation.population_group().cummulative().total() *1.0f / 1000000.0f
-																						 ) + " million";
-				} else if( compilation.population_group().cummulative().total() > 1000 ){
-					total_population = String::number(
-								compilation.population_group().cummulative().total() / 1000
-								) + " thousand";
-				}
 
-				file_printer() << String(
-														"Total Population: " + total_population
-														);
+		{
+			//average age
+			MarkdownList details_list(file_printer(), MarkdownPrinter::list_unordered);
 
-				file_printer() << String().format(
-														"Average Age: %0.2f years old",
-														compilation.population_group().calculate_average_age()
-														);
+			String total_population;
 
-				file_printer() << String().format(
-														"Population Density: %0.2f people per square mile",
-														compilation.calculate_population_density()
-														);
+			if( population > 1000000 ){
+				total_population =
+						String().format(
+							"%0.1f",
+							population *1.0f / 1000000.0f
+							) + " million";
+
+			} else if( population > 1000 ){
+				total_population =
+						String::number(
+							population / 1000
+							) + " thousand";
+			}
+
+			file_printer() << String(
+													"Total Population: " + total_population
+													);
+
+			file_printer() << (String().format(
+													"Population Density: %0.2f ",
+													population_density
+													) + population_density_units);
+			}
+
+			if( is_population_group_available ){
+				if( is_population_group_available ){
+					file_printer() << String().format(
+															"Average Age: %0.2f years old",
+															compilation.population_group().calculate_average_age()
+															);
 
 				file_printer() << String().format(
 														"Males vs Females: %0.2f:%0.2f",
@@ -346,17 +385,18 @@ void Renderer::process_compilation(
 														compilation.population_group().cummulative().female_ratio() * 100.0f
 														);
 			}
-
-			{
-				//population histogram
-				file_printer() << MarkdownPrinter::insert_newline;
-				MarkdownCode age_histogram(file_printer(), "chart");
-				file_printer() << Plotter().create_population_histogram_by_age(
-														compilation.population_group()
-														);
-			}
-
 		}
+
+		if( is_population_group_available ){
+			//population histogram
+			file_printer() << MarkdownPrinter::insert_newline;
+			MarkdownCode age_histogram(file_printer(), "chart");
+			file_printer() << Plotter().create_population_histogram_by_age(
+													compilation.population_group()
+													);
+		}
+
+
 
 	}
 

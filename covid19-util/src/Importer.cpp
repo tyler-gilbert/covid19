@@ -66,8 +66,11 @@ void Importer::execute(){
 					).to_array();
 	}
 
-	create_compilation_output();
-	create_world_output();
+
+	process_factbook();
+
+	//create_compilation_output();
+	//create_world_output();
 
 }
 
@@ -241,6 +244,142 @@ bool Importer::is_filter_covid19(const Locale & locale) const {
 		if( locale.state() == "null" ){ return true; }
 	}
 	return false;
+}
+
+void Importer::process_factbook(){
+	String directory_path = "data/factbook.csv";
+	//import
+
+	PrinterObject pg(printer(), "Process Factbook");
+
+	printer().info("load categories");
+	Vector<FactbookCategory> category_list =
+			load_factbook_categories(directory_path + "/categories.csv");
+	printer().info("loaded %d categories", category_list.count());
+
+	printer().info("load values");
+	Vector<FactbookValue> value_list;
+	value_list.reserve(
+				category_list.count() * 300
+				);
+
+	for(const FactbookCategory & category: category_list){
+		String file_path =
+				directory_path + "/data/c" + category.number() + ".csv";
+		Vector<FactbookValue> category_value_list = load_factbook_values(
+					category.category(),
+					category.name(),
+					file_path
+					);
+
+		printer().debug(
+					"loaded %d values from %s",
+					category_value_list.count(),
+					file_path.cstring()
+					);
+
+		value_list << category_value_list;
+	}
+
+	printer().info("loaded %d total values", value_list.count());
+
+
+	StringList country_list = build_factbook_country_list(
+				value_list
+				);
+
+	country_list.sort(StringList::ascending);
+
+	printer().info("loaded %d countries", country_list.count());
+
+	Vector<Factbook> factbook_list;
+	for(const auto & country: country_list){
+
+		printer().debug(
+					"building %s factbook",
+					country.cstring()
+					);
+
+		factbook_list.push_back(
+					Factbook(
+						country,
+						value_list
+						)
+					);
+	}
+
+	JsonArray factbook_array;
+	for(const Factbook & factbook: factbook_list){
+		factbook_array.append(factbook.to_object());
+	}
+
+	JsonDocument().save(
+				factbook_array,
+				JsonDocument::FilePath("data/intermediate/factbook.json")
+				);
+}
+
+
+Vector<FactbookCategory> Importer::load_factbook_categories(
+		const var::String & category_file_path
+		){
+	Matrix<String> category_matrix = Csv::load(
+				category_file_path
+				);
+
+	Vector<FactbookCategory> result;
+	result.reserve(category_matrix.row_count());
+
+	for(u32 i=1; i < category_matrix.row_count(); i++){
+		result.push_back(
+					FactbookCategory()
+					.set_number( category_matrix.at(i, 0) )
+					.set_category( category_matrix.at(i, 1) )
+					.set_name( category_matrix.at(i, 2) )
+					);
+	}
+
+
+	return result;
+}
+
+StringList Importer::build_factbook_country_list(
+		const Vector<FactbookValue> & value_list
+		) const {
+	StringList result;
+	for(const FactbookValue & value: value_list){
+		String country = value.country();
+		if( result.find(country) == result.count() ){
+			result.push_back(country);
+		}
+	}
+	return result;
+}
+
+Vector<FactbookValue> Importer::load_factbook_values(
+		const var::String & category,
+		const String& name,
+		const var::String & value_file_path
+		){
+	Matrix<String> value_matrix = Csv::load(
+				value_file_path
+				);
+
+	Vector<FactbookValue> result;
+	result.reserve(value_matrix.row_count());
+
+	for(u32 i=1; i < value_matrix.row_count(); i++){
+		result.push_back(
+					FactbookValue()
+					.set_category( category )
+					.set_name( name )
+					.set_position( value_matrix.at(i, 0) )
+					.set_country( value_matrix.at(i, 1) )
+					.set_value( value_matrix.at(i, 2) )
+					);
+	}
+
+	return result;
 }
 
 void Importer::process_land_area_data(){

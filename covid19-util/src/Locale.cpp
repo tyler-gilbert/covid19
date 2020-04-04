@@ -5,6 +5,7 @@ String Locale::deabbreviate_country(const String & abbr){
 	if( abbr == "Taiwan*"){ return "Taiwan"; }
 	if( abbr == "China"){ return "MainlandChina"; }
 	if( abbr == "UK"){ return "UnitedKingdom"; }
+	if( abbr == "US"){ return "UnitedStates"; }
 	if( abbr == "UnitedKingdoms"){ return "UnitedKingdom"; }
 	if( abbr == "Korea,South"){ return "SouthKorea"; }
 	if( abbr == "Korea, South"){ return "SouthKorea"; }

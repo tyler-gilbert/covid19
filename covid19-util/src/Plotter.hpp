@@ -9,6 +9,7 @@
 #include "Covid19.hpp"
 #include "Population.hpp"
 #include "Compilation.hpp"
+#include "Factbook.hpp"
 
 //methods to convert containers to charts
 class Plotter : public Object {

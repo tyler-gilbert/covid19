@@ -46,16 +46,15 @@ void Covid19List::sanitization_filter(){
 			}
 		}
 
-#if 1
-		constexpr u32 window_size = 4;
+		constexpr u32 window_size = 3;
 		//do a moving average log filter
 		if( m_data_smoothed.count() > window_size ){
-			for(u32 i=0; i < m_data_smoothed.count()-1; i++){
+			for(int i=m_data_smoothed.count()-1; i > 1; i--){
 				float count = 1.0f;
 				Covid19Float sample = m_data_smoothed.at(i).log10f();
-				for(u32 j = 1; j < window_size; j++){
-					if( i < m_data_smoothed.count() - j ){
-						sample += m_data_smoothed.at(i+j).log10f();
+				for(int j = 1; j < window_size; j++){
+					if( i - j > 0){
+						sample += m_data_smoothed.at(i-j).log10f();
 						count+=1.0f;
 					}
 				}
@@ -63,7 +62,6 @@ void Covid19List::sanitization_filter(){
 				m_data_smoothed.at(i) = sample.powf(10.0f);
 			}
 		}
-#endif
 	}
 }
 

@@ -133,7 +133,7 @@ String Plotter::create_covid19_history_plot(
 			.set_y_axis(y_axis_object)
 			.set_property(
 				"title",
-				ChartJsOptions::create_title("COVID19 Cases")
+				ChartJsOptions::create_title("COVID19 Cases (4 Day Logarithmic Moving Average)")
 				);
 
 	chart.data()
@@ -151,7 +151,7 @@ String Plotter::create_covid19_daily_growth_rate(
 
 
 	Vector<Covid19Float> daily_increase =
-			covid19_list.calculate_daily_growth_rate(1, 0.24f);
+			covid19_list.calculate_daily_growth_rate(1, 0.45f);
 
 	Array<ChartJsDataSet, 3> data_sets;
 
@@ -217,7 +217,7 @@ String Plotter::create_covid19_daily_growth_rate(
 					);
 
 		truncation_line.data().push_back(
-					JsonReal(24.0f)
+					JsonReal(45.0f)
 					);
 
 	}
@@ -237,7 +237,7 @@ String Plotter::create_covid19_daily_growth_rate(
 
 	JsonObject ticks;
 	ticks.insert("min", JsonInteger(0));
-	ticks.insert("max", JsonInteger(25.0f));
+	ticks.insert("max", JsonInteger(50.0f));
 	y_axis_object.insert("ticks", ticks);
 
 
@@ -246,7 +246,7 @@ String Plotter::create_covid19_daily_growth_rate(
 			.set_y_axis(y_axis_object)
 			.set_property(
 				"title",
-				ChartJsOptions::create_title("Percent Daily Increase (Capped at 24%)")
+				ChartJsOptions::create_title("Percent Daily Increase (Capped at 45%)")
 				);
 
 	return JsonDocument().stringify(chart.to_object());
@@ -316,8 +316,8 @@ String Plotter::create_covid19_days_to_double(
 					);
 
 		for(u32 j=0; j < data_sets.count(); j++){
-			if( days_to_double.at(i).at(j) > 24 ){
-				data_sets.at(j).data().push_back(JsonReal(24.0f));
+			if( days_to_double.at(i).at(j) > 45.0f ){
+				data_sets.at(j).data().push_back(JsonReal(45.0f));
 			} else {
 				data_sets.at(j).data().push_back(
 							JsonReal(days_to_double.at(i).at(j))
@@ -332,7 +332,7 @@ String Plotter::create_covid19_days_to_double(
 					);
 
 		truncation_line.data().push_back(
-					JsonReal(24.0f)
+					JsonReal(45.0f)
 					);
 	}
 
@@ -482,7 +482,7 @@ String Plotter::create_growth_trend_bubble_chart(
 		if( group.parent().covid19().data().count() &&
 				group.parent().covid19().total(metric_type) > 20 ){
 			Vector<Covid19Float> daily_growth =
-					group.parent().covid19().calculate_daily_growth_rate(10, 0.24f);
+					group.parent().covid19().calculate_daily_growth_rate(10, 0.45f);
 
 			if( daily_growth.count() > 1 ){
 				float rate = daily_growth.back().metric(metric_type)*100.0f;
@@ -576,7 +576,10 @@ String Plotter::create_growth_trend_bubble_chart(
 
 	JsonObject x_axis_object = ChartJsOptions::create_axis("logarithmic");
 	x_axis_object.insert("position", JsonString("bottom"));
-	x_axis_object.insert("scaleLabel", ChartJsOptions::create_scale_label("Number of Confirmed Cases (Log Scale)"));
+	x_axis_object.insert("scaleLabel",
+											 ChartJsOptions::create_scale_label(
+												 "Number of " + Covid19::metric_name(metric_type) + " (Log Scale)")
+											 );
 
 	JsonObject y_axis_object = ChartJsOptions::create_axis("linear");
 	y_axis_object.insert("scaleLabel", ChartJsOptions::create_scale_label("Growth Rate (Lower is Better)"));
@@ -584,7 +587,7 @@ String Plotter::create_growth_trend_bubble_chart(
 	{
 		JsonObject ticks;
 		ticks.insert("min", JsonInteger(0));
-		ticks.insert("max", JsonInteger(25.0f));
+		ticks.insert("max", JsonInteger(50.0f));
 		y_axis_object.insert("ticks", ticks);
 	}
 

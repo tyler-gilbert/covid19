@@ -8,6 +8,7 @@
 #include "Locale.hpp"
 #include "Covid19.hpp"
 #include "Population.hpp"
+#include "Factbook.hpp"
 
 class Importer : public Object {
 public:
@@ -52,12 +53,14 @@ private:
 	void process_population_data();
 	void process_covid19_data();
 	void process_covid19_daily_report(const String& file_path);
+	void process_factbook();
 	void create_compilation_output();
 	void create_world_output();
 
 	bool is_filter_covid19(const Locale& locale) const;
 
 	StringList build_country_list() const;
+	StringList build_factbook_country_list(const Vector<FactbookValue> & value_list) const;
 	Vector<Locale> build_locale_list(const var::String & country, const String& state);
 	Vector<Locale> build_locale_list() const;
 
@@ -97,6 +100,15 @@ private:
 			u32 maximum_age
 			);
 
+	Vector<FactbookCategory> load_factbook_categories(
+			const var::String & category_file_path
+			);
+
+	Vector<FactbookValue> load_factbook_values(
+			const var::String & category,
+			const var::String & name,
+			const var::String & value_file_path
+			);
 
 };
 

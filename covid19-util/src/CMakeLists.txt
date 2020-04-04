@@ -10,6 +10,8 @@ set(SOURCES
 	Compilation.hpp
 	Container.cpp
 	Container.hpp
+	Factbook.cpp
+	Factbook.hpp
 	Locale.cpp
 	Locale.hpp
 	Population.cpp

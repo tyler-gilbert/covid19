@@ -5,6 +5,7 @@
 #include <sapi/fs.hpp>
 #include "Object.hpp"
 #include "Compilation.hpp"
+#include "Factbook.hpp"
 
 class MarkdownFilePrinter : public MarkdownPrinter {
 public:
@@ -37,7 +38,12 @@ private:
 	String m_output_directory;
 	File m_output_file;
 	MarkdownFilePrinter m_file_printer;
+	WorldFactbook m_world_factbook;
 
+
+	const WorldFactbook& world_factbook() const {
+		return m_world_factbook;
+	}
 	void load_options();
 	void process_world();
 	void process_compilation_group(CompilationGroup& group);
