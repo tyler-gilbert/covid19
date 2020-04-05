@@ -42,13 +42,6 @@ void Renderer::load_options(){
 
 void Renderer::process_world(){
 	PrinterObject pg(printer(), "Process World");
-	printer().debug("Load world factbook");
-	m_world_factbook = WorldFactbook(
-				JsonDocument().load(
-					JsonDocument::FilePath("data/intermediate/factbook.json")
-					).to_array()
-				);
-
 	printer().debug("Load world compilation");
 	CompilationGroup world(
 				JsonDocument().load(
@@ -148,92 +141,11 @@ void Renderer::process_compilation_group(
 	//link to list of children
 	if( group.children().count() > 0 ){
 
-		group.children().sort(CompilationGroup::descending_deaths);
-
-		if( group.children().at(0).parent().covid19().cummulative(Covid19::metric_type_deaths) == 0 ){
-			//no deadliest places data available
-
-		} else {
-
-			MarkdownHeader county_list(
-						file_printer(),
-						"Deadliest Places"
-						);
-
-			if( locale.country() == "US" ){
-				MarkdownPrettyTable deadly_list(
-							file_printer(),
-				{"Name", "Deaths", "People/Square Mile", "Deaths/Million"}
-							);
-
-				file_printer() << MarkdownPrinter::insert_newline;
-				for(u32 i=0; (i < 10) && (i < group.children().count()); i++){
-
-					if( group.children().at(i).parent().covid19().cummulative(Covid19::metric_type_deaths) == 0 ){
-						break;
-					}
-
-					file_printer().append_pretty_table_row(
-					{
-
-									"[" +
-									group.children().at(i).parent().locale().description() +
-									"]({{< ref \"" +
-									group.children().at(i).parent().locale().output_file_base_name() +
-									"\" >}})"
-									,
-									String::number(
-									group.children().at(i).parent().covid19().cummulative(Covid19::metric_type_deaths)
-									),
-
-									String::number(
-									group.children().at(i).parent().calculate_population_density(), "%0.2f"
-									),
-
-									String::number(
-									group.children().at(i).parent().covid19().cummulative(Covid19::metric_type_deaths) * 1.0f /
-									(group.children().at(i).parent().population_group().cummulative().total() * 1.0f / 1000000.0f),
-									"%0.4f"
-									)
-
-								});
-				}
-			} else {
+		render_deadliest_places(group);
 
 
-				MarkdownPrettyTable deadly_list(
-							file_printer(),
-				{"Name", "Deaths"}
-							);
 
-				file_printer() << MarkdownPrinter::insert_newline;
-				for(u32 i=0; (i < 10) && (i < group.children().count()); i++){
-
-					if( group.children().at(i).parent().covid19().cummulative(Covid19::metric_type_deaths) == 0 ){
-						break;
-					}
-
-					file_printer().append_pretty_table_row(
-					{
-
-									"[" +
-									group.children().at(i).parent().locale().description() +
-									"]({{< ref \"" +
-									group.children().at(i).parent().locale().output_file_base_name() +
-									"\" >}})"
-									,
-
-									String::number(
-									group.children().at(i).parent().covid19().cummulative(Covid19::metric_type_deaths)
-									)
-
-								});
-				}
-			}
-		}
-
-
-		if( (locale.country() == "US") || locale.is_world() ){
+		if( (locale.country() == "UnitedStates") || locale.is_world() ){
 			//scatter plot
 			file_printer() << MarkdownPrinter::insert_newline;
 
@@ -314,11 +226,9 @@ void Renderer::process_compilation(
 		const Compilation& compilation,
 		bool is_show_notes){
 
-	printer().debug("get factbook for " + compilation.locale().country());
-	const Factbook& factbook =
-			world_factbook().factbook(compilation.locale().country());
+	const Factbook& factbook = compilation.factbook();
 
-	if( (compilation.locale().country() == "US") ||
+	if( (compilation.locale().country() == "UnitedStates") ||
 			compilation.locale().is_country()
 			){
 		file_printer() << MarkdownPrinter::insert_newline;
@@ -340,7 +250,6 @@ void Renderer::process_compilation(
 			population = compilation.population_group().cummulative().total();
 			population_density_units = "people per square mile";
 		}
-
 
 		{
 			//average age
@@ -367,17 +276,17 @@ void Renderer::process_compilation(
 													);
 
 			file_printer() << (String().format(
-													"Population Density: %0.2f ",
-													population_density
-													) + population_density_units);
-			}
+													 "Population Density: %0.2f ",
+													 population_density
+													 ) + population_density_units);
+		}
 
+		if( is_population_group_available ){
 			if( is_population_group_available ){
-				if( is_population_group_available ){
-					file_printer() << String().format(
-															"Average Age: %0.2f years old",
-															compilation.population_group().calculate_average_age()
-															);
+				file_printer() << String().format(
+														"Average Age: %0.2f years old",
+														compilation.population_group().calculate_average_age()
+														);
 
 				file_printer() << String().format(
 														"Males vs Females: %0.2f:%0.2f",
@@ -466,5 +375,89 @@ void Renderer::process_compilation(
 													"day (so it would take forever to double.";
 			}
 		}
+	}
+}
+
+void Renderer::render_deadliest_places(CompilationGroup& group){
+	const Locale locale = group.parent().locale();
+
+	PrinterObject pg(printer(), "Deadliest places for " + locale.description());
+	group.children().sort(CompilationGroup::descending_deaths);
+
+	if( group.children()
+			.at(0)
+			.parent()
+			.covid19()
+			.cummulative(Covid19::metric_type_deaths) == 0 ){
+		//no deadliest places data available
+		printer().debug(
+					"no deadliest places available for " +
+					locale.description()
+					);
+		return;
+	}
+
+	MarkdownHeader sub_list(
+				file_printer(),
+				"Deadliest Places"
+				);
+
+	String population_density_label = "People/Square Mile";
+
+	MarkdownPrettyTable deadly_list(
+				file_printer(),
+	{"Name", "Deaths", population_density_label, "Deaths/Million"}
+				);
+
+	file_printer() << MarkdownPrinter::insert_newline;
+	for(u32 i=0; (i < 10) && (i < group.children().count()); i++){
+
+		if( group.children().at(i).parent().covid19().cummulative(Covid19::metric_type_deaths) == 0 ){
+			printer().debug(
+						"no deaths for " +
+						group.children().at(i).parent().locale().description()
+						);
+			break;
+		}
+
+		float population_density =
+				group.children().at(i).parent().calculate_population_density();
+
+		String population_density_string;
+		if( population_density > 0.1f ){
+			population_density_string = String::number(population_density, "%0.2f");
+		} else {
+			population_density_string = "not available";
+		}
+
+		file_printer().append_pretty_table_row(
+		{
+
+						"[" +
+						group.children().at(i).parent().locale().description() +
+						"]({{< ref \"" +
+						group.children().at(i).parent().locale().output_file_base_name() +
+						"\" >}})",
+
+						String::number(
+						group.children()
+						.at(i)
+						.parent()
+						.covid19().cummulative(Covid19::metric_type_deaths)
+						),
+
+						population_density_string,
+
+						String::number(
+						group.children()
+						.at(i)
+						.parent()
+						.calculate_covid19_cummulative_per_population(
+						Covid19::metric_type_deaths, 1000000.0f
+						),
+						"%0.4f"
+						)
+
+					});
 	}
 }

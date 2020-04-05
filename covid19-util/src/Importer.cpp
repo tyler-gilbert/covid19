@@ -69,8 +69,8 @@ void Importer::execute(){
 
 	process_factbook();
 
-	//create_compilation_output();
-	//create_world_output();
+	create_compilation_output();
+	create_world_output();
 
 }
 
@@ -124,7 +124,7 @@ void Importer::create_compilation_output(){
 					);
 		//builds a list of all unique locales
 		Vector<Locale> locale_list = build_locale_list();
-		Vector<String> country_list = build_country_list();
+		StringList country_list = build_country_list();
 
 		Vector<Compilation> compilation_list;
 		compilation_list.reserve( country_list.count() + locale_list.count() );
@@ -171,14 +171,18 @@ void Importer::create_compilation_output(){
 							locale,
 							locale_population_group,
 							covid19_data,
-							Covid19FeatureGroup()
-							)
+							Covid19FeatureGroup(),
+							locale.is_country() ?
+								m_world_factbook.factbook(locale.country()) :
+								Factbook()
+								)
 						);
 
 			printer().info("added locale");
 		}
 
 		printer().info("Checking for %d total countries", country_list.count());
+		printer() << country_list;
 		for(auto & country: country_list){
 			Locale locale;
 			locale.set_country(country);
@@ -202,7 +206,8 @@ void Importer::create_compilation_output(){
 								locale,
 								PopulationGroup(),
 								Covid19List(),
-								Covid19FeatureGroup()
+								Covid19FeatureGroup(),
+								m_world_factbook.factbook(locale.country())
 								)
 							);
 			}
@@ -240,7 +245,7 @@ void Importer::create_world_output(){
 }
 
 bool Importer::is_filter_covid19(const Locale & locale) const {
-	if( locale.country() == "US" ){
+	if( locale.country() == "UnitedStates" ){
 		if( locale.state() == "null" ){ return true; }
 	}
 	return false;
@@ -292,7 +297,6 @@ void Importer::process_factbook(){
 
 	printer().info("loaded %d countries", country_list.count());
 
-	Vector<Factbook> factbook_list;
 	for(const auto & country: country_list){
 
 		printer().debug(
@@ -300,7 +304,9 @@ void Importer::process_factbook(){
 					country.cstring()
 					);
 
-		factbook_list.push_back(
+		m_world_factbook
+				.list()
+				.push_back(
 					Factbook(
 						country,
 						value_list
@@ -309,7 +315,7 @@ void Importer::process_factbook(){
 	}
 
 	JsonArray factbook_array;
-	for(const Factbook & factbook: factbook_list){
+	for(const Factbook & factbook: m_world_factbook.list()){
 		factbook_array.append(factbook.to_object());
 	}
 
@@ -433,7 +439,7 @@ void Importer::process_land_area_data(){
 			Locale locale = Locale()
 					.set_county(county)
 					.set_state(state)
-					.set_country("US")
+					.set_country("UnitedStates")
 					.set_land_area(land_area.to_float());
 
 			//all land area data will be computed by summing county data
@@ -498,13 +504,14 @@ void Importer::process_population_data(){
 		population = row.at(2);
 		male_popuation = row.at(6);
 
-		entry.insert("locale",
-								 Locale()
-								 .set_county(county)
-								 .set_state(state)
-								 .set_country("US")
-								 .to_object()
-								 );
+		entry.insert(
+					"locale",
+					Locale()
+					.set_county(county)
+					.set_state(state)
+					.set_country("UnitedStates")
+					.to_object()
+					);
 
 		PopulationGroup population_group;
 		population_group.set_total(

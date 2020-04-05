@@ -42,6 +42,7 @@ private:
 	JsonArray m_population_array;
 	JsonArray m_covid19_array;
 	JsonArray m_compilation_array;
+	WorldFactbook m_world_factbook;
 
 	Vector<JsonArray*> m_json_array_data;
 	bool m_is_process_land_area;

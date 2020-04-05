@@ -11,11 +11,66 @@ Compilation::Compilation()
 
 
 float Compilation::calculate_population_density() const {
-	float land_area = locale().land_area();
-	if( land_area < 0.2f ){
+
+
+	PRINTER_TRACE(
+				printer(),
+				String().format(
+					"%f / %f -- for %s",
+					total_population() * 1.0f,
+					locale().land_area() * 1.0f,
+					locale().description().cstring()
+					)
+			);
+
+			if( locale().land_area() > 0.0f ){
+		return total_population() * 1.0f / locale().land_area();
+	}
+
+	return 0.0f;
+}
+
+u32 Compilation::total_population() const {
+	if( factbook().is_valid() ){
+		return factbook().population();
+	}
+
+	return population_group().cummulative().total();
+}
+
+float Compilation::calculate_covid19_cummulative_per_population(
+		enum Covid19::metric_type metric,
+		float population_size
+		) const {
+
+	float total = total_population();
+	if( total < 1.0f ){
+		PRINTER_TRACE(
+					printer(),
+					"total population is zero for " +
+					locale().description()
+					);
 		return 0.0f;
 	}
-	return population_group().cummulative().total() * 1.0f / land_area;
+
+
+	float result =
+			covid19().cummulative(metric) * 1.0f /
+			(total / population_size);
+
+	PRINTER_TRACE(
+				printer(),
+				String().format(
+					"cumm per pop is %d / (%f / %f) = %f -:- ",
+					covid19().cummulative(metric),
+					total,
+					population_size,
+					result
+					) +
+				locale().description()
+				);
+
+	return result;
 }
 
 CompilationGroup::CompilationGroup(const JsonObject & object) :

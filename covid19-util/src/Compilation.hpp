@@ -4,6 +4,7 @@
 #include "Locale.hpp"
 #include "Population.hpp"
 #include "Covid19.hpp"
+#include "Factbook.hpp"
 
 class Compilation : public Container {
 public:
@@ -12,19 +13,43 @@ public:
 			const Locale& locale,
 			const PopulationGroup& population_group,
 			const Covid19List& covid19,
-			const Covid19FeatureGroup & feature_group) :
+			const Covid19FeatureGroup& feature_group,
+			const Factbook& factbook) :
 		m_locale(locale),
 		m_population_group(population_group),
 		m_covid19(covid19),
-		m_feature_group(feature_group)
-	{}
+		m_feature_group(feature_group),
+		m_factbook(factbook)
+	{
+
+	}
 
 	Compilation(const JsonObject & object) :
 		m_population_group(object.at("population").to_object()),
 		m_locale(object.at("locale").to_object()),
 		m_covid19(object.at("covid19").to_array()),
+		m_factbook(locale(), object.at("factbook").to_array()),
 		m_feature_group(m_covid19)
 	{
+
+		if( m_factbook.is_valid() && (m_locale.land_area() < 3.0f) ){
+			PRINTER_TRACE(
+						printer(),
+						"get land area from factbook for " +
+						m_locale.description()
+						);
+			m_locale.set_land_area(
+						m_factbook.land_area()
+						);
+		} else {
+			PRINTER_TRACE(
+						printer(),
+						"land area is " +
+						String::number(m_locale.land_area()) +
+						" for " +
+						m_locale.description()
+						);
+		}
 
 	}
 
@@ -38,6 +63,10 @@ public:
 
 	const Covid19List & covid19() const {
 		return m_covid19;
+	}
+
+	const Factbook & factbook() const {
+		return m_factbook;
 	}
 
 	const Covid19FeatureGroup& feature_group() const {
@@ -64,12 +93,21 @@ public:
 	}
 
 	float calculate_population_density() const;
+	float calculate_covid19_cummulative_per_population(
+			enum Covid19::metric_type metric,
+			float population_size
+			) const;
+
+	u32 total_population() const;
+
+	String land_area_units() const;
 
 	JsonObject to_object() const {
 		JsonObject result;
 		result.insert("locale", locale().to_object());
 		result.insert("population", population_group().to_object());
 		result.insert("covid19", covid19().to_array());
+		result.insert("factbook", factbook().to_array());
 		return result;
 	}
 
@@ -78,6 +116,7 @@ private:
 	PopulationGroup m_population_group;
 	Covid19List m_covid19;
 	Covid19FeatureGroup m_feature_group;
+	Factbook m_factbook;
 
 };
 
@@ -87,8 +126,8 @@ public:
 	CompilationGroup(const JsonObject & object);
 	CompilationGroup(const JsonArray & json_array);
 	CompilationGroup(const Compilation & parent,
-			const Vector<Compilation>& compilation_array
-			);
+									 const Vector<Compilation>& compilation_array
+									 );
 
 	const String& country() const {
 		return parent().locale().country();
@@ -152,6 +191,20 @@ public:
 			){
 		return b.parent().covid19().cummulative(Covid19::metric_type_deaths) <
 				a.parent().covid19().cummulative(Covid19::metric_type_deaths);
+	}
+
+	static bool descending_deaths_per_million_population(
+			const CompilationGroup & a,
+			const CompilationGroup & b
+			){
+		return b.parent().calculate_covid19_cummulative_per_population(
+					Covid19::metric_type_deaths,
+					1000000.0f
+					) <
+				a.parent().calculate_covid19_cummulative_per_population(
+					Covid19::metric_type_deaths,
+					1000000.0f
+					);
 	}
 
 	static bool ascending_confirmed(

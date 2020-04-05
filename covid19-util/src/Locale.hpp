@@ -168,7 +168,7 @@ public:
 
 	String child_name() const {
 		if( is_country() ){
-			if( (country() == "US") || (country() == "Canada") ){
+			if( (country() == "UnitedStates") || (country() == "Canada") ){
 				return "State";
 			} else if( country() == "UnitedKingdom" ){
 				return "Territory";
@@ -176,7 +176,7 @@ public:
 				return "Province";
 			}
 		} else if( is_state() ){
-			if(country() == "US"){
+			if(country() == "UnitedStates"){
 				return "County";
 			} else {
 				return "Municipal";

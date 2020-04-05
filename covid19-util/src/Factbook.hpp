@@ -9,7 +9,7 @@ public:
 	FactbookValue(){}
 	FactbookValue(const JsonObject & object){
 		m_name = object.at("name").to_string();
-		m_country = object.at("country").to_string();
+		//m_country = object.at("country").to_string();
 		m_position = object.at("position").to_string();
 		m_category = object.at("category").to_string();
 		m_value = object.at("value").to_string();
@@ -19,7 +19,7 @@ public:
 		JsonObject result;
 		result.insert("category", JsonString(category()));
 		result.insert("name", JsonString(name()));
-		result.insert("country", JsonString(country()));
+		//result.insert("country", JsonString(country()));
 		result.insert("position", JsonString(position()));
 		result.insert("value", JsonString(value()));
 		return result;
@@ -159,9 +159,18 @@ public:
 		}
 	}
 
+	Factbook(const Locale& locale, const JsonArray & array) :
+		m_locale(locale){
+		for(u32 i=0; i < array.count(); i++){
+			m_values.push_back(
+						FactbookValue(array.at(i).to_object())
+						);
+		}
+	}
+
 	Factbook(const JsonObject & object) :
 		m_locale(object.at("locale").to_object()){
-		JsonArray value_array = object.at("values").to_array();
+		JsonArray value_array = object.at("factbook").to_array();
 		for(u32 i=0; i < value_array.count(); i++){
 			m_values.push_back(
 						FactbookValue(value_array.at(i).to_object())
@@ -172,11 +181,15 @@ public:
 	JsonObject to_object() const {
 		JsonObject result;
 		result.insert("locale", locale().to_object());
-		JsonArray value_array;
+		result.insert("factbook", to_array());
+		return result;
+	}
+
+	JsonArray to_array() const {
+		JsonArray result;
 		for(const FactbookValue& value: value_list()){
-			value_array.append(value.to_object());
+			result.append(value.to_object());
 		}
-		result.insert("values", value_array);
 		return result;
 	}
 
@@ -197,6 +210,15 @@ public:
 
 	u32 population() const {
 		return find_value("Population").to_integer();
+	}
+
+	u32 land_area() const {
+		//returns square miles
+		return find_value("Area").to_integer() * 0.3861022f;
+	}
+
+	static float square_miles_to_square_kilometers(float value){
+		return value / 0.3861022f;
 	}
 
 private:
@@ -239,6 +261,8 @@ public:
 		return m_factbook_list.at(offset);
 	}
 
+	const Vector<Factbook>& list() const { return m_factbook_list; }
+	Vector<Factbook>& list(){ return m_factbook_list; }
 
 private:
 	Vector<Factbook> m_factbook_list;

@@ -142,6 +142,10 @@ public:
 		return result;
 	}
 
+	bool is_valid() const {
+		return cummulative().total() > 0;
+	}
+
 	PopulationGroup& set_total(const Population& value){
 		m_cummulative = value;
 		return *this;

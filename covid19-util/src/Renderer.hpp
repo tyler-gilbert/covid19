@@ -38,12 +38,7 @@ private:
 	String m_output_directory;
 	File m_output_file;
 	MarkdownFilePrinter m_file_printer;
-	WorldFactbook m_world_factbook;
 
-
-	const WorldFactbook& world_factbook() const {
-		return m_world_factbook;
-	}
 	void load_options();
 	void process_world();
 	void process_compilation_group(CompilationGroup& group);
@@ -57,6 +52,8 @@ private:
 	}
 
 	void write_demographics(const Compilation & compiliation);
+
+	void render_deadliest_places(CompilationGroup& group);
 
 
 };
