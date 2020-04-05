@@ -55,6 +55,9 @@ public:
 		m_county.
 				erase("County");
 
+		m_county.
+				erase("Parish");
+
 		if( m_county == "NewYorkCity" ){
 			m_county = "NewYork";
 		}

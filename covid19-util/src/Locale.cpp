@@ -1,5 +1,6 @@
 #include "Locale.hpp"
 
+
 String Locale::deabbreviate_country(const String & abbr){
 	if( abbr == "HongKongSAR"){ return "HongKong"; }
 	if( abbr == "Taiwan*"){ return "Taiwan"; }
@@ -9,6 +10,8 @@ String Locale::deabbreviate_country(const String & abbr){
 	if( abbr == "UnitedKingdoms"){ return "UnitedKingdom"; }
 	if( abbr == "Korea,South"){ return "SouthKorea"; }
 	if( abbr == "Korea, South"){ return "SouthKorea"; }
+	if( abbr == "Iran(IslamicRepublicof)"){ return "Iran"; }
+	if( abbr == "RepublicofIreland"){ return "Ireland"; }
 	return abbr;
 }
 

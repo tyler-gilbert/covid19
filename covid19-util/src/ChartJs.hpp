@@ -184,7 +184,7 @@ public:
 		var::JsonObject result;
 		result.insert(
 					"labels",
-					var::JsonArray(m_labels)
+					var::JsonArray(m_label_list)
 					);
 		var::JsonArray dataset_array;
 		for(const auto & dataset: m_dataset_list){
@@ -197,12 +197,12 @@ public:
 		return result;
 	}
 
-	var::StringList& labels(){ return m_labels; }
-	const var::StringList& labels() const { return m_labels; }
+	var::StringList& label_list(){ return m_label_list; }
+	const var::StringList& label_list() const { return m_label_list; }
 
 
 private:
-	var::StringList m_labels;
+	var::StringList m_label_list;
 	var::Vector<ChartJsDataSet> m_dataset_list;
 };
 

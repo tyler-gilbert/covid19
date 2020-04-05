@@ -54,7 +54,9 @@ private:
 	void write_demographics(const Compilation & compiliation);
 
 	void render_deadliest_places(CompilationGroup& group);
-
+	void render_factbook(const Compilation& compilation);
+	void render_demographics(const Compilation& compilation);
+	void render_covid19(const Compilation& compilation);
 
 };
 

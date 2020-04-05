@@ -45,6 +45,19 @@ public:
 			enum Covid19::metric_type metric_type
 			);
 
+	String create_covid19_per_million_pie_chart(
+			const CompilationGroup& compilation_group,
+			enum Covid19::metric_type metric_type,
+			u32 per_population
+			);
+
+	String create_days_of_spread_bubble_chart(
+			const CompilationGroup& compilation_group,
+			enum Covid19::metric_type metric_type,
+			std::function<float(CompilationGroup& compilation_group)> get_y_value,
+			std::function<float(CompilationGroup& compilation_group)> get_radius_value
+			);
+
 };
 
 #endif // PLOTTER_HPP

@@ -30,7 +30,7 @@ String Plotter::create_population_histogram_by_age(
 						);
 		}
 
-		chart.data().labels().push_back(label);
+		chart.data().label_list().push_back(label);
 		data_set.data().push_back(
 					JsonReal(by_age.total())
 					);
@@ -57,7 +57,7 @@ String Plotter::create_population_pie_chart_by_sex(
 			.push_back(ChartJsColor::create_red().to_string());
 
 
-	chart.data().labels()
+	chart.data().label_list()
 			.push_back("male")
 			.push_back("female");
 
@@ -105,7 +105,7 @@ String Plotter::create_covid19_history_plot(
 				);
 
 	for(const auto & covid19: covid19_list.data_smoothed()){
-		chart.data().labels().push_back(
+		chart.data().label_list().push_back(
 					covid19.timestamp_string()
 					);
 
@@ -201,7 +201,7 @@ String Plotter::create_covid19_daily_growth_rate(
 
 	for(u32 i=0; i < covid19_list.data().count(); i++){
 
-		chart.data().labels().push_back(
+		chart.data().label_list().push_back(
 					covid19_list.data().at(i).timestamp_string()
 					);
 
@@ -311,7 +311,7 @@ String Plotter::create_covid19_days_to_double(
 
 	for(u32 i=0; i < covid19_list.data().count(); i++){
 
-		chart.data().labels().push_back(
+		chart.data().label_list().push_back(
 					covid19_list.data().at(i).timestamp_string().split(" ").at(0)
 					);
 
@@ -512,8 +512,8 @@ String Plotter::create_growth_trend_bubble_chart(
 
 					trend_data_set
 							.set_property("label", JsonString(group.parent().locale().description()))
-							.set_property("pointRadius", JsonReal(0))
-							.set_property("pointHoverRadius", JsonReal(0))
+							.set_property("pointRadius", JsonReal(0.5))
+							.set_property("pointHoverRadius", JsonReal(2.0))
 							.set_property(
 								"borderColor",
 								JsonString(
@@ -607,4 +607,76 @@ String Plotter::create_growth_trend_bubble_chart(
 			.set_y_axis(y_axis_object);
 
 	return JsonDocument().stringify(chart.to_object());
+}
+
+String Plotter::create_covid19_per_million_pie_chart(
+		const CompilationGroup& compilation_group,
+		enum Covid19::metric_type metric_type,
+		u32 per_population
+		){
+	ChartJs chart;
+	chart.set_type(ChartJs::type_doughnut);
+	chart.options().create_title(
+				"Deaths Per " + String::number(per_population) + " People"
+				);
+
+	Vector<ChartJsColor> color_list = ChartJsColor::create_standard_palette();
+
+
+	StringList colors;
+	colors.push_back(ChartJsColor::create_blue().to_string())
+			.push_back(ChartJsColor::create_red().to_string());
+
+	ChartJsDataSet data_set;
+	StringList background_color_list;
+
+	u32 count = 0;
+	for(const CompilationGroup& group: compilation_group.children()){
+
+		chart.data().label_list()
+				.push_back(group.parent().locale().description());
+
+		background_color_list.push_back(
+					color_list.at(count % color_list.count())
+					.set_alpha(64)
+					.to_string()
+					);
+
+
+		data_set.append(
+					JsonReal(
+						group.parent().calculate_covid19_cummulative_per_population
+						(metric_type, per_population*1.0f)
+						)
+					);
+
+		count++;
+	}
+
+
+	data_set.set_property(
+				"backgroundColor", JsonArray(background_color_list)
+				);
+
+	JsonObject legend = ChartJsOptions::create_legend(true);
+	legend.insert("position", JsonString("left"));
+
+	chart.data().append(data_set);
+	chart.options()
+			.set_property(
+				"legend",
+				legend
+				);
+
+	return JsonDocument().stringify(chart.to_object());
+}
+
+String Plotter::create_days_of_spread_bubble_chart(
+		const CompilationGroup& compilation_group,
+		enum Covid19::metric_type metric_type,
+		std::function<float(CompilationGroup& compilation_group)> get_y_value,
+		std::function<float(CompilationGroup& compilation_group)> get_radius_value
+		){
+
+	return String();
 }

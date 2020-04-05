@@ -123,6 +123,7 @@ private:
 class CompilationGroup : public Container {
 public:
 
+	CompilationGroup(){}
 	CompilationGroup(const JsonObject & object);
 	CompilationGroup(const JsonArray & json_array);
 	CompilationGroup(const Compilation & parent,
