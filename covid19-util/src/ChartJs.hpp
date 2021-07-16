@@ -119,8 +119,6 @@ private:
 	u8 m_green = 0xff;
 	u8 m_blue = 0xff;
 	u8 m_alpha = 0xff;
-
-
 };
 
 class ChartJsDataSet {

@@ -653,7 +653,6 @@ String Plotter::create_covid19_per_million_pie_chart(
 		count++;
 	}
 
-
 	data_set.set_property(
 				"backgroundColor", JsonArray(background_color_list)
 				);
